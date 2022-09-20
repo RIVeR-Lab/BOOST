@@ -2,6 +2,7 @@
 #include <device.h>
 #include <devicetree.h>
 #include <drivers/gpio.h>
+#include <drivers/uart.h>
 
 /* 1000 msec = 1 sec */
 #define SLEEP_TIME_MS   500
@@ -21,8 +22,22 @@
 #define FLAGS	0
 #endif
 
+// USART2
+#define USART2_ID DT_NODELABEL(usart2)
+
+#if DT_NODE_HAS_STATUS(USART2_ID, okay)
+#define USART2_LABEL DT_LABEL(USART2_ID)
+#else
+#error "Unsupported board"
+#endif
+
 void main(void)
 {
+	const struct device *gps_dev;
+	gps_dev = device_get_binding(USART2_LABEL);
+
+	
+
 	const struct device *led0_dev;
 	bool led_is_on = true;
 	int ret;
@@ -40,6 +55,7 @@ void main(void)
 	while (1) {
 		gpio_pin_set(led0_dev, PIN, (int)led_is_on);
 		led_is_on = !led_is_on;
+		uart_poll_out(gps_dev, 'h');
 		k_msleep(SLEEP_TIME_MS);
 	}
 }
