@@ -23,22 +23,22 @@
 
 void main(void)
 {
-	const struct device *dev;
+	const struct device *led0_dev;
 	bool led_is_on = true;
 	int ret;
 
-	dev = device_get_binding(LED0);
-	if (dev == NULL) {
+	led0_dev = device_get_binding(LED0);
+	if (led0_dev == NULL) {
 		return;
 	}
 
-	ret = gpio_pin_configure(dev, PIN, GPIO_OUTPUT_ACTIVE | FLAGS);
+	ret = gpio_pin_configure(led0_dev, PIN, GPIO_OUTPUT_ACTIVE | FLAGS);
 	if (ret < 0) {
 		return;
 	}
 
 	while (1) {
-		gpio_pin_set(dev, PIN, (int)led_is_on);
+		gpio_pin_set(led0_dev, PIN, (int)led_is_on);
 		led_is_on = !led_is_on;
 		k_msleep(SLEEP_TIME_MS);
 	}
