@@ -3,9 +3,10 @@
 #include <devicetree.h>
 #include <drivers/gpio.h>
 #include <drivers/uart.h>
+#include <string.h>
 
 /* 1000 msec = 1 sec */
-#define SLEEP_TIME_MS   500
+#define SLEEP_TIME_MS   1
 
 /* The devicetree node identifier for the "led0" alias. */
 #define LED0_NODE DT_ALIAS(led0)
@@ -33,6 +34,7 @@
 
 void main(void)
 {
+	printk("Main Function\n");
 	const struct device *gps_dev;
 	gps_dev = device_get_binding(USART2_LABEL);
 
@@ -52,10 +54,27 @@ void main(void)
 		return;
 	}
 
+	const uint32_t uartRxBufferLen = 512;
+	uint8_t uartRxBuffer[uartRxBufferLen] = { 0 };
+	uint32_t uartRxBufferI = 0;
+
 	while (1) {
 		gpio_pin_set(led0_dev, PIN, (int)led_is_on);
 		led_is_on = !led_is_on;
-		uart_poll_out(gps_dev, 'h');
+		uint8_t inChar;
+		int success = uart_poll_in(gps_dev, &inChar);
+		if(success == 0){
+			printk("%c", inChar);
+			memcpy(&uartRxBuffer[uartRxBufferI++], &inChar, 1);
+			if(uartRxBufferI >= uartRxBufferLen){
+				uartRxBufferI = 0;
+				printk("%s", uartRxBuffer);
+				// for(size_t i = 0; i < uartRxBufferLen; i++){
+					
+				// }
+			}
+		}
+		// printk("inChar: 0x%X success: %d\n", inChar, success);
 		k_msleep(SLEEP_TIME_MS);
 	}
 }
