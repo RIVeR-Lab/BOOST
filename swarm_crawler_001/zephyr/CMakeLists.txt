@@ -5,5 +5,8 @@ project(swarm_crawler_001)
 
 set(app_sources
     ../src/main.cpp
+    ../src/uartBase.cpp
+    ../src/ubxNeo6M.cpp
+    ../src/gpsManager.cpp
 )
 target_sources(app PRIVATE ${app_sources})
