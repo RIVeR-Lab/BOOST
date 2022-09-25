@@ -23,14 +23,23 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
 #include "TinyGPS++.h"
 
-#include <string.h>
-#include <ctype.h>
-#include <stdlib.h>
-
 #define _GPRMCterm   "GPRMC"
 #define _GPGGAterm   "GPGGA"
 #define _GNRMCterm   "GNRMC"
 #define _GNGGAterm   "GNGGA"
+
+#define M_PI        3.14159265358979323846
+#define M_PI_2      1.57079632679489661923
+#define TWO_PI  M_PI_2
+constexpr int radians(int deg){
+  return M_PI*(deg/180);
+}
+constexpr int degrees(int rad){
+  return rad*180/M_PI;
+}
+constexpr int sq(int n){
+  return n*n;
+}
 
 TinyGPSPlus::TinyGPSPlus()
   :  parity(0)
@@ -338,7 +347,7 @@ void TinyGPSLocation::commit()
 {
    rawLatData = rawNewLatData;
    rawLngData = rawNewLngData;
-   lastCommitTime = millis();
+   lastCommitTime = k_uptime_get();
    valid = updated = true;
 }
 
@@ -369,14 +378,14 @@ double TinyGPSLocation::lng()
 void TinyGPSDate::commit()
 {
    date = newDate;
-   lastCommitTime = millis();
+   lastCommitTime = k_uptime_get();
    valid = updated = true;
 }
 
 void TinyGPSTime::commit()
 {
    time = newTime;
-   lastCommitTime = millis();
+   lastCommitTime = k_uptime_get();
    valid = updated = true;
 }
 
@@ -436,7 +445,7 @@ uint8_t TinyGPSTime::centisecond()
 void TinyGPSDecimal::commit()
 {
    val = newval;
-   lastCommitTime = millis();
+   lastCommitTime = k_uptime_get();
    valid = updated = true;
 }
 
@@ -448,7 +457,7 @@ void TinyGPSDecimal::set(const char *term)
 void TinyGPSInteger::commit()
 {
    val = newval;
-   lastCommitTime = millis();
+   lastCommitTime = k_uptime_get();
    valid = updated = true;
 }
 
@@ -478,7 +487,7 @@ void TinyGPSCustom::begin(TinyGPSPlus &gps, const char *_sentenceName, int _term
 void TinyGPSCustom::commit()
 {
    strcpy(this->buffer, this->stagingBuffer);
-   lastCommitTime = millis();
+   lastCommitTime = k_uptime_get();
    valid = updated = true;
 }
 

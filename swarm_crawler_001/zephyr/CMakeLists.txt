@@ -8,5 +8,6 @@ set(app_sources
     ../src/uartBase.cpp
     ../src/ubxNeo6M.cpp
     ../src/gpsManager.cpp
+    ../src/3rd_party/TinyGPS++.cpp
 )
 target_sources(app PRIVATE ${app_sources})

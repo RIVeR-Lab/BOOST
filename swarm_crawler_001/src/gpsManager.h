@@ -11,6 +11,7 @@
 #include "ubxNeo6M.h"
 #include <device.h>
 #include <zephyr.h>
+#include "3rd_party/TinyGPSPlus.h"
 
 class gpsManager {
 public:
