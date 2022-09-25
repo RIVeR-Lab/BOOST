@@ -9,6 +9,9 @@
 #define SRC_UBXNEO6M_H
 #include "uartBase.h"
 #include <string.h>
+#include "zephyr.h"
+#include "logging/log.h"
+
 
 class ubxNeo6M {
 public:
@@ -19,7 +22,7 @@ public:
 private:
     uartBase uartPort;
     static const uint32_t rxBufferLen = 512;
-    uint8_t rxBuffer[rxBufferLen] = { 0 };
+    char rxBuffer[rxBufferLen] = { 0 };
     uint32_t rxBufferI = 0;
 };
 

@@ -7,12 +7,13 @@
  */
 
 #include "ubxNeo6M.h"
+LOG_MODULE_DECLARE(gps, LOG_LEVEL_DBG);
 
 ubxNeo6M::ubxNeo6M(uartBase &_uart) : uartPort(_uart) {}
 ubxNeo6M::~ubxNeo6M() {}
 bool ubxNeo6M::readIn() {
   bool success = true;
-  uint8_t inChar;
+  unsigned char inChar;
 
   int stat = uartPort.poll_read(inChar);
   // If char arrived, add to buffer.
@@ -21,7 +22,7 @@ bool ubxNeo6M::readIn() {
     // If buffer is full, print it out
     if (rxBufferI >= rxBufferLen) {
       rxBufferI = 0;
-      printk("%s", rxBuffer);
+      LOG_DBG("\n%s\r\n", log_strdup(rxBuffer));
     }
   }
 

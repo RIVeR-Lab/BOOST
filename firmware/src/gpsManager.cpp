@@ -7,6 +7,7 @@
 
 #include "gpsManager.h"
 #include "zephyr.h"
+LOG_MODULE_REGISTER(gps, LOG_LEVEL_DBG);
 
 K_THREAD_STACK_DEFINE(gps_manager_stack, gpsManager::kStackSize);
 
