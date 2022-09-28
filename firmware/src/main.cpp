@@ -5,9 +5,14 @@
 #include <drivers/uart.h>
 #include "uartBase.h"
 #include "gpsManager.h"
+#include "logging/log.h"
+#include <debug/thread_analyzer.h>
+#include <stdio.h>
+
+LOG_MODULE_REGISTER(mainThread, LOG_LEVEL_DBG);
 
 /* 1000 msec = 1 sec */
-#define SLEEP_TIME_MS   1
+#define SLEEP_TIME_MS   1000
 
 /* The devicetree node identifier for the "led0" alias. */
 #define LED0_NODE DT_ALIAS(led0)
@@ -59,10 +64,28 @@ void main(void)
 	gpsManager.create();
 	gpsManager.start();
 
+	thread_analyzer_print();
 
 	while (1) {
 		gpio_pin_set(led0_dev, PIN, (int)led_is_on);
 		led_is_on = !led_is_on;
+
+		// char buffer [100];
+  		// snprintf(buffer, 100, "Lat: %f\n", gpsManager.getLat());
+		// printk("%s", buffer);
+
+		
+
+		// printInt(gps.satellites.value(), gps.satellites.isValid(), 5);
+		// printFloat(gps.hdop.hdop(), gps.hdop.isValid(), 6, 1);
+		// printFloat(gps.location.lat(), gps.location.isValid(), 11, 6);
+		// printFloat(gps.location.lng(), gps.location.isValid(), 12, 6);
+		// printInt(gps.location.age(), gps.location.isValid(), 5);
+		// printDateTime(gps.date, gps.time);
+		// printFloat(gps.altitude.meters(), gps.altitude.isValid(), 7, 2);
+		// printFloat(gps.course.deg(), gps.course.isValid(), 7, 2);
+		// printFloat(gps.speed.kmph(), gps.speed.isValid(), 6, 2);
+		// printStr(gps.course.isValid() ? TinyGPSPlus::cardinal(gps.course.deg()) : "*** ", 6);
 
 		k_msleep(SLEEP_TIME_MS);
 	}

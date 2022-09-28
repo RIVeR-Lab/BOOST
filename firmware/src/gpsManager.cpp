@@ -6,7 +6,6 @@
  */
 
 #include "gpsManager.h"
-#include "zephyr.h"
 LOG_MODULE_REGISTER(gps, LOG_LEVEL_DBG);
 
 K_THREAD_STACK_DEFINE(gps_manager_stack, gpsManager::kStackSize);
@@ -17,9 +16,21 @@ gpsManager::~gpsManager() {}
 
 // The entry point and/or "main" function of this thread
 void gpsManager::loopHook() {
+  int64_t lastPrintMs = k_uptime_get();
   while (1) {
     gps.readIn();
     k_sleep(K_MSEC(loopTimeMs));
+    // Print GPS data:
+    if(k_uptime_get() - lastPrintMs > 1000){
+      lastPrintMs = k_uptime_get();
+      char buffer [100];
+      printk("DateTime: ");
+      printDateTime(gps.getDate(), gps.getTime());
+      printk("Lat(deg): ");
+      printFloat(gps.getLocation().lat(), gps.getLocation().isValid(), 11, 6);
+      printk("Lng(deg): ");
+      printFloat(gps.getLocation().lng(), gps.getLocation().isValid(), 12, 6);
+    }
   }
 }
 

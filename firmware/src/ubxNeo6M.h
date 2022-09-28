@@ -7,23 +7,32 @@
 
 #ifndef SRC_UBXNEO6M_H
 #define SRC_UBXNEO6M_H
-#include "uartBase.h"
-#include <string.h>
-#include "zephyr.h"
+#include "3rd_party/TinyGPSPlus.h"
 #include "logging/log.h"
-
+#include "uartBase.h"
+#include "zephyr.h"
+#include <string.h>
 
 class ubxNeo6M {
 public:
   ubxNeo6M(uartBase &_uart);
   ~ubxNeo6M();
   bool readIn();
+  TinyGPSLocation getLocation() { return gpsEncoder.location; }
+  TinyGPSDate getDate() { return gpsEncoder.date; }
+  TinyGPSTime getTime() { return gpsEncoder.time; }
+  TinyGPSSpeed getSpeed() { return gpsEncoder.speed; }
+  TinyGPSCourse getCourse() { return gpsEncoder.course; }
+  TinyGPSAltitude getAltitude() { return gpsEncoder.altitude; }
+  TinyGPSInteger getSatellites() { return gpsEncoder.satellites; }
+  TinyGPSHDOP getHdop() { return gpsEncoder.hdop; }
 
 private:
-    uartBase uartPort;
-    static const uint32_t rxBufferLen = 512;
-    char rxBuffer[rxBufferLen] = { 0 };
-    uint32_t rxBufferI = 0;
+  TinyGPSPlus gpsEncoder;
+  uartBase uartPort;
+  static const uint32_t rxBufferLen = 512;
+  char rxBuffer[rxBufferLen] = {0};
+  uint32_t rxBufferI = 0;
 };
 
 #endif // SRC_UBXNEO6M_H

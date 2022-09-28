@@ -22,6 +22,7 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
 
 #include "TinyGPS++.h"
+LOG_MODULE_DECLARE(gps, LOG_LEVEL_DBG);
 
 #define _GPRMCterm   "GPRMC"
 #define _GPGGAterm   "GPGGA"
