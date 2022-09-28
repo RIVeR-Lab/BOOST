@@ -43,7 +43,9 @@ static void printFloat(float val, bool valid, int len, int prec)
   }
   else
   {
-    printk("%.*f", prec, val);
+    char sz[32] = "*****************";
+    sprintf(sz, "%.*f", prec, val);
+    printk("%s", sz);
     int vi = abs((int)val);
     int flen = prec + (val < 0.0 ? 2 : 1); // . and -
     flen += vi >= 1000 ? 4 : vi >= 100 ? 3 : vi >= 10 ? 2 : 1;
