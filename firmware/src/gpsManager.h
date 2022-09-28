@@ -50,22 +50,20 @@ static void printFloat(float val, bool valid, int len, int prec)
     for (int i=flen; i<len; ++i)
       printk(" ");
   }
-  // smartDelay(0);
 }
 
-// static void printInt(unsigned long val, bool valid, int len)
-// {
-//   char sz[32] = "*****************";
-//   if (valid)
-//     sprintf(sz, "%ld", val);
-//   sz[len] = 0;
-//   for (int i=strlen(sz); i<len; ++i)
-//     sz[i] = ' ';
-//   if (len > 0) 
-//     sz[len-1] = ' ';
-//   printk(sz);
-//   smartDelay(0);
-// }
+static void printInt(unsigned long val, bool valid, int len)
+{
+  char sz[32] = "*****************";
+  if (valid)
+    sprintf(sz, "%ld", val);
+  sz[len] = 0;
+  for (int i=strlen(sz); i<len; ++i)
+    sz[i] = ' ';
+  if (len > 0) 
+    sz[len-1] = ' ';
+  printk("%s", sz);
+}
 
 static void printDateTime(TinyGPSDate d, TinyGPSTime t)
 {
@@ -90,18 +88,18 @@ static void printDateTime(TinyGPSDate d, TinyGPSTime t)
     sprintf(sz, "%02d:%02d:%02d ", t.hour(), t.minute(), t.second());
     printk("%s", sz);
   }
-
-  // printInt(d.age(), d.isValid(), 5);
-  // smartDelay(0);
 }
 
-// static void printStr(const char *str, int len)
-// {
-//   int slen = strlen(str);
-//   for (int i=0; i<len; ++i)
-//     printk(i<slen ? str[i] : ' ');
-//   smartDelay(0);
-// }
+static void printStr(const char *str, int len)
+{
+  int slen = strlen(str);
+  for (int i=0; i<len; ++i)
+    if(i<slen){
+      printk("%c", str[i]);
+    }else{
+      printk(" ");
+    }
+}
 
 };
 
