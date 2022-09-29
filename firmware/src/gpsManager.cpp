@@ -28,11 +28,11 @@ void gpsManager::loopHook() {
     if(k_uptime_get() - lastPrintMs > 3000){
       lastPrintMs = k_uptime_get();
       // TODO: Change to use LOGGING instead
-      printk("Sats HDOP  Latitude   Longitude   Fix  Date       Time     Date  Alt    Course Speed Card  Chars Sentences Checksum\r\n");
-      printk("           (deg)      (deg)       Age                      Age   (m)    --- from GPS ----   RX    RX        Fail\r\n");
+      printk("Sats  Latitude   Longitude   Fix      Date    Time     Date  Alt    Course Speed Card  Chars Sentences Checksum\r\n");
+      printk("       (deg)      (deg)      Age                       Age   (m)    --- from GPS ----   RX    RX        Fail\r\n");
       printk("----------------------------------------------------------------------------------------------------------------------------------------\r\n");
       printInt(gps.getSatellites().value(), gps.getSatellites().isValid(), 5);
-      printFloat(gps.getHdop().hdop(), gps.getHdop().isValid(), 6, 1);
+      // printFloat(gps.getHdop().hdop(), gps.getHdop().isValid(), 6, 1);
       printFloat(gps.getLocation().lat(), gps.getLocation().isValid(), 11, 6);
       printFloat(gps.getLocation().lng(), gps.getLocation().isValid(), 12, 6);      
       printInt(gps.getLocation().age(), gps.getLocation().isValid(), 5);
@@ -41,8 +41,11 @@ void gpsManager::loopHook() {
       printFloat(gps.getCourse().deg(), gps.getCourse().isValid(), 7, 2);
       printFloat(gps.getSpeed().kmph(), gps.getSpeed().isValid(), 6, 2);
       printStr(gps.getCourse().isValid() ? TinyGPSPlus::cardinal(gps.getCourse().deg()) : "*** ", 6);
+      printk("        ");
       printInt(gps.charsProcessed(), true, 6);
+      printk("  ");
       printInt(gps.sentencesWithFix(), true, 10);
+      printk("  ");
       printInt(gps.failedChecksum(), true, 9);
       printk("\r\n\r\n");
     }
