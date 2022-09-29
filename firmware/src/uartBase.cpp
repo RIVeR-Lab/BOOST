@@ -6,6 +6,8 @@
  */
 
 #include "uartBase.h"
+// See https://github.com/zephyrproject-rtos/zephyr/blob/main/tests/drivers/uart/uart_basic_api/src/test_uart_poll.c
+// for examples.
 uartBase::uartBase(const struct device &_uartDev) : uartDev(_uartDev) {}
 uartBase::~uartBase() {}
 
