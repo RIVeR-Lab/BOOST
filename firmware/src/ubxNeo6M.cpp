@@ -11,6 +11,16 @@ LOG_MODULE_DECLARE(gps, LOG_LEVEL_NONE);
 
 ubxNeo6M::ubxNeo6M(uartBase &_uart) : uartPort(_uart) {}
 ubxNeo6M::~ubxNeo6M() {}
+
+bool ubxNeo6M::initialize(){
+  bool success = true;
+  if(USE_INTERRUPT_UART){
+    success = success && uartPort.initializeIrq();
+  }
+
+  return success;
+}
+
 /**
   * Return the following
   * 0 – If a character arrived.

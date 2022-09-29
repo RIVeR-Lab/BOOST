@@ -10,7 +10,7 @@ LOG_MODULE_REGISTER(gps, LOG_LEVEL_DBG);
 
 K_THREAD_STACK_DEFINE(gps_manager_stack, gpsManager::kStackSize);
 
-gpsManager::gpsManager(uartBase _uart) : gpsUart(_uart), gps(_uart) {}
+gpsManager::gpsManager(uartBase _uart) : gps(_uart) {}
 
 gpsManager::~gpsManager() {}
 
@@ -70,8 +70,16 @@ void gpsManager::create() {
                               NULL, kThreadPriority, 0, K_FOREVER);
 }
 
-void gpsManager::initialize() {
-  // gpsUart.initialize();
+bool gpsManager::initialize() {
+  bool success = true;
+  success = success && gps.initialize();
+
+  if(!success){
+    LOG_ERR("Failed to initialize gpsManager.");
+  }else{
+    LOG_INF("Initialized gpsManager successfully.");
+  }
+  return success;
 }
 
 // Starts this thread

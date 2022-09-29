@@ -11,22 +11,23 @@
 uartBase::uartBase(const struct device &_uartDev) : uartDev(_uartDev) {}
 uartBase::~uartBase() {}
 
-bool uartBase::initialize(){
+// Just a wrapper for the time being
+int uartBase::poll_read(unsigned char &p_char){
+    return uart_poll_in(&uartDev, &p_char);
+}
+
+bool uartBase::initializeIrq(){
     bool success = true;
 
-	uart_irq_callback_user_data_set(&uartDev, uartBase::uart_fifo_callback, this);
+	uart_irq_callback_user_data_set(&uartDev, uartBase::uartIrqHandler, this);
 
 	// Enable RX interrupt
 	uart_irq_rx_enable(&uartDev);
     return success;
 }
 
-// Just a wrapper for the time being
-int uartBase::poll_read(unsigned char &p_char){
-    return uart_poll_in(&uartDev, &p_char);
-}
-
-void uartBase::uart_fifo_callback(const struct device *dev, void *uartInstance)
+// Callback=handler
+void uartBase::uartIrqHandler(const struct device *dev, void *uartInstance)
 {
     uartBase* pThis(static_cast<uartBase*>(uartInstance));
 	static int tx_data_idx;

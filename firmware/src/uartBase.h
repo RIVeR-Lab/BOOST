@@ -15,10 +15,8 @@ class uartBase {
 public:
   uartBase(const struct device &_uartDev);
   ~uartBase();
-  bool initialize();
   int poll_read(unsigned char &p_char);
-  bool read(unsigned char &p_char);
-  // bool write(unsigned char p_char);
+  bool initializeIrq();
 
 private:
   static const int rxFifoSize = 512;
@@ -26,7 +24,7 @@ private:
   uint8_t rxFifo[rxFifoSize];
   uint8_t txFifo[txFifoSize];
   const struct device &uartDev;
-  static void uart_fifo_callback(const struct device *dev, void *uartInstance);
+  static void uartIrqHandler(const struct device *dev, void *uartInstance);
 };
 
 #endif // SRC_UARTBASE_H

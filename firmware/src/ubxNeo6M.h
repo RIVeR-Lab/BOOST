@@ -17,6 +17,7 @@ class ubxNeo6M {
 public:
   ubxNeo6M(uartBase &_uart);
   ~ubxNeo6M();
+  bool initialize();
   int readIn();
   TinyGPSLocation getLocation() { return gpsEncoder.location; }
   TinyGPSDate getDate() { return gpsEncoder.date; }
@@ -32,6 +33,7 @@ public:
   uint32_t passedChecksum()   const { return gpsEncoder.passedChecksum(); }
 
 private:
+  static const bool USE_INTERRUPT_UART = false;
   TinyGPSPlus gpsEncoder;
   uartBase uartPort;
   static const uint32_t rxBufferLen = 512;

@@ -19,7 +19,7 @@ public:
   gpsManager(uartBase _uart);
   ~gpsManager();
   void create();
-  void initialize();
+  bool initialize();
   void start();
   static const uint32_t kStackSize = 1024; // in bytes
 
@@ -29,7 +29,6 @@ private:
   static k_tid_t kThreadId;
   static const uint32_t loopTimeMs = 100;
 
-  uartBase gpsUart;
   ubxNeo6M gps;
 
   void loopHook();
