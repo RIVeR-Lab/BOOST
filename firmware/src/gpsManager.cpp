@@ -64,6 +64,8 @@ void gpsManager::create() {
   // We pass a pointer to "this" class instance as a parameter because
   // entryPoint() must be static. Then we can call the passed class instance's
   // loopHook() from within entryPoint().
+  // TODO: figure out how to put a thread name in as string so that it 
+  // comes up in thread_analyze().
   kThreadId = k_thread_create(&gps_manager_thread_data, gps_manager_stack,
                               K_THREAD_STACK_SIZEOF(gps_manager_stack),
                               gpsManager::entryPoint, (gpsManager *)this, NULL,
