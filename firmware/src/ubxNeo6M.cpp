@@ -11,6 +11,13 @@ LOG_MODULE_DECLARE(gps, LOG_LEVEL_NONE);
 
 ubxNeo6M::ubxNeo6M(uartBase &_uart) : uartPort(_uart) {}
 ubxNeo6M::~ubxNeo6M() {}
+/**
+  * Return the following
+  * 0 – If a character arrived.
+  * -1 – If no character was available to read (i.e. the UART input buffer was empty).
+  * -ENOSYS – If the operation is not implemented.
+  * -EBUSY – If async reception was enabled using uart_rx_enable
+  */
 int ubxNeo6M::readIn() {
   bool success = true;
   unsigned char inChar;
