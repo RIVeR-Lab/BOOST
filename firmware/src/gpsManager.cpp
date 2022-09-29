@@ -18,12 +18,11 @@ gpsManager::~gpsManager() {}
 void gpsManager::loopHook() {
   int64_t lastPrintMs = k_uptime_get();
   while (1) {
-    while (gps.readIn() < 0) {
-			/* Allow other thread/workqueue to work. */
-			k_yield();
-		}
-    
-    // k_sleep(K_MSEC(loopTimeMs));
+    gps.readIn();
+    /* Allow other thread/workqueue to work. */
+    // Yield to other theads with same or higher priority.
+    k_yield();
+
     // Print GPS data:
     if(k_uptime_get() - lastPrintMs > 3000){
       lastPrintMs = k_uptime_get();
