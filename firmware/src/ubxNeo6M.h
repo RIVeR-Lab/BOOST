@@ -17,7 +17,7 @@ class ubxNeo6M {
 public:
   ubxNeo6M(uartBase &_uart);
   ~ubxNeo6M();
-  bool readIn();
+  int readIn();
   TinyGPSLocation getLocation() { return gpsEncoder.location; }
   TinyGPSDate getDate() { return gpsEncoder.date; }
   TinyGPSTime getTime() { return gpsEncoder.time; }

@@ -11,7 +11,7 @@ LOG_MODULE_DECLARE(gps, LOG_LEVEL_NONE);
 
 ubxNeo6M::ubxNeo6M(uartBase &_uart) : uartPort(_uart) {}
 ubxNeo6M::~ubxNeo6M() {}
-bool ubxNeo6M::readIn() {
+int ubxNeo6M::readIn() {
   bool success = true;
   unsigned char inChar;
 
@@ -31,5 +31,5 @@ bool ubxNeo6M::readIn() {
   }
 
   success = success && (stat == 0 || stat == -1);
-  return success;
+  return stat;
 }

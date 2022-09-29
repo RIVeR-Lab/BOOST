@@ -10,7 +10,7 @@ LOG_MODULE_REGISTER(gps, LOG_LEVEL_DBG);
 
 K_THREAD_STACK_DEFINE(gps_manager_stack, gpsManager::kStackSize);
 
-gpsManager::gpsManager(uartBase _uart) : gps(_uart) {}
+gpsManager::gpsManager(uartBase _uart) : gpsUart(_uart), gps(_uart) {}
 
 gpsManager::~gpsManager() {}
 
@@ -18,8 +18,12 @@ gpsManager::~gpsManager() {}
 void gpsManager::loopHook() {
   int64_t lastPrintMs = k_uptime_get();
   while (1) {
-    gps.readIn();
-    k_sleep(K_MSEC(loopTimeMs));
+    while (gps.readIn() < 0) {
+			/* Allow other thread/workqueue to work. */
+			k_yield();
+		}
+    
+    // k_sleep(K_MSEC(loopTimeMs));
     // Print GPS data:
     if(k_uptime_get() - lastPrintMs > 3000){
       lastPrintMs = k_uptime_get();
@@ -62,6 +66,10 @@ void gpsManager::create() {
                               K_THREAD_STACK_SIZEOF(gps_manager_stack),
                               gpsManager::entryPoint, (gpsManager *)this, NULL,
                               NULL, kThreadPriority, 0, K_FOREVER);
+}
+
+void gpsManager::initialize() {
+  // gpsUart.initialize();
 }
 
 // Starts this thread

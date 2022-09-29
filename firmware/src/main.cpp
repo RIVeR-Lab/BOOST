@@ -62,6 +62,7 @@ void main(void)
 	gpsManager gpsManager(uart2);
 
 	gpsManager.create();
+	gpsManager.initialize();
 	gpsManager.start();
 
 	thread_analyzer_print();
