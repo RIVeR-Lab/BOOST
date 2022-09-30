@@ -28,7 +28,7 @@ void gpsManager::loopHook() {
       lastPrintMs = k_uptime_get();
       // TODO: Change to use LOGGING instead
       printk("Sats  Latitude   Longitude   Fix      Date    Time     Date  Alt    Course Speed Card  Chars Sentences Checksum\r\n");
-      printk("       (deg)      (deg)      Age                       Age   (m)    --- from GPS ----   RX    RX        Fail\r\n");
+      printk("       (deg)      (deg)    Age(ms)                     Age   (m)    --- from GPS ----   RX    RX        Fail\r\n");
       printk("----------------------------------------------------------------------------------------------------------------------------------------\r\n");
       printInt(gps.getSatellites().value(), gps.getSatellites().isValid(), 5);
       // printFloat(gps.getHdop().hdop(), gps.getHdop().isValid(), 6, 1);
@@ -39,7 +39,8 @@ void gpsManager::loopHook() {
       printFloat(gps.getAltitude().meters(), gps.getAltitude().isValid(), 7, 2);
       printFloat(gps.getCourse().deg(), gps.getCourse().isValid(), 7, 2);
       printFloat(gps.getSpeed().kmph(), gps.getSpeed().isValid(), 6, 2);
-      printStr(gps.getCourse().isValid() ? TinyGPSPlus::cardinal(gps.getCourse().deg()) : "*** ", 6);
+      // const char* deg = TinyGPSPlus::cardinal(gps.getCourse().deg());
+      // printStr(gps.getCourse().isValid(), deg); // This causes fault
       printk("        ");
       printInt(gps.charsProcessed(), true, 6);
       printk("  ");

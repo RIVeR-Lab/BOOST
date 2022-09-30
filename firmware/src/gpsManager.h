@@ -94,15 +94,20 @@ static void printDateTime(TinyGPSDate d, TinyGPSTime t)
   }
 }
 
-static void printStr(const char *str, int len)
+static void printStr(bool valid, const char *str)
 {
-  int slen = strlen(str);
-  for (int i=0; i<len; ++i)
-    if(i<slen){
-      printk("%c", str[i]);
-    }else{
-      printk(" ");
-    }
+  if(valid){
+    printk("%s", str);
+  }else{
+    printk("***");
+  }
+  // int slen = strlen(str);
+  // for (int i=0; i<len; ++i)
+  //   if(i<slen){
+  //     printk("%c", str[i]);
+  //   }else{
+  //     printk(" ");
+  //   }
 }
 
 };
