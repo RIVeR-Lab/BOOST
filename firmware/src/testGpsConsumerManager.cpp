@@ -29,8 +29,8 @@ void testGpsConsumerManager::loopHook() {
 
     // Print GPS data:
     // TODO: Change to use LOGGING instead
-    printk("Sats  HDOP  Latitude   Longitude   Fix      Date    Time     Date  Alt   Course Speed Card  Chars Sentences Checksum\r\n");
-    printk("             (deg)      (deg)    Age(ms)                     Age   (m)    --- from GPS ----   RX    RX        Fail\r\n");
+    printk("Sats  HDOP  Latitude   Longitude   Fix      Date    Time     Date  Alt   Course Speed Card  Chars Sentences Checksum  Checksum  RX Fail Prob.\r\n");
+    printk("             (deg)      (deg)    Age(ms)                     Age   (m)    --- from GPS ----   RX    RX        Fail       Pass        (%)      \r\n");
     printk("-----------------------------------------------------------------"
             "-----------------------------------------------------------------"
             "------\r\n");
@@ -58,6 +58,10 @@ void testGpsConsumerManager::loopHook() {
     ubxNeo6M::printInt(outData.getSentencesWithFix(), true, 10);
     printk("  ");
     ubxNeo6M::printInt(outData.getFailedChecksum(), true, 9);
+    printk("  ");
+    ubxNeo6M::printInt(outData.getPassedChecksum(), true, 9);
+    printk("  ");
+    printk("%4.4f", (outData.getFailedChecksum() / outData.getPassedChecksum())*100);
     printk("\r\n\r\n");
   }
 }
