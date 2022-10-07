@@ -1,49 +1,35 @@
 /**
- * gpsManager.h
+ * testGpsConsumerManager.h
  *
  * Author: David Antaki
  * Date: 9/24/2022
  */
 
-#ifndef SRC_GPSMANAGER_H
-#define SRC_GPSMANAGER_H
-#include "uartBase.h"
-#include "ubxNeo6M.h"
+#ifndef SRC_TEST_GPS_CONSUMER_MANAGER_H
+#define SRC_TEST_GPS_CONSUMER_MANAGER_H
 #include <device.h>
 #include <zephyr.h>
 #include "3rd_party/TinyGPSPlus.h"
 #include <stdio.h>
-#include "export/gpsDatagram.h"
 
-class gpsManager {
+
+class testGpsConsumerManager {
 public:
-  gpsManager(uartBase _uart);
-  ~gpsManager();
+  testGpsConsumerManager();
+  ~testGpsConsumerManager();
   void create();
   bool initialize();
   void start();
+
   static const uint32_t kStackSize = 1024; // in bytes
 
-  bool getGpsData(gpsDatagram &outData);
-
 private:
-  static const uint32_t kThreadPriority = 3;
-  static struct k_thread gps_manager_thread_data;
+  static const uint32_t kThreadPriority = 2;
+  static struct k_thread testGpsConsumerManagerData;
   static k_tid_t kThreadId;
   static const uint32_t loopTimeMs = 100;
 
-  // All possible messages that can be sent to this thread's mailbox.
-  enum message_t : uint32_t {
-    UNKNOWN_MSG,
-    GET_GPS_DATAGRAM
-  };
-
-  struct k_mbox mailbox;
-
-  ubxNeo6M gps; 
-
   void loopHook();
-  bool processMbx();
   static void entryPoint(void *, void *, void *);
 
   
@@ -124,4 +110,4 @@ static void printStr(bool valid, const char *str)
 
 };
 
-#endif // SRC_GPSMANAGER_H
+#endif // SRC_TEST_GPS_CONSUMER_MANAGER_H

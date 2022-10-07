@@ -19,6 +19,7 @@ void gpsManager::loopHook() {
   int64_t lastPrintMs = k_uptime_get();
   while (1) {
     gps.readIn();
+    processMbx();
     /* Allow other thread/workqueue to work. */
     // Yield to other theads with same or higher priority.
     k_yield();
@@ -75,6 +76,7 @@ void gpsManager::create() {
 
 bool gpsManager::initialize() {
   bool success = true;
+  k_mbox_init(&mailbox);
   success = success && gps.initialize();
 
   if(!success){
@@ -87,3 +89,67 @@ bool gpsManager::initialize() {
 
 // Starts this thread
 void gpsManager::start() { k_thread_start(kThreadId); }
+
+bool gpsManager::processMbx(){
+  bool success = true;
+  struct k_mbox_msg recv_msg;
+  char buffer[10000];
+
+  /* prepare to receive message */
+  recv_msg.size = 10000;
+  recv_msg.rx_source_thread = K_ANY;
+
+  /* get message, but not its data */
+  int hasMessage = k_mbox_get(&mailbox, &recv_msg, NULL, K_NO_WAIT);
+
+  if(hasMessage == 0){
+    // Process the specific received message
+    switch(recv_msg.info){
+      case GET_GPS_DATAGRAM:{
+        // Copy data to the sender's buffer
+        memcpy(recv_msg.tx_data, gps.getLastGoodReading(), sizeof(gpsDatagram));
+        // Delete message from mailbox and release sender if they are waiting.
+        k_mbox_data_get(&recv_msg, NULL);
+      }
+      break;
+      case UNKNOWN_MSG:
+      default:{
+        // Delete message from mailbox and release sender if it is waiting for message to be received.
+        k_mbox_data_get(&recv_msg, NULL);
+        LOG_ERR("Invalid message type.");
+        success = false;
+      }
+    }
+  }
+
+  return success;
+}
+
+bool gpsManager::getGpsData(gpsDatagram &outData){
+  bool success = true;
+
+  struct k_mbox_msg send_msg;
+  gpsDatagram recv_datagram{};
+  char buffer[gpsDatagramSize]{};
+  int buffer_bytes_used{};
+
+  /* prepare to send message */
+  send_msg.info = GET_GPS_DATAGRAM;
+  send_msg.size = sizeof(buffer);
+  send_msg.tx_data = &outData;
+  send_msg.tx_block.data = NULL;
+  send_msg.tx_target_thread = kThreadId;
+
+  /* send message and wait until thread receives */
+  k_mbox_put(&mailbox, &send_msg, K_FOREVER);
+
+  /* info, size, and tx_target_thread fields have been updated */
+
+  /* verify that message data was fully received */
+  if (send_msg.size < buffer_bytes_used) {
+      printf("some message data dropped during transfer!");
+      printf("receiver only had room for %d bytes", send_msg.info);
+  }
+
+  return success;
+}

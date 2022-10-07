@@ -12,6 +12,7 @@
 #include "uartBase.h"
 #include "zephyr.h"
 #include <string.h>
+#include "export/gpsDatagram.h"
 
 class ubxNeo6M {
 public:
@@ -32,6 +33,10 @@ public:
   uint32_t failedChecksum()   const { return gpsEncoder.failedChecksum(); }
   uint32_t passedChecksum()   const { return gpsEncoder.passedChecksum(); }
 
+  const gpsDatagram* getLastGoodReading(){
+    return lastGoodReading;
+  }
+
 private:
   static const bool USE_INTERRUPT_UART = false;
   TinyGPSPlus gpsEncoder;
@@ -39,6 +44,8 @@ private:
   static const uint32_t rxBufferLen = 512;
   char rxBuffer[rxBufferLen] = {0};
   uint32_t rxBufferI = 0;
+  uint32_t lastPassedChecksumCount = 0;
+  gpsDatagram *lastGoodReading;
 };
 
 #endif // SRC_UBXNEO6M_H

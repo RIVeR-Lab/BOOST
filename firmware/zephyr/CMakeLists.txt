@@ -9,5 +9,7 @@ set(app_sources
     ../src/ubxNeo6M.cpp
     ../src/gpsManager.cpp
     ../src/3rd_party/TinyGPS++.cpp
+    ../src/testGpsConsumerManager.cpp
+    ../src/mainThread.cpp
 )
 target_sources(app PRIVATE ${app_sources})

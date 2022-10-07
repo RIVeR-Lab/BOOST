@@ -39,5 +39,21 @@ int ubxNeo6M::readIn() {
     gpsEncoder.encode(inChar);
   }
 
+  // Update the last good GPS reading if the checksum incremented
+  if(lastPassedChecksumCount < gpsEncoder.passedChecksum()){
+    lastPassedChecksumCount = gpsEncoder.passedChecksum();
+    const gpsDatagram newLastGoodReading = {
+      gpsEncoder.location,
+      gpsEncoder.date,
+      gpsEncoder.time,
+      gpsEncoder.speed,
+      gpsEncoder.course,
+      gpsEncoder.altitude,
+      gpsEncoder.satellites,
+      gpsEncoder.hdop,
+    };
+    memcpy(lastGoodReading, &newLastGoodReading, sizeof(gpsDatagram));
+  }
+
   return stat;
 }
