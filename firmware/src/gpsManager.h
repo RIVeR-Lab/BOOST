@@ -26,25 +26,6 @@ public:
 
   bool getGpsData(gpsDatagram &outData);
 
-private:
-  static const uint32_t kThreadPriority = 3;
-  static struct k_thread gps_manager_thread_data;
-  static k_tid_t kThreadId;
-  static const uint32_t loopTimeMs = 100;
-
-  // All possible messages that can be sent to this thread's mailbox.
-  enum message_t : uint32_t {
-    UNKNOWN_MSG,
-    GET_GPS_DATAGRAM
-  };
-
-  struct k_mbox mailbox;
-
-  ubxNeo6M gps; 
-
-  void loopHook();
-  bool processMbx();
-  static void entryPoint(void *, void *, void *);
 
   
 static void printFloat(float val, bool valid, int len, int prec)
@@ -121,6 +102,26 @@ static void printStr(bool valid, const char *str)
   //     printk(" ");
   //   }
 }
+
+private:
+  static const uint32_t kThreadPriority = 3;
+  static struct k_thread gps_manager_thread_data;
+  static k_tid_t kThreadId;
+  static const uint32_t loopTimeMs = 100;
+
+  // All possible messages that can be sent to this thread's mailbox.
+  enum message_t : uint32_t {
+    UNKNOWN_MSG,
+    GET_GPS_DATAGRAM
+  };
+
+  struct k_mbox mailbox;
+
+  ubxNeo6M gps; 
+
+  void loopHook();
+  bool processMbx();
+  static void entryPoint(void *, void *, void *);
 
 };
 
