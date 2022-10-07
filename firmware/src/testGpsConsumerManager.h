@@ -26,7 +26,7 @@ private:
   static const uint32_t kThreadPriority = 2;
   static struct k_thread testGpsConsumerManagerData;
   static k_tid_t kThreadId;
-  static const uint32_t loopTimeMs = 100;
+  static const uint32_t loopTimeMs = 2000;
 
   void loopHook();
   static void entryPoint(void *, void *, void *);

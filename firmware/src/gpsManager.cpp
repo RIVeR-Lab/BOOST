@@ -96,7 +96,6 @@ void gpsManager::start() { k_thread_start(kThreadId); }
 bool gpsManager::processMbx() {
   bool success = true;
   struct k_mbox_msg recv_msg;
-  char buffer[10000];
 
   /* prepare to receive message */
   recv_msg.size = 10000;
@@ -111,6 +110,7 @@ bool gpsManager::processMbx() {
     case GET_GPS_DATAGRAM: {
       // Copy data to the sender's buffer
       memcpy(recv_msg.tx_data, gps.getLastGoodReading(), sizeof(gpsDatagram));
+
       // Delete message from mailbox and release sender if they are waiting.
       k_mbox_data_get(&recv_msg, NULL);
     } break;
@@ -128,12 +128,17 @@ bool gpsManager::processMbx() {
   return success;
 }
 
+/**
+ * This is to be called from a different thread that wants to get GPS data
+ * from this thread.
+ */ 
 bool gpsManager::getGpsData(gpsDatagram &outData) {
   bool success = true;
+  int ret;
 
   struct k_mbox_msg send_msg;
-  char buffer[gpsDatagramSize]{};
-  int buffer_bytes_used{};
+  char buffer[sizeof(gpsDatagram)]{};
+  size_t buffer_bytes_used = sizeof(gpsDatagram);
 
   /* prepare to send message */
   send_msg.info = GET_GPS_DATAGRAM;
@@ -143,14 +148,11 @@ bool gpsManager::getGpsData(gpsDatagram &outData) {
   send_msg.tx_target_thread = kThreadId;
 
   /* send message and wait until thread receives */
-  k_mbox_put(&mailbox, &send_msg, K_FOREVER);
+  ret = k_mbox_put(&mailbox, &send_msg, K_FOREVER);
 
-  /* info, size, and tx_target_thread fields have been updated */
-
-  /* verify that message data was fully received */
-  if (send_msg.size < buffer_bytes_used) {
-    printf("some message data dropped during transfer!");
-    printf("receiver only had room for %d bytes", send_msg.info);
+  if(ret < 0){
+    LOG_ERR("getGpsData() msg failed: err(%d)", ret);
+    success = false;
   }
 
   return success;

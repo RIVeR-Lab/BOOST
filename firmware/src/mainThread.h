@@ -70,7 +70,7 @@ private:
   static const uint32_t kThreadPriority = 99;
   static struct k_thread threadData;
   static k_tid_t kThreadId;
-  static const uint32_t loopTimeMs = 100;
+  static const uint32_t loopTimeMs = 1000;
 
   void loopHook();
   bool processMbx();
