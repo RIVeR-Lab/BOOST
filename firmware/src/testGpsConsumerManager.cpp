@@ -62,7 +62,7 @@ void testGpsConsumerManager::loopHook() {
     printk("  ");
     ubxNeo6M::printInt(outData.getPassedChecksum(), true, 9);
     printk("  ");
-    printk("%4.2f", (outData.getFailedChecksum() / outData.getPassedChecksum())*100);
+    printk("%.2f", ((double)outData.getFailedChecksum() / (double)outData.getPassedChecksum())*100);
     printk("\r\n\r\n");
   }
 }
