@@ -20,7 +20,7 @@ void testGpsConsumerManager::loopHook() {
   int64_t lastPrintMs = k_uptime_get();
   while (1) {
     /* Allow other thread/workqueue to work. */
-    k_sleep(K_MSEC(loopTimeMs));
+    k_msleep(loopTimeMs);
     
     // This is simply to test passing data from the the GPS thread to this thread.
     gpsDatagram outData;
