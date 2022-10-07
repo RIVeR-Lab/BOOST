@@ -44,10 +44,12 @@ int ubxNeo6M::readIn() {
   if (lastPassedChecksumCount < gpsEncoder.passedChecksum()) {
     lastPassedChecksumCount = gpsEncoder.passedChecksum();
     const gpsDatagram newLastGoodReading = {
-        gpsEncoder.location,   gpsEncoder.date,   gpsEncoder.time,
-        gpsEncoder.speed,      gpsEncoder.course, gpsEncoder.altitude,
-        gpsEncoder.satellites, gpsEncoder.hdop,
-    };
+        gpsEncoder.location,       gpsEncoder.date,
+        gpsEncoder.time,           gpsEncoder.speed,
+        gpsEncoder.course,         gpsEncoder.altitude,
+        gpsEncoder.satellites,     gpsEncoder.hdop,
+        gpsEncoder.charsProcessed(), gpsEncoder.sentencesWithFix(),
+        gpsEncoder.failedChecksum(), gpsEncoder.passedChecksum()};
     memcpy(lastGoodReading, &newLastGoodReading, sizeof(gpsDatagram));
   }
 

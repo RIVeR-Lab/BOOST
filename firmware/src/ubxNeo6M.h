@@ -13,6 +13,8 @@
 #include "uartBase.h"
 #include "zephyr.h"
 #include <string.h>
+#include <stdio.h>
+
 
 class ubxNeo6M {
 public:

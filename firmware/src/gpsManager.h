@@ -12,7 +12,6 @@
 #include "uartBase.h"
 #include "ubxNeo6M.h"
 #include <device.h>
-#include <stdio.h>
 #include <zephyr.h>
 
 class gpsManager {

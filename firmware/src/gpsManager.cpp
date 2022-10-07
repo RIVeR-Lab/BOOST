@@ -20,40 +20,39 @@ void gpsManager::loopHook() {
   while (1) {
     gps.readIn();
     processMbx();
-    /* Allow other thread/workqueue to work. */
     // Yield to other theads with same or higher priority.
     k_yield();
 
     // Print GPS data:
-    if (k_uptime_get() - lastPrintMs > 3000) {
-      lastPrintMs = k_uptime_get();
-      // TODO: Change to use LOGGING instead
-      printk("Sats  Latitude   Longitude   Fix      Date    Time     Date  Alt "
-             "   Course Speed Card  Chars Sentences Checksum\r\n");
-      printk("       (deg)      (deg)    Age(ms)                     Age   (m) "
-             "   --- from GPS ----   RX    RX        Fail\r\n");
-      printk("-----------------------------------------------------------------"
-             "-----------------------------------------------------------------"
-             "------\r\n");
-      printInt(gps.getSatellites().value(), gps.getSatellites().isValid(), 5);
-      // printFloat(gps.getHdop().hdop(), gps.getHdop().isValid(), 6, 1);
-      printFloat(gps.getLocation().lat(), gps.getLocation().isValid(), 11, 6);
-      printFloat(gps.getLocation().lng(), gps.getLocation().isValid(), 12, 6);
-      printInt(gps.getLocation().age(), gps.getLocation().isValid(), 5);
-      printDateTime(gps.getDate(), gps.getTime());
-      printFloat(gps.getAltitude().meters(), gps.getAltitude().isValid(), 7, 2);
-      printFloat(gps.getCourse().deg(), gps.getCourse().isValid(), 7, 2);
-      printFloat(gps.getSpeed().kmph(), gps.getSpeed().isValid(), 6, 2);
-      // const char* deg = TinyGPSPlus::cardinal(gps.getCourse().deg());
-      // printStr(gps.getCourse().isValid(), deg); // This causes fault
-      printk("        ");
-      printInt(gps.charsProcessed(), true, 6);
-      printk("  ");
-      printInt(gps.sentencesWithFix(), true, 10);
-      printk("  ");
-      printInt(gps.failedChecksum(), true, 9);
-      printk("\r\n\r\n");
-    }
+    // if (k_uptime_get() - lastPrintMs > 3000) {
+    //   lastPrintMs = k_uptime_get();
+    //   // TODO: Change to use LOGGING instead
+    //   printk("Sats  Latitude   Longitude   Fix      Date    Time     Date  Alt "
+    //          "   Course Speed Card  Chars Sentences Checksum\r\n");
+    //   printk("       (deg)      (deg)    Age(ms)                     Age   (m) "
+    //          "   --- from GPS ----   RX    RX        Fail\r\n");
+    //   printk("-----------------------------------------------------------------"
+    //          "-----------------------------------------------------------------"
+    //          "------\r\n");
+    //   printInt(gps.getSatellites().value(), gps.getSatellites().isValid(), 5);
+    //   // printFloat(gps.getHdop().hdop(), gps.getHdop().isValid(), 6, 1);
+    //   printFloat(gps.getLocation().lat(), gps.getLocation().isValid(), 11, 6);
+    //   printFloat(gps.getLocation().lng(), gps.getLocation().isValid(), 12, 6);
+    //   printInt(gps.getLocation().age(), gps.getLocation().isValid(), 5);
+    //   printDateTime(gps.getDate(), gps.getTime());
+    //   printFloat(gps.getAltitude().meters(), gps.getAltitude().isValid(), 7, 2);
+    //   printFloat(gps.getCourse().deg(), gps.getCourse().isValid(), 7, 2);
+    //   printFloat(gps.getSpeed().kmph(), gps.getSpeed().isValid(), 6, 2);
+    //   // const char* deg = TinyGPSPlus::cardinal(gps.getCourse().deg());
+    //   // printStr(gps.getCourse().isValid(), deg); // This causes fault
+    //   printk("        ");
+    //   printInt(gps.charsProcessed(), true, 6);
+    //   printk("  ");
+    //   printInt(gps.sentencesWithFix(), true, 10);
+    //   printk("  ");
+    //   printInt(gps.failedChecksum(), true, 9);
+    //   printk("\r\n\r\n");
+    // }
   }
 }
 
@@ -133,7 +132,6 @@ bool gpsManager::getGpsData(gpsDatagram &outData) {
   bool success = true;
 
   struct k_mbox_msg send_msg;
-  gpsDatagram recv_datagram{};
   char buffer[gpsDatagramSize]{};
   int buffer_bytes_used{};
 
