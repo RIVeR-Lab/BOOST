@@ -19,6 +19,7 @@ void gpsManager::loopHook() {
   int64_t lastPrintMs = k_uptime_get();
   while (1) {
     gps.readIn();
+    gps.checkProbOfChecksumFail();
     processMbx();
     // Yield to other theads with same or higher priority.
     k_yield();

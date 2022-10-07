@@ -36,6 +36,7 @@ public:
   uint32_t passedChecksum() const { return gpsEncoder.passedChecksum(); }
 
   const gpsDatagram *getLastGoodReading() { return lastGoodReading; }
+  bool checkProbOfChecksumFail();
 
     static void printFloat(float val, bool valid, int len, int prec) {
     if (!valid) {
@@ -108,6 +109,11 @@ private:
   uint32_t rxBufferI = 0;
   uint32_t lastPassedChecksumCount = 0;
   gpsDatagram *lastGoodReading;
+   // The max allowable probability of checksum's failing before we log error.
+   // There is 1 checksums per GPS sentence.
+  static constexpr double maxProbOfChecksumFail = 0.05;
+  static const int64_t checkProbOfChecksumFailRateMs = 2000;
+  int64_t lastCheckProbOfChecksumFailMs = 0;
 };
 
 #endif // SRC_UBXNEO6M_H

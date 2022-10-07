@@ -7,7 +7,7 @@
  */
 
 #include "ubxNeo6M.h"
-LOG_MODULE_DECLARE(gps, LOG_LEVEL_NONE);
+LOG_MODULE_DECLARE(gps, LOG_LEVEL_DBG);
 
 ubxNeo6M::ubxNeo6M(uartBase &_uart) : uartPort(_uart) {}
 ubxNeo6M::~ubxNeo6M() {}
@@ -19,6 +19,22 @@ bool ubxNeo6M::initialize() {
   }
 
   return success;
+}
+
+// Probability of Checksum fail=failedChecksums/passedChecksums.
+// There is 1 checksums per GPS sentence.
+// Return true if the ratio of P(checksumFail)>0.05
+bool ubxNeo6M::checkProbOfChecksumFail(){
+  // Only check every set period.
+  if((k_uptime_get() - lastCheckProbOfChecksumFailMs)> checkProbOfChecksumFailRateMs){
+    lastCheckProbOfChecksumFailMs = k_uptime_get();
+    double probOfChecksumFail = static_cast<double>(gpsEncoder.failedChecksum())/static_cast<double>(gpsEncoder.passedChecksum());
+    if(probOfChecksumFail > maxProbOfChecksumFail){
+      LOG_ERR("The ratio of GPS sentence failedChecksums:passedChecksums=%.2f>%.2f", probOfChecksumFail*100, maxProbOfChecksumFail*100);
+      return true;
+    }
+  }
+  return false;
 }
 
 /**
