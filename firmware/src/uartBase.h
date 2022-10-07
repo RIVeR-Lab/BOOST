@@ -8,8 +8,8 @@
 #ifndef SRC_UARTBASE_H
 #define SRC_UARTBASE_H
 #include <device.h>
-#include <zephyr.h>
 #include <drivers/uart.h>
+#include <zephyr.h>
 
 class uartBase {
 public:

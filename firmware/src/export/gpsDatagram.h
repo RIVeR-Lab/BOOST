@@ -10,7 +10,7 @@
 
 #include "3rd_party/TinyGPSPlus.h"
 
-struct gpsDatagram{
+struct gpsDatagram {
   TinyGPSLocation location;
   TinyGPSDate date;
   TinyGPSTime time;
@@ -22,4 +22,4 @@ struct gpsDatagram{
 };
 static const uint32_t gpsDatagramSize = sizeof(gpsDatagram);
 
-#endif  // EXPORT_GPS_DATAGRAM_H
+#endif // EXPORT_GPS_DATAGRAM_H

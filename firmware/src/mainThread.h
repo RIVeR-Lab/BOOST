@@ -7,30 +7,30 @@
 
 #ifndef SRC_MAINTHREAD_H
 #define SRC_MAINTHREAD_H
-#include "uartBase.h"
-#include "ubxNeo6M.h"
-#include <device.h>
-#include <zephyr.h>
 #include "3rd_party/TinyGPSPlus.h"
-#include <stdio.h>
 #include "export/gpsDatagram.h"
 #include "gpsManager.h"
 #include "testGpsConsumerManager.h"
+#include "uartBase.h"
+#include "ubxNeo6M.h"
+#include <device.h>
 #include <drivers/gpio.h>
+#include <stdio.h>
+#include <zephyr.h>
 
 class testGpsConsumerManager;
 
 // LED0
 #define LED0_NODE DT_ALIAS(led0)
 #if DT_NODE_HAS_STATUS(LED0_NODE, okay)
-#define LED0	DT_GPIO_LABEL(LED0_NODE, gpios)
-#define PIN	DT_GPIO_PIN(LED0_NODE, gpios)
-#define FLAGS	DT_GPIO_FLAGS(LED0_NODE, gpios)
+#define LED0 DT_GPIO_LABEL(LED0_NODE, gpios)
+#define PIN DT_GPIO_PIN(LED0_NODE, gpios)
+#define FLAGS DT_GPIO_FLAGS(LED0_NODE, gpios)
 #else
 #error "Unsupported board: led0 devicetree alias is not defined"
-#define LED0	""
-#define PIN	0
-#define FLAGS	0
+#define LED0 ""
+#define PIN 0
+#define FLAGS 0
 #endif
 
 // USART2
@@ -75,7 +75,6 @@ private:
   void loopHook();
   bool processMbx();
   static void entryPoint(void *, void *, void *);
-
 };
 
 extern mainThread theMainThread;

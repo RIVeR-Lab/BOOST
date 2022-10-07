@@ -8,11 +8,11 @@
 #ifndef SRC_UBXNEO6M_H
 #define SRC_UBXNEO6M_H
 #include "3rd_party/TinyGPSPlus.h"
+#include "export/gpsDatagram.h"
 #include "logging/log.h"
 #include "uartBase.h"
 #include "zephyr.h"
 #include <string.h>
-#include "export/gpsDatagram.h"
 
 class ubxNeo6M {
 public:
@@ -28,14 +28,12 @@ public:
   TinyGPSAltitude getAltitude() { return gpsEncoder.altitude; }
   TinyGPSInteger getSatellites() { return gpsEncoder.satellites; }
   TinyGPSHDOP getHdop() { return gpsEncoder.hdop; }
-  uint32_t charsProcessed()   const { return gpsEncoder.charsProcessed(); }
+  uint32_t charsProcessed() const { return gpsEncoder.charsProcessed(); }
   uint32_t sentencesWithFix() const { return gpsEncoder.sentencesWithFix(); }
-  uint32_t failedChecksum()   const { return gpsEncoder.failedChecksum(); }
-  uint32_t passedChecksum()   const { return gpsEncoder.passedChecksum(); }
+  uint32_t failedChecksum() const { return gpsEncoder.failedChecksum(); }
+  uint32_t passedChecksum() const { return gpsEncoder.passedChecksum(); }
 
-  const gpsDatagram* getLastGoodReading(){
-    return lastGoodReading;
-  }
+  const gpsDatagram *getLastGoodReading() { return lastGoodReading; }
 
 private:
   static const bool USE_INTERRUPT_UART = false;
