@@ -29,6 +29,7 @@ void testGpsConsumerManager::loopHook() {
 
     // Print GPS data:
     // TODO: Change to use LOGGING instead
+    // TODO: Change this dumb format to a json like output format or something
     printk("Sats  HDOP  Latitude   Longitude   Fix      Date    Time     Date  Alt   Course Speed Card  Chars Sentences Checksum  Checksum  RX Fail Prob.\r\n");
     printk("             (deg)      (deg)    Age(ms)                     Age   (m)    --- from GPS ----   RX    RX        Fail       Pass        (%)      \r\n");
     printk("-----------------------------------------------------------------"
@@ -61,7 +62,7 @@ void testGpsConsumerManager::loopHook() {
     printk("  ");
     ubxNeo6M::printInt(outData.getPassedChecksum(), true, 9);
     printk("  ");
-    printk("%4.4f", (outData.getFailedChecksum() / outData.getPassedChecksum())*100);
+    printk("%4.2f", (outData.getFailedChecksum() / outData.getPassedChecksum())*100);
     printk("\r\n\r\n");
   }
 }
