@@ -7,7 +7,7 @@
 
 #ifndef SRC_GPSMANAGER_H
 #define SRC_GPSMANAGER_H
-#include "3rd_party/TinyGPSPlus.h"
+#include "3rd_party/TinyGPS/TinyGPSPlus.h"
 #include "export/gpsDatagram.h"
 #include "uartBase.h"
 #include "ubxNeo6M.h"

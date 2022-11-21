@@ -8,7 +8,7 @@
 #ifndef EXPORT_GPS_DATAGRAM_H
 #define EXPORT_GPS_DATAGRAM_H
 
-#include "3rd_party/TinyGPSPlus.h"
+#include "3rd_party/TinyGPS/TinyGPSPlus.h"
 
 // TODO: Make this simpler and make it only POD
 struct gpsDatagram {

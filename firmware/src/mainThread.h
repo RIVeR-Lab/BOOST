@@ -7,7 +7,7 @@
 
 #ifndef SRC_MAINTHREAD_H
 #define SRC_MAINTHREAD_H
-#include "3rd_party/TinyGPSPlus.h"
+#include "3rd_party/TinyGPS/TinyGPSPlus.h"
 #include "export/gpsDatagram.h"
 #include "gpsManager.h"
 #include "testGpsConsumerManager.h"

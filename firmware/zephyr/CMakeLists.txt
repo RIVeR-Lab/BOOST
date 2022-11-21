@@ -8,7 +8,7 @@ set(app_sources
     ../src/uartBase.cpp
     ../src/ubxNeo6M.cpp
     ../src/gpsManager.cpp
-    ../src/3rd_party/TinyGPS++.cpp
+    ../src/3rd_party/TinyGPS/TinyGPS++.cpp
     ../src/testGpsConsumerManager.cpp
     ../src/mainThread.cpp
 )

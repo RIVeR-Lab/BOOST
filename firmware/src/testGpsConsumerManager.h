@@ -7,7 +7,7 @@
 
 #ifndef SRC_TEST_GPS_CONSUMER_MANAGER_H
 #define SRC_TEST_GPS_CONSUMER_MANAGER_H
-#include "3rd_party/TinyGPSPlus.h"
+#include "3rd_party/TinyGPS/TinyGPSPlus.h"
 #include <device.h>
 #include <stdio.h>
 #include <zephyr.h>
