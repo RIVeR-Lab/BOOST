@@ -10,6 +10,7 @@
 
 #include "3rd_party/TinyGPSPlus.h"
 
+// TODO: Make this simpler and make it only POD
 struct gpsDatagram {
   gpsDatagram() {}
   gpsDatagram(TinyGPSLocation _location, TinyGPSDate _date, TinyGPSTime _time,
