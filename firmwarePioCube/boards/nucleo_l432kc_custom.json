@@ -1,0 +1,45 @@
+{
+  "build": {
+    "cpu": "cortex-m4",
+    "extra_flags": "-DSTM32L432xx",
+    "f_cpu": "80000000L",
+    "mcu": "stm32l432kcu6",
+    "product_line": "STM32L432xx",
+    "variant": "nucleo_l432kc_custom",
+    "variants_dir": "variants"
+  },
+  "debug": {
+    "default_tools": [
+      "stlink"
+    ],
+    "jlink_device": "STM32L432KC",
+    "onboard_tools": [
+      "stlink"
+    ],
+    "openocd_target": "stm32l4x",
+    "svd_path": "STM32L4x2.svd"
+  },
+  "frameworks": [
+    "arduino",
+    "cmsis",
+    "mbed",
+    "stm32cube",
+    "libopencm3",
+    "zephyr"
+  ],
+  "name": "ST Nucleo L432KC",
+  "upload": {
+    "maximum_ram_size": 65536,
+    "maximum_size": 262144,
+    "protocol": "stlink",
+    "protocols": [
+      "jlink",
+      "cmsis-dap",
+      "stlink",
+      "blackmagic",
+      "mbed"
+    ]
+  },
+  "url": "https://developer.mbed.org/platforms/ST-Nucleo-L432KC/",
+  "vendor": "ST"
+}
