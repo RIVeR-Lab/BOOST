@@ -47,6 +47,23 @@ PrefsVaultGUID=
 PrefsRevisionGUID=
 
 [Document1]
+DocumentPath=minibot_v1.PcbDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=PMKVRVDQ
+
+[Document2]
 DocumentPath=minibot_v1.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -63,7 +80,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=ZMULUGLI
 
-[Document2]
+[Document3]
 DocumentPath=swarm_crawler_sch.SchLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -80,7 +97,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=YJGDHDAB
 
-[Document3]
+[Document4]
 DocumentPath=swarm_crawler_pcb.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -97,7 +114,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=FIJYEXNN
 
-[Document4]
+[Document5]
 DocumentPath=microController.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -114,7 +131,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=TTVLRZTZ
 
-[Document5]
+[Document6]
 DocumentPath=Connectors.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -131,7 +148,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=WJLGBEYH
 
-[Document6]
+[Document7]
 DocumentPath=Sensor.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -148,7 +165,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=LCBDGOBV
 
-[Document7]
+[Document8]
 DocumentPath=Power.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -165,8 +182,8 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=FKGEVYAY
 
-[Document8]
-DocumentPath=minibot_v1.PcbDoc
+[Document9]
+DocumentPath=Nucleo.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -180,7 +197,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=PMKVRVDQ
+DocumentUniqueId=FPGCPSPJ
 
 [Configuration1]
 Name=Sources
