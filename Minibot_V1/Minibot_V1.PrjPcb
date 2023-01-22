@@ -47,23 +47,6 @@ PrefsVaultGUID=
 PrefsRevisionGUID=
 
 [Document1]
-DocumentPath=minibot_v1.PcbDoc
-AnnotationEnabled=1
-AnnotateStartValue=1
-AnnotationIndexControlEnabled=0
-AnnotateSuffix=
-AnnotateScope=All
-AnnotateOrder=-1
-DoLibraryUpdate=1
-DoDatabaseUpdate=1
-ClassGenCCAutoEnabled=1
-ClassGenCCAutoRoomEnabled=1
-ClassGenNCAutoScope=None
-DItemRevisionGUID=
-GenerateClassCluster=0
-DocumentUniqueId=LMNROIAQ
-
-[Document2]
 DocumentPath=minibot_v1.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -80,7 +63,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=ZMULUGLI
 
-[Document3]
+[Document2]
 DocumentPath=swarm_crawler_sch.SchLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -97,7 +80,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=YJGDHDAB
 
-[Document4]
+[Document3]
 DocumentPath=swarm_crawler_pcb.PcbLib
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -114,7 +97,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=FIJYEXNN
 
-[Document5]
+[Document4]
 DocumentPath=microController.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -131,7 +114,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=TTVLRZTZ
 
-[Document6]
+[Document5]
 DocumentPath=Connectors.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -148,7 +131,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=WJLGBEYH
 
-[Document7]
+[Document6]
 DocumentPath=Sensor.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -165,7 +148,7 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=LCBDGOBV
 
-[Document8]
+[Document7]
 DocumentPath=Power.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
@@ -181,6 +164,23 @@ ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=FKGEVYAY
+
+[Document8]
+DocumentPath=minibot_v1.PcbDoc
+AnnotationEnabled=1
+AnnotateStartValue=1
+AnnotationIndexControlEnabled=0
+AnnotateSuffix=
+AnnotateScope=All
+AnnotateOrder=-1
+DoLibraryUpdate=1
+DoDatabaseUpdate=1
+ClassGenCCAutoEnabled=1
+ClassGenCCAutoRoomEnabled=1
+ClassGenNCAutoScope=None
+DItemRevisionGUID=
+GenerateClassCluster=0
+DocumentUniqueId=PMKVRVDQ
 
 [Configuration1]
 Name=Sources
