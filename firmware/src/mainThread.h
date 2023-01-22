@@ -11,6 +11,7 @@
 #include "export/gpsDatagram.h"
 #include "gpsManager.h"
 #include "testGpsConsumerManager.h"
+#include "imuAccelGyroManager.h"
 #include "uartBase.h"
 #include "ubxNeo6M.h"
 #include <device.h>
@@ -42,7 +43,16 @@ class testGpsConsumerManager;
 #error "Unsupported board"
 #endif
 
-// class testGpsConsumerManager;
+// I2C2
+#define I2C2_ID DT_NODELABEL(i2c2)
+
+#if DT_NODE_HAS_STATUS(I2C2_ID, okay)
+#define I2C2_LABEL DT_LABEL(I2C2_ID)
+#else
+#error "Unsupported board"
+#endif
+
+
 
 class mainThread {
 public:
@@ -59,11 +69,13 @@ public:
   const struct device *led0_dev = device_get_binding(LED0);
   const struct device *uart2Dev = device_get_binding(USART2_LABEL);
   uartBase uart2;
+  const struct device *i2c2Dev = device_get_binding(I2C2_LABEL);
   /* ------------------ END DEVICES ------------------ */
 
   /* ------------------ THREADS ------------------ */
   testGpsConsumerManager testGpsManager;
   gpsManager gpsThread;
+  imuAccelGyroManager imuAccelGyroManagerThread;
   /* ------------------ END THREADS ------------------ */
 
 private:

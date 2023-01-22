@@ -14,7 +14,7 @@ K_THREAD_STACK_DEFINE(mainThreadStack, mainThread::kStackSize);
 mainThread theMainThread;
 
 mainThread::mainThread()
-    : uart2(*uart2Dev), testGpsManager(), gpsThread(uart2){};
+    : uart2(*uart2Dev), testGpsManager(), gpsThread(uart2), imuAccelGyroManagerThread(*i2c2Dev) {};
 
 void mainThread::entryPoint(void *thisThread, void *, void *) {
   mainThread *pThis = (mainThread *)thisThread;
@@ -67,6 +67,10 @@ bool mainThread::initialize() {
   testGpsManager.create();
   success = success && testGpsManager.initialize();
   testGpsManager.start();
+
+  imuAccelGyroManagerThread.create();
+  success = success && imuAccelGyroManagerThread.initialize();
+  imuAccelGyroManagerThread.start();
 
   if (!success) {
     LOG_ERR("Failed to initialize mainThread.");
