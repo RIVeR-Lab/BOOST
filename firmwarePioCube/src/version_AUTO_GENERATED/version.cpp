@@ -1,8 +1,8 @@
 
 #include "version.h"
 std::string Version::getGitCommitSha1() {
- return "0bd7763c68decd20308f5d7feaa13fc0134a87b0";
+ return "0da98b2e505f6cf7315bf602a43bc7e3d082b3f9";
 }
 std::string Version::getBuildTimestamp() {
- return "2023-01-20 15:27:34.842195";
+ return "2023-01-22 17:08:26.888354";
 }

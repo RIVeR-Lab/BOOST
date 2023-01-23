@@ -1,18 +1,20 @@
-#include "RealMain.h"
+// #include "RealMain.h"
 //
 #include <Arduino.h>  // This include order matters for Arduino's INPUT macro not getting overwritten.
 //
-#include "MantaCommon/src/utils/log.h"
+#include "utils/log.h"
 //
 #include "pins.h"
-#include "common.h"
 #include "adc.h"
-#include "pwm.h"
+// #include "pwm.h"
+
+#define LOGGING true
 
 // Devices
-ePaper view(SPI); // TODO: Make passing SPI into the object work beacuse right now it's not working.
 // I just call SPI.something() directly.
-RealMain realMain(view);
+HardwareSerial SerialUSB();
+#define Console SerialUSB
+
 
 
 /**
@@ -39,8 +41,8 @@ void setup() {
   #endif
 
 
-  initPwm();
-  setPwm(5000, 50);
+  // initPwm();
+  // setPwm(5000, 50);
   initAdc();
 
   LOGEVENT("\n\n\n");

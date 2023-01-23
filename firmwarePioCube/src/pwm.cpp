@@ -5,9 +5,9 @@ void initPwm(){
   
 }
 
-void setPwm(uint32_t freq, uint32_t duty){
-  // Configure and start PWM
-  // No callback required, idk why, there must be defaults somewhere.
-  pwmTim->setPWM(channel, PWM1, freq, duty, NULL, NULL);
-  pwmTim->resume(); // Start PWM
-}
+// void setPwm(uint32_t freq, uint32_t duty){
+//   // Configure and start PWM
+//   // No callback required, idk why, there must be defaults somewhere.
+//   pwmTim->setPWM(channel, PWM1, freq, duty, NULL, NULL);
+//   pwmTim->resume(); // Start PWM
+// }
