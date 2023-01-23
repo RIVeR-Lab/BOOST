@@ -10,7 +10,7 @@
  *
  *******************************************************************************
  */
-#if defined(ARDUINO_NUCLEO_F446RE)
+#if defined(NUCLEO_F446RE_CUSTOM)
 
 #include "pins_arduino.h"
 

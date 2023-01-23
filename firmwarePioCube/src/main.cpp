@@ -12,8 +12,7 @@
 
 // Devices
 // I just call SPI.something() directly.
-HardwareSerial SerialUSB();
-#define Console SerialUSB
+HardwareSerial Console();
 
 
 
