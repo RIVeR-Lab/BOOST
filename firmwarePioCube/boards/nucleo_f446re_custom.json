@@ -6,7 +6,7 @@
     "f_cpu": "180000000L",
     "mcu": "stm32f446ret6",
     "product_line": "STM32F446xx",
-    "variant": "STM32F4xx/F446R(C-E)T",
+    "variant": "nucleo_f446re_custom",
     "variants_dir": "variants"
   },
   "connectivity": [
