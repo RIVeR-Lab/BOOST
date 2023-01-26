@@ -4,6 +4,7 @@
 
 // Devices
 // I just call SPI.something() directly.
+HardwareSerial serial2(USART2);
 
 /**
   * @brief  This function is executed in case of error occurrence.
@@ -33,6 +34,15 @@ void setup() {
   }
   #endif
 
+  serial2.setRx(PD_6);
+  serial2.setTx(PD_5);
+  serial2.begin(115200);
+  while(!serial2){
+    yield();
+  }
+  serial2.printf("hellow:\n");
+
+
   LOGEVENT("Setup...");
 
   // initPwm();
@@ -52,6 +62,7 @@ void setup() {
 
 void loop() {
   LOGEVENT("Looping...");
+  serial2.printf("hellow:\r\n");
   str_msg.data = hello;
   chatter.publish( &str_msg );
   nh.spinOnce();
