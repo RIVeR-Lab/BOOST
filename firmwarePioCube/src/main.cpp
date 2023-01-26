@@ -1,19 +1,11 @@
-// #include "RealMain.h"
-//
-#include <Arduino.h>  // This include order matters for Arduino's INPUT macro not getting overwritten.
-//
-#include "utils/log.h"
-//
-#include "pins.h"
-#include "adc.h"
-// #include "pwm.h"
+#include "main.h"
 
 #define LOGGING true
 
 // Devices
 // I just call SPI.something() directly.
-HardwareSerial Console();
-
+// Console
+HardwareSerial Console(PIN_SERIAL_RX, PIN_SERIAL_TX);
 
 
 /**
@@ -27,7 +19,7 @@ void _Error_Handler(const char *msg, int val)
   LOGERROR("Error: %s (%i)", msg, val);
   while (1) {
   }
-}
+} 
 
 void setup() {
   // put your setup code here, to run once:
@@ -42,7 +34,7 @@ void setup() {
 
   // initPwm();
   // setPwm(5000, 50);
-  initAdc();
+  // initAdc();
 
   LOGEVENT("\n\n\n");
   LOGEVENT("Starting RealMain");
@@ -53,7 +45,7 @@ void setup() {
 }
 
 void loop() {
-  LOGEVENT("ADC vRef Read (mV): %d", readVref());
-  LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
+  // LOGEVENT("ADC vRef Read (mV): %d", readVref());
+  // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
   HAL_Delay(10);
 }
