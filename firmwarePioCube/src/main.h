@@ -8,7 +8,11 @@
 #include "utils/log.h"
 //
 #include "pins.h"
+// #include "HardwareSerial.h"
 // #include "adc.h"
 // #include "pwm.h"
+
+// HardwareSerial Console;
+#define Console Serial3
 
 #endif /* MAIN_H */

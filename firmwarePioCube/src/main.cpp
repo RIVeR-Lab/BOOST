@@ -1,12 +1,7 @@
 #include "main.h"
 
-#define LOGGING true
-
 // Devices
 // I just call SPI.something() directly.
-// Console
-HardwareSerial Console(PIN_SERIAL_RX, PIN_SERIAL_TX);
-
 
 /**
   * @brief  This function is executed in case of error occurrence.
@@ -31,21 +26,23 @@ void setup() {
   }
   #endif
 
+  LOGEVENT("Setup...");
 
   // initPwm();
   // setPwm(5000, 50);
   // initAdc();
 
   LOGEVENT("\n\n\n");
-  LOGEVENT("Starting RealMain");
+  // LOGEVENT("Starting RealMain");
   // realMain.go();
 
-  LOGEVENT("RealMain exited.");
-  LOGEVENT("Shutting off device.");
+  // LOGEVENT("RealMain exited.");
+  // LOGEVENT("Shutting off device.");
 }
 
 void loop() {
+  LOGEVENT("Looping...");
   // LOGEVENT("ADC vRef Read (mV): %d", readVref());
   // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
-  HAL_Delay(10);
+  HAL_Delay(1000);
 }

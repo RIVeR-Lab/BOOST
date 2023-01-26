@@ -4,6 +4,7 @@
 #include "stdint.h"
 #include "Arduino.h"
 #include "pins.h"
+#include "main.h"
 
 #define LOG_LEVEL LOGLEVEL_ERROR
 
