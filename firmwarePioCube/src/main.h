@@ -8,6 +8,12 @@
 #include "utils/log.h"
 //
 #include "pins.h"
+
+// #include "ros.h"
+// #include "std_msgs"
+
+// #include <micro_ros_arduino.h>
+
 // #include "HardwareSerial.h"
 // #include "adc.h"
 // #include "pwm.h"

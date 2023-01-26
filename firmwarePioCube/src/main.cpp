@@ -1,4 +1,6 @@
 #include "main.h"
+#include <ros.h>
+#include <std_msgs/String.h>
 
 // Devices
 // I just call SPI.something() directly.
@@ -16,6 +18,11 @@ void _Error_Handler(const char *msg, int val)
   }
 } 
 
+ros::NodeHandle nh;
+std_msgs::String str_msg;
+ros::Publisher chatter("chatter", &str_msg);
+char hello[13] = "hello world!";
+
 void setup() {
   // put your setup code here, to run once:
   #if LOGGING
@@ -32,6 +39,9 @@ void setup() {
   // setPwm(5000, 50);
   // initAdc();
 
+  nh.initNode();
+  nh.advertise(chatter);
+
   LOGEVENT("\n\n\n");
   // LOGEVENT("Starting RealMain");
   // realMain.go();
@@ -42,6 +52,9 @@ void setup() {
 
 void loop() {
   LOGEVENT("Looping...");
+  str_msg.data = hello;
+  chatter.publish( &str_msg );
+  nh.spinOnce();
   // LOGEVENT("ADC vRef Read (mV): %d", readVref());
   // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
   HAL_Delay(1000);
