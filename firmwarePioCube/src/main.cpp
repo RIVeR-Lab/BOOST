@@ -1,7 +1,9 @@
 #include "main.h"
 // Devices
 // I just call SPI.something() directly.
-// HardwareSerial serial2(USART2);
+#if NUCLEO_F446RE_CUSTOM
+HardwareSerial serial2(USART2);
+#endif
 
 /**
   * @brief  This function is executed in case of error occurrence.
@@ -31,14 +33,17 @@ void setup() {
   serial2.setTx(PD_5);
 #endif
 #if NUCLEO_F446RE_CUSTOM
-  serial2.setRx(PA_2);
-  serial2.setTx(PA_3);
+  // Serial2.flush(); 
+  // Serial2.end();
+
+  // serial2.setRx(PA_3);
+  // serial2.setTx(PA_2);
 #endif
-  serial2.begin(115200);
-  while(!serial2){
-    yield();
-  }
-  serial2.printf("hellow:\n");
+  // serial2.begin(115200);
+  // while(!serial2){
+  //   yield();
+  // }
+  // serial2.printf("hellow:\n");
 
 
   LOGEVENT("Setup...");
@@ -57,7 +62,7 @@ void setup() {
 
 void loop() {
   LOGEVENT("Looping...");
-  serial2.printf("hellow:\r\n");
+  // serial2.printf("hellow:\r\n");
   // LOGEVENT("ADC vRef Read (mV): %d", readVref());
   // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
   HAL_Delay(1000);

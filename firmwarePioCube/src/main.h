@@ -2,7 +2,7 @@
 #define MAIN_H
 
 // #include "RealMain.h"
-//
+// #include "HardwareSerial.h"
 #include <Arduino.h>  // This include order matters for Arduino's INPUT macro not getting overwritten.
 //
 #include "utils/log.h"
@@ -23,6 +23,7 @@
 #define Console Serial3
 #endif
 #ifdef NUCLEO_F446RE_CUSTOM
+// extern HardwareSerial serial2;
 #define Console Serial2
 #endif
 
