@@ -34,8 +34,14 @@ void setup() {
   }
   #endif
 
+#if NUCLEO_F767ZI_CUSTOM
   serial2.setRx(PD_6);
   serial2.setTx(PD_5);
+#endif
+#if NUCLEO_F446RE_CUSTOM
+  serial2.setRx(PA_2);
+  serial2.setTx(PA_3);
+#endif
   serial2.begin(115200);
   while(!serial2){
     yield();
