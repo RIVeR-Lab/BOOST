@@ -57,6 +57,9 @@
 #elif (defined(__STM32F1__) and !(defined(USE_STM32_HW_SERIAL))) or defined(SPARK) 
   // Stm32duino Maple mini USB Serial Port
   #define SERIAL_CLASS USBSerial
+#elif (defined(__STM32F7__))
+  #include <HardwareSerial.h>  // Arduino STM32
+  #define SERIAL_CLASS HardwareSerial
 #else 
   #include <HardwareSerial.h>  // Arduino AVR
   #define SERIAL_CLASS HardwareSerial
@@ -75,6 +78,8 @@ class ArduinoHardware {
       iostream = &Serial1;
 #elif defined(USE_TEENSY_HW_SERIAL) or defined(USE_STM32_HW_SERIAL)
       iostream = &Serial1;
+#elif (defined(__STM32F7__))
+      iostream = &Serial2;
 #else
       iostream = &Serial;
 #endif
