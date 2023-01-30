@@ -1,9 +1,10 @@
 #include "main.h"
+#include <ros.h>
+#include <std_msgs/String.h>
+
 // Devices
 // I just call SPI.something() directly.
-#if NUCLEO_F446RE_CUSTOM
 HardwareSerial serial2(USART2);
-#endif
 
 /**
   * @brief  This function is executed in case of error occurrence.
@@ -17,6 +18,11 @@ void _Error_Handler(const char *msg, int val)
   while (1) {
   }
 } 
+
+ros::NodeHandle nh;
+std_msgs::String str_msg;
+ros::Publisher chatter("chatter", &str_msg);
+char hello[13] = "hello world!";
 
 void setup() {
   // put your setup code here, to run once:
@@ -33,17 +39,14 @@ void setup() {
   serial2.setTx(PD_5);
 #endif
 #if NUCLEO_F446RE_CUSTOM
-  // Serial2.flush(); 
-  // Serial2.end();
-
-  // serial2.setRx(PA_3);
-  // serial2.setTx(PA_2);
+  serial2.setRx(PA_2);
+  serial2.setTx(PA_3);
 #endif
-  // serial2.begin(115200);
-  // while(!serial2){
-  //   yield();
-  // }
-  // serial2.printf("hellow:\n");
+  serial2.begin(115200);
+  while(!serial2){
+    yield();
+  }
+  serial2.printf("hellow:\n");
 
 
   LOGEVENT("Setup...");
@@ -51,6 +54,9 @@ void setup() {
   // initPwm();
   // setPwm(5000, 50);
   // initAdc();
+
+  nh.initNode();
+  nh.advertise(chatter);
 
   LOGEVENT("\n\n\n");
   // LOGEVENT("Starting RealMain");
@@ -62,7 +68,10 @@ void setup() {
 
 void loop() {
   LOGEVENT("Looping...");
-  // serial2.printf("hellow:\r\n");
+  serial2.printf("hellow:\r\n");
+  str_msg.data = hello;
+  chatter.publish( &str_msg );
+  nh.spinOnce();
   // LOGEVENT("ADC vRef Read (mV): %d", readVref());
   // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
   HAL_Delay(1000);
