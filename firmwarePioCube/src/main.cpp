@@ -4,7 +4,7 @@
 
 // Devices
 // I just call SPI.something() directly.
-HardwareSerial serial2(USART2);
+// HardwareSerial serial2(USART2);
 
 /**
   * @brief  This function is executed in case of error occurrence.
@@ -22,7 +22,7 @@ void _Error_Handler(const char *msg, int val)
 ros::NodeHandle nh;
 std_msgs::String str_msg;
 ros::Publisher chatter("chatter", &str_msg);
-char hello[13] = "hello world!";
+char hello[13] = "MCU blink!";
 
 void setup() {
   // put your setup code here, to run once:
@@ -39,14 +39,14 @@ void setup() {
   serial2.setTx(PD_5);
 #endif
 #if NUCLEO_F446RE_CUSTOM
-  serial2.setRx(PA_2);
-  serial2.setTx(PA_3);
+  // serial2.setRx(PA_2);
+  // serial2.setTx(PA_3);
 #endif
-  serial2.begin(115200);
-  while(!serial2){
-    yield();
-  }
-  serial2.printf("hellow:\n");
+  // serial2.begin(115200);
+  // while(!serial2){
+  //   yield();
+  // }
+  // serial2.printf("hellow:\n");
 
 
   LOGEVENT("Setup...");
@@ -55,8 +55,12 @@ void setup() {
   // setPwm(5000, 50);
   // initAdc();
 
+  nh.getHardware()->setBaud(57600);
+  nh.getHardware()->setPort(&Serial2);
   nh.initNode();
   nh.advertise(chatter);
+
+  pinMode(LED_BUILTIN, OUTPUT);
 
   LOGEVENT("\n\n\n");
   // LOGEVENT("Starting RealMain");
@@ -68,11 +72,15 @@ void setup() {
 
 void loop() {
   LOGEVENT("Looping...");
-  serial2.printf("hellow:\r\n");
+  // serial2.printf("hellow:\r\n");
   str_msg.data = hello;
   chatter.publish( &str_msg );
+  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
   nh.spinOnce();
+  // nh.publish();
   // LOGEVENT("ADC vRef Read (mV): %d", readVref());
   // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
-  HAL_Delay(1000);
+  HAL_Delay(500);
+  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  HAL_Delay(500);
 }
