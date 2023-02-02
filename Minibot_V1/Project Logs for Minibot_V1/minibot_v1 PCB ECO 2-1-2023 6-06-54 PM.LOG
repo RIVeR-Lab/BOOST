@@ -1,0 +1,4 @@
+Added Pin To Net: NetName=UART3_RX_GPS Pin=J8-CN7_1
+Added Pin To Net: NetName=UART3_TX_GPS Pin=J8-CN7_2
+Added Pin To Net: NetName=UART3_RX_GPS Pin=U1-51
+Added Pin To Net: NetName=UART3_TX_GPS Pin=U1-52

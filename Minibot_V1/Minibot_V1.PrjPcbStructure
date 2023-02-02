@@ -1,5 +1,6 @@
 Record=TopLevelDocument|FileName=Connectors.SchDoc|SheetNumber=3
 Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=microController.SchDoc|SheetNumber=2
 Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=minibot_v1.SchDoc|SheetNumber=1
+Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=Nucleo.SchDoc|SheetNumber=6
 Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=Power.SchDoc|SheetNumber=5
 Record=NoMainPathDocument|SourceDocument=Connectors.SchDoc|FileName=Sensor.SchDoc|SheetNumber=4

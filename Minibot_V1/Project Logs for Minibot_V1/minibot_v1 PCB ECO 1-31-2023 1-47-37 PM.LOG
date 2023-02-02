@@ -1,0 +1,2 @@
+Added Pin To Net: NetName=I2C1_SCL_IMU Pin=U5-19
+Added Pin To Net: NetName=I2C1_SDA_IMU Pin=U5-20

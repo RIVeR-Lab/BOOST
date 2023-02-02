@@ -1,0 +1,6 @@
+Added Pin To Net: NetName=GND Pin=R13-1
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

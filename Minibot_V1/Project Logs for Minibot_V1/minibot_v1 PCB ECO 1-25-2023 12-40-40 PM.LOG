@@ -1,0 +1,8 @@
+Change Component Designator: OldDesignator=  NewDesignator=U5
+Added Pin To Net: NetName=GND Pin=C10-1
+Added Pin To Net: NetName=3V3_IMU Pin=C10-2
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

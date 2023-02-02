@@ -1,0 +1,45 @@
+Removed Pin From Net: NetName=TIM2_CH3_ENC_1B Pin=J8-CN10_35
+Removed Pin From Net: NetName=NRST Pin=J11-1
+Removed Pin From Net: NetName=3V3 Pin=R36-2
+Removed Pin From Net: NetName=3V3 Pin=R37-2
+Removed Pin From Net: NetName=TIM2_CH3_ENC_1B Pin=U1-16
+Removed Pin From Net: NetName=TIM2_CH3_ENC_1B Pin=U8-3
+Removed Member From Class: ClassName=Connectors Member=R36
+Removed Member From Class: ClassName=Connectors Member=R37
+Added Component: Designator=C30(CAPC1608X90N)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/GRM1885C1H4R3BA01D/Murata%20Electronics%20North%20America/view-part/1775789/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Murata"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "GRM1885C1H4R3BA01D"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "1608 Murata"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/GRM1885C1H4R3BA01D/Murata%20Electronics%20North%20America/view-part/1775789/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Component: Designator=C31(CAPC1608X90N)
+Add component (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Check_prices"; Value = "https://www.snapeda.com/parts/GRM1885C1H4R3BA01D/Murata%20Electronics%20North%20America/view-part/1775789/?ref=eda"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MF"; Value = "Murata"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "MP"; Value = "GRM1885C1H4R3BA01D"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Package"; Value = "1608 Murata"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "SnapEDA_Link"; Value = "https://www.snapeda.com/parts/GRM1885C1H4R3BA01D/Murata%20Electronics%20North%20America/view-part/1775789/?ref=snap"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=NetC30_1 Pin=C30-1
+Added Pin To Net: NetName=BATT_GND Pin=C30-2
+Added Pin To Net: NetName=NetC31_1 Pin=C31-1
+Added Pin To Net: NetName=BATT_GND Pin=C31-2
+Added Pin To Net: NetName=TIM2_CH3_ENC_1B Pin=J8-CN10_31
+Added Pin To Net: NetName=BATT_GND Pin=R27-1
+Change Net Name : Old Net Name=BATT_GND New Net Name=GND
+Change Net Name : Old Net Name=JTCK New Net Name=SWCLK
+Change Net Name : Old Net Name=JTMS New Net Name=SWDIO
+Added Pin To Net: NetName=TIM2_CH2_ENC_1B Pin=U1-55
+Added Pin To Net: NetName=TIM2_CH2_ENC_1B Pin=U8-3
+Added Net: Name=TIM2_CH2_ENC_1B
+Added Member To Class: ClassName=microController Member=Component C30 GRM1885C1H4R3BA01D
+Added Member To Class: ClassName=microController Member=Component C31 GRM1885C1H4R3BA01D
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

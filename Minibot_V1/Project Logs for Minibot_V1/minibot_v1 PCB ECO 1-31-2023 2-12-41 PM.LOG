@@ -1,0 +1,7 @@
+Added Pin To Net: NetName=I2C1_SCL_IMU Pin=R17-1
+Added Pin To Net: NetName=I2C1_SCL_IMU Pin=R18-2
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

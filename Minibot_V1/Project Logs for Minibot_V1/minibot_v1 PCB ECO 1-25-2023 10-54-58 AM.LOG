@@ -1,0 +1,9 @@
+Removed Member From Class: ClassName=Connectors Member=J7
+Change Net Name : Old Net Name=BOOT0_0 New Net Name=NetJ7_1
+Change Net Name : Old Net Name=BOOT0_1 New Net Name=GND
+Added Member To Class: ClassName=microController Member=Component J7 61300211121
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

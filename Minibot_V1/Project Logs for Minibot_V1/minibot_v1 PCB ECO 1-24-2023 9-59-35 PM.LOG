@@ -1,0 +1,6 @@
+Change Component Footprint: Designator=U6 Old Footprint=MODULE_SL871LS3232R001 New Footprint=SL871
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

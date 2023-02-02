@@ -1,0 +1,19 @@
+Removed Pin From Net: NetName=RESET_N_GPS Pin=J8-CN7_1
+Removed Pin From Net: NetName=RESET_N_GPS Pin=U1-51
+Added Pin To Net: NetName=UART3_GPS_RX Pin=J8-CN7_1
+Added Pin To Net: NetName=UART3_GPS_RX Pin=U1-51
+Added Net: Name=UART3_GPS_RX
+Added Pin To Net: NetName=UART3_GPS_TX Pin=J8-CN7_2
+Added Pin To Net: NetName=UART3_GPS_TX Pin=U1-52
+Added Net: Name=UART3_GPS_TX
+Added Pin To Net: NetName=UART3_RX_GPS Pin=U6-3
+Added Net: Name=UART3_RX_GPS
+Added Pin To Net: NetName=UART3_TX_GPS Pin=U6-2
+Added Net: Name=UART3_TX_GPS
+Added Member To Class: ClassName=Connectors Member=Component J11 61201021621
+Added Member To Class: ClassName=microController Member=Component U1 STM32F446RCT6TR
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor
