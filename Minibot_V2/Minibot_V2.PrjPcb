@@ -64,7 +64,7 @@ GenerateClassCluster=0
 DocumentUniqueId=PMKVRVDQ
 
 [Document2]
-DocumentPath=..\Minibot_V1\Connectors.SchDoc
+DocumentPath=..\Minibot_V1\minibot_v1.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -78,7 +78,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=
+DocumentUniqueId=ZMULUGLI
 
 [Document3]
 DocumentPath=..\Minibot_V1\microController.SchDoc
@@ -95,10 +95,10 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=
+DocumentUniqueId=TTVLRZTZ
 
 [Document4]
-DocumentPath=..\Minibot_V1\minibot_v1.SchDoc
+DocumentPath=..\Minibot_V1\Sensor.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -112,10 +112,10 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=
+DocumentUniqueId=LCBDGOBV
 
 [Document5]
-DocumentPath=..\Minibot_V1\Nucleo.SchDoc
+DocumentPath=..\Minibot_V1\Power.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -129,10 +129,10 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=
+DocumentUniqueId=FKGEVYAY
 
 [Document6]
-DocumentPath=..\Minibot_V1\Power.SchDoc
+DocumentPath=..\Minibot_V1\Connectors.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -149,7 +149,7 @@ GenerateClassCluster=0
 DocumentUniqueId=
 
 [Document7]
-DocumentPath=..\Minibot_V1\Sensor.SchDoc
+DocumentPath=..\Minibot_V1\Nucleo.SchDoc
 AnnotationEnabled=1
 AnnotateStartValue=1
 AnnotationIndexControlEnabled=0
@@ -163,7 +163,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=
+DocumentUniqueId=FPGCPSPJ
 
 [Document8]
 DocumentPath=..\Minibot_V1\swarm_crawler_pcb.PcbLib
@@ -180,7 +180,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=
+DocumentUniqueId=FIJYEXNN
 
 [Document9]
 DocumentPath=..\Minibot_V1\swarm_crawler_sch.SchLib
@@ -197,7 +197,7 @@ ClassGenCCAutoRoomEnabled=1
 ClassGenNCAutoScope=None
 DItemRevisionGUID=
 GenerateClassCluster=0
-DocumentUniqueId=
+DocumentUniqueId=YJGDHDAB
 
 [GeneratedDocument1]
 DocumentPath=Project Outputs for Minibot_V2\Design Rule Check - minibot_v1.html
@@ -322,7 +322,7 @@ OutputDefault20=0
 [OutputGroup2]
 Name=Simulator Outputs
 Description=
-TargetPrinter=Microsoft Print to PDF
+TargetPrinter=Brother HL-3075CW series Printer
 PrinterOptions=Record=PrinterOptions|Copies=1|Duplex=1|TrueTypeOptions=3|Collate=1|PrintJobKind=1|PrintWhat=1
 
 [OutputGroup3]
