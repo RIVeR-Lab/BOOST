@@ -15,13 +15,13 @@
 
 ### Getting Data into ROS1 from MCU
 - http://wiki.ros.org/rosserial_arduino/Tutorials/Hello%20World
-- run roscore
+- run roscore in one terminal
   - wsl> roscore
-- Run serial_node.py
+- Run serial_node.py in another terminal
   - wsl> rosrun rosserial_python serial_node.py /dev/ttyACM0
   - Can also set baudrate in this command
   - This will get all topics from the MCU.
-- Should now see the topic in ROS1
+- Should now see the topic in ROS1 in another terminal
   - wsl> rostopic list
   - Can echo with wsl> rostopic echo <topic>
 
