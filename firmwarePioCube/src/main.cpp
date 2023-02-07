@@ -1,10 +1,10 @@
 #include "main.h"
-#include <ros.h>
-#include <std_msgs/String.h>
+#include "rosHandler.h"
 
 // Devices
 // I just call SPI.something() directly.
 // HardwareSerial serial2(USART2);
+RosHandler rosHandler;
 
 /**
   * @brief  This function is executed in case of error occurrence.
@@ -18,11 +18,6 @@ void _Error_Handler(const char *msg, int val)
   while (1) {
   }
 } 
-
-ros::NodeHandle nh;
-std_msgs::String str_msg;
-ros::Publisher chatter("chatter", &str_msg);
-char hello[13] = "MCU blink!";
 
 void setup() {
   // put your setup code here, to run once:
@@ -48,17 +43,12 @@ void setup() {
   // }
   // serial2.printf("hellow:\n");
 
-
+  rosHandler.init();
   LOGEVENT("Setup...");
 
   // initPwm();
   // setPwm(5000, 50);
   // initAdc();
-
-  nh.getHardware()->setBaud(57600);
-  nh.getHardware()->setPort(&Serial2);
-  nh.initNode();
-  nh.advertise(chatter);
 
   pinMode(LED_BUILTIN, OUTPUT);
 
@@ -72,12 +62,8 @@ void setup() {
 
 void loop() {
   LOGEVENT("Looping...");
-  // serial2.printf("hellow:\r\n");
-  str_msg.data = hello;
-  chatter.publish( &str_msg );
+  rosHandler.loop();
   digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-  nh.spinOnce();
-  // nh.publish();
   // LOGEVENT("ADC vRef Read (mV): %d", readVref());
   // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
   HAL_Delay(500);
