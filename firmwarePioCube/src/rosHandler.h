@@ -24,14 +24,14 @@ public:
     bool loop() {
         bool success = true;
 
-        if(!nodeHandle.connected()){
-            isRosConnected = false;
-        } else {
+        // if(!nodeHandle.connected()){
+        //     isRosConnected = false;
+        // } else {
             isRosConnected = true;
             str_msg.data = str_msg_data.c_str();
             chatter.publish( &str_msg );
             nodeHandle.spinOnce();
-        }
+        // }
 
         return success;
     }
