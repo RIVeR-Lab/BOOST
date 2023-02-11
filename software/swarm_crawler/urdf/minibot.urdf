@@ -66,10 +66,12 @@
       <origin xyz="0.10 0 .040" rpy="0 0 0"/>
 
       <geometry>
-        <mesh filename="package://swarm_crawler/meshes/minibot.stl" scale="0.005 0.005 0.005"/>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+
+        <!-- <mesh filename="package://swarm_crawler/meshes/minibot.stl" scale="0.005 0.005 0.005"/> -->
       </geometry>
       <material name="White">
-        <color rgba="${220/255} ${220/255} ${220/255} 1.0"/>
+        <color rgba="${220/255} ${220/255} ${220/255} 0.5"/>
       </material>
     </visual>
 
@@ -140,7 +142,7 @@
         <sphere radius="${(wheel_radius+wheel_zoff-(base_height/2))}"/>
       </geometry>
       <material name="White">
-        <color rgba="${255/255} ${255/255} ${255/255} 1.0"/>
+        <color rgba="${255/255} ${255/255} ${255/255} 0.5"/>
       </material>
     </visual>
     <collision>
@@ -178,11 +180,11 @@
   <!-- *********************** LIDAR SETUP **********************************  -->
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
-    <child link="lidar_link"/>
-    <origin xyz="0.215 0 0.13" rpy="0 0 0"/>
+    <child link="camera_link"/>
+    <origin xyz=".6 0 0.13" rpy="0 0 0"/>
   </joint>
 
-  <link name="lidar_link">
+  <link name="camera_link">
   
     <collision>
      <origin xyz="0 0 0" rpy="0 0 0"/>

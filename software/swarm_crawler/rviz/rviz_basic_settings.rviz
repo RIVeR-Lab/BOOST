@@ -72,34 +72,34 @@ Visualization Manager:
           Show Axes: false
           Show Trail: false
           Value: true
-        drivewhl_l_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        drivewhl_r_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        front_caster:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
-        gps_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        imu_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-        lidar_link:
-          Alpha: 1
-          Show Axes: false
-          Show Trail: false
-          Value: true
+        # drivewhl_l_link:
+        #   Alpha: 1
+        #   Show Axes: false
+        #   Show Trail: false
+        #   Value: true
+        # drivewhl_r_link:
+        #   Alpha: 1
+        #   Show Axes: false
+        #   Show Trail: false
+        #   Value: true
+        # front_caster:
+        #   Alpha: 1
+        #   Show Axes: false
+        #   Show Trail: false
+        #   Value: true
+        # gps_link:
+        #   Alpha: 1
+        #   Show Axes: false
+        #   Show Trail: false
+        # imu_link:
+        #   Alpha: 1
+        #   Show Axes: false
+        #   Show Trail: false
+        # lidar_link:
+        #   Alpha: 1
+        #   Show Axes: false
+        #   Show Trail: false
+        #   Value: true
       Name: RobotModel
       TF Prefix: ""
       Update Interval: 0
@@ -114,18 +114,18 @@ Visualization Manager:
           Value: false
         base_link:
           Value: false
-        drivewhl_l_link:
-          Value: true
-        drivewhl_r_link:
-          Value: true
-        front_caster:
-          Value: false
-        gps_link:
-          Value: false
-        imu_link:
-          Value: false
-        lidar_link:
-          Value: false
+        # drivewhl_l_link:
+        #   Value: true
+        # drivewhl_r_link:
+        #   Value: true
+        # front_caster:
+        #   Value: false
+        # gps_link:
+        #   Value: false
+        # imu_link:
+        #   Value: false
+        # lidar_link:
+        #   Value: false
       Marker Scale: 1
       Name: TF
       Show Arrows: false
@@ -134,18 +134,18 @@ Visualization Manager:
       Tree:
         base_footprint:
           base_link:
-            drivewhl_l_link:
-              {}
-            drivewhl_r_link:
-              {}
-            front_caster:
-              {}
-            gps_link:
-              {}
-            imu_link:
-              {}
-            lidar_link:
-              {}
+            # drivewhl_l_link:
+            #   {}
+            # drivewhl_r_link:
+            #   {}
+            # front_caster:
+            #   {}
+            # gps_link:
+            #   {}
+            # imu_link:
+            #   {}
+            # lidar_link:
+            #   {}
       Update Interval: 0
       Value: true
   Enabled: true
