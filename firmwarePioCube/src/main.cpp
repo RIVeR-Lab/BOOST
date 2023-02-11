@@ -3,8 +3,11 @@
 
 // Devices
 // I just call SPI.something() directly.
-// HardwareSerial serial2(USART2);
-RosHandler rosHandler;
+HardwareSerial mySerial1(USART1);
+HardwareSerial mySerial2(USART2);
+HardwareSerial mySerial4(UART4);
+RosHandler rosHandler(mySerial4);
+
 
 /**
   * @brief  This function is executed in case of error occurrence.
@@ -20,10 +23,11 @@ void _Error_Handler(const char *msg, int val)
 } 
 
 void setup() {
+  bool success = true;
   // put your setup code here, to run once:
   #if LOGGING
   delay(2000);
-  Console.begin(115200);
+  Console.begin(RosHandler::rosSerialBaud);
   while(!Console){
     yield();
   }
@@ -36,14 +40,15 @@ void setup() {
 #if NUCLEO_F446RE_CUSTOM
   // serial2.setRx(PA_2);
   // serial2.setTx(PA_3);
+  mySerial4.setRx(PA_1);
+  mySerial4.setTx(PA_0);
 #endif
-  // serial2.begin(115200);
-  // while(!serial2){
+  // mySerial4.begin(RosHandler::rosSerialBaud);
+  // while(!mySerial4){
   //   yield();
   // }
-  // serial2.printf("hellow:\n");
-
-  rosHandler.init();
+  
+  success = success && rosHandler.init();
   LOGEVENT("Setup...");
 
   // initPwm();
@@ -51,6 +56,10 @@ void setup() {
   // initAdc();
 
   pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(L_WHEEL_FORW_PIN, OUTPUT);
+  pinMode(L_WHEEL_BACK_PIN, OUTPUT);
+  pinMode(R_WHEEL_FORW_PIN, OUTPUT);
+  pinMode(R_WHEEL_BACK_PIN, OUTPUT);
 
   LOGEVENT("\n\n\n");
   // LOGEVENT("Starting RealMain");
@@ -61,12 +70,18 @@ void setup() {
 }
 
 void loop() {
-  LOGEVENT("Looping...");
+  // LOGEVENT("Looping...");
   rosHandler.loop();
-  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  // mySerial4.printf("looping\n");
+  
+  // Blink LED every 1 second
+  // if(millis() % 1000 == 0) {
+  //   digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  // }
+  // analogWrite(L_WHEEL_FORW_PIN, 255);
   // LOGEVENT("ADC vRef Read (mV): %d", readVref());
   // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
-  HAL_Delay(500);
-  digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-  HAL_Delay(500);
+  // HAL_Delay(500);
+  // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  // HAL_Delay(10);
 }
