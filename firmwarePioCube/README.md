@@ -31,3 +31,8 @@
 - Need to source both ROS1 and then ROS2 setup.bash's
 - wsl> ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
   - This will bring in all topics from ROS1 to ROS2 and all topics from ROS2 to ROS1.
+
+## teleop twist keyboard
+- http://wiki.ros.org/stdr_simulator/Tutorials/Teleop%20with%20teleop_twist_keyboard
+- ROS1: >rosrun teleop_twist_keyboard teleop_twist_keyboard.py cmd_vel:=cmd_vel
+- ROS2: >ros2 run teleop_twist_keyboard teleop_twist_keyboard
