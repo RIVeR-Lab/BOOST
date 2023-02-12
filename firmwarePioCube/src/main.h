@@ -27,7 +27,7 @@
 #ifdef NUCLEO_F446RE_CUSTOM
 // extern HardwareSerial serial2;
 // HardwareSerial mySerial4;
-#define Console Serial2
+// #define Console Serial2
 #endif
 
 

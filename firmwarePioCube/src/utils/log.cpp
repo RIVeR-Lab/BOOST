@@ -1,4 +1,5 @@
 #include "log.h"
+#include "RealMain.h"
 
 bool log_printf_level(const char *file, uint32_t line, uint32_t level,
                       bool addNL, const char *Format, ...) {
