@@ -6,7 +6,7 @@
 HardwareSerial mySerial1(USART1);
 HardwareSerial mySerial2(USART2);
 HardwareSerial mySerial4(UART4);
-RosHandler rosHandler(mySerial4);
+RosHandler rosHandler(Serial2);
 
 
 /**
@@ -70,14 +70,19 @@ void setup() {
 }
 
 void loop() {
-  // LOGEVENT("Looping...");
+  // Blink LED every 1 second
+  static uint32_t counter = 0;
+  if((millis() - counter) > 1000) {
+    counter = millis();
+    LOGEVENT("Looping...");
+    rosHandler.nodeHandle.loginfo("Looping...");
+    digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+  }
+
   rosHandler.loop();
   // mySerial4.printf("looping\n");
   
-  // Blink LED every 1 second
-  // if(millis() % 1000 == 0) {
-  //   digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-  // }
+  
   // analogWrite(L_WHEEL_FORW_PIN, 255);
   // LOGEVENT("ADC vRef Read (mV): %d", readVref());
   // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));

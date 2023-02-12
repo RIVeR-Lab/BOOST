@@ -37,6 +37,7 @@ public:
     }
 
     bool loop() {
+        static uint32_t counter = 0;
         bool success = true;
 
         // if(!nodeHandle.connected()){
@@ -44,7 +45,9 @@ public:
         // } else {
             isRosConnected = true;
             // Only publish chatter every 1 second
-            if(millis() % 1000 == 0) {
+            
+            if((millis() - counter) > 1000) {
+                counter = millis();
                 str_msg.data = str_msg_data.c_str();
                 chatter.publish( &str_msg );
             }
@@ -54,9 +57,11 @@ public:
         return success;
     }
 
+    ros::NodeHandle nodeHandle;
+
 private: 
     const HardwareSerial &nodeHardware;
-    ros::NodeHandle nodeHandle;
+    
     bool isRosConnected = false;
 
 
