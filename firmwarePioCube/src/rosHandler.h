@@ -6,6 +6,8 @@
 #include <std_msgs/Empty.h>
 #include <geometry_msgs/Twist.h>
 #include "utils/log.h"
+#include <math.h>
+#include <algorithm>
 
 class RosHandler {
 public:
@@ -61,8 +63,16 @@ public:
 
 private: 
     const HardwareSerial &nodeHardware;
-    
     bool isRosConnected = false;
+
+    static constexpr float WHEEL_BASE = 0.2; // (meters per radian)
+    static constexpr float WHEEL_RADIUS = 0.02; // (meters per radian)
+    static constexpr float PWM_MIN = 0;
+    static constexpr float PWM_MAX = 255;
+    static constexpr float MOTOR_RPM = 60;
+    static constexpr float MOTOR_MAX_RAD_PER_SEC = MOTOR_RPM * ((2.0 * M_PI) / 60.0); // rad/s
+    static constexpr float MOTOR_MIN_RAD_PER_SEC = -MOTOR_MAX_RAD_PER_SEC; // rad/s
+    
 
 
     // PUBLISHERS
