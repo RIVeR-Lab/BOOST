@@ -114,6 +114,14 @@ DItemRevisionGUID=
 GenerateClassCluster=0
 DocumentUniqueId=
 
+[ProjectVariant1]
+UniqueID=0B58906B-7E4F-45AB-AB6F-11A208C353BD
+Description=Variant of docking_connector_v2
+AllowFabrication=0
+ParameterCount=0
+VariationCount=0
+ParamVariationCount=0
+
 [GeneratedDocument1]
 DocumentPath=Project Outputs for docking_connector_v2\Design Rule Check - docking_connector_v2.html
 DItemRevisionGUID=
