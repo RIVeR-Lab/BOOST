@@ -50,14 +50,14 @@
 
   <!-- ****************** ROBOT BASE FOOTPRINT ***************************  -->
   <!-- Define the center of the main robot chassis projected on the ground -->	
-  <link name="base_footprint"/>
+  <!-- <link name="base_footprint"/> -->
 
   <!-- The base footprint of the robot is located underneath the chassis -->
-  <joint name="base_joint" type="fixed">
+  <!-- <joint name="base_joint" type="fixed">
     <parent link="base_footprint"/>
     <child link="base_link" />
     <origin xyz="0.0 0.0 ${(wheel_radius+wheel_zoff)}" rpy="0 0 0"/>
-  </joint>
+  </joint> -->
 
   <!-- ********************** ROBOT BASE *********************************  -->
   <link name="base_link">
@@ -66,7 +66,9 @@
       <origin xyz="0.10 0 .040" rpy="0 0 0"/>
 
       <geometry>
-        <mesh filename="package://swarm_crawler/meshes/minibot.stl" scale="0.005 0.005 0.005"/>
+        <box size="${base_length} ${base_width} ${base_height}"/>
+
+        <!-- <mesh filename="package://swarm_crawler/meshes/minibot.stl" scale="0.005 0.005 0.005"/> -->
       </geometry>
       <material name="White">
         <color rgba="${220/255} ${220/255} ${220/255} 0.5"/>
@@ -76,6 +78,11 @@
     <collision>
       <geometry>
         <box size="${base_length} ${base_width} ${base_height}"/>
+
+      <!-- <material name="Green">
+        <color rgba="${0/255} ${220/255} ${0/255} 0.5"/>
+      </material> -->
+
       </geometry>
     </collision>
 
@@ -178,11 +185,11 @@
   <!-- *********************** LIDAR SETUP **********************************  -->
   <joint name="lidar_joint" type="fixed">
     <parent link="base_link"/>
-    <child link="lidar_link"/>
-    <origin xyz=".6 0 0.13" rpy="0 0 0"/>
+    <child link="camera_link"/>
+    <origin xyz=".2 0 0.13" rpy="0 0 0"/>
   </joint>
 
-  <link name="lidar_link">
+  <link name="camera_link">
   
     <collision>
      <origin xyz="0 0 0" rpy="0 0 0"/>
@@ -207,5 +214,40 @@
       <inertia ixx="0.001" ixy="0" ixz="0" iyy="0.001" iyz="0" izz="0.001" />
     </inertial>
   </link>
+<!-- 
+<joint name="t265_joint" type="fixed">
+    <parent link="camera_link"/>
+    <child link="minibot_a_t265_pose_frame"/>
+    <origin xyz=".6 0 0.13" rpy="0 0 0"/>
+  </joint> 
+
+  <link name="minibot_a_t265_pose_frame"/> -->
+
+<!-- <joint name="t265_joint" type="fixed">
+  <parent link="camera_link"/>
+  <child link="odom_frame"/>
+  <origin xyz=".6 0 0.13" rpy="0 0 0"/>
+</joint> 
+
+<link name="odom_frame"/> -->
+
+  
+<joint name="extraneous_joint" type="fixed">
+    <parent link="camera_link"/>
+    <child link="minibot_a_t265_pose_frame"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint> 
+
+  <link name="minibot_a_t265_pose_frame"/>
+
+<joint name="d435_joint" type="fixed">
+    <parent link="camera_link"/>
+    <child link="minibot_a_d435_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint> 
+
+  <link name="minibot_a_d435_link"/>
+
+  
 
 </robot>

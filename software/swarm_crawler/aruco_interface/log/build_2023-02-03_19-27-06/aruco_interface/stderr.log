@@ -1,0 +1,9 @@
+CMake Error at /opt/ros/galactic/share/rosidl_cmake/cmake/rosidl_target_interfaces.cmake:46 (message):
+  rosidl_target_interfaces() the second argument 'aruco_interface'
+  concatenated with the third argument 'aruco_marker_pose_estimation_py'
+  using double underscores must be a valid target name
+Call Stack (most recent call first):
+  CMakeLists.txt:22 (rosidl_target_interfaces)
+
+
+make: *** [Makefile:222: cmake_check_build_system] Error 1

@@ -1,0 +1,83 @@
+[0.142s] DEBUG:colcon:Command line arguments: ['/usr/bin/colcon', 'build']
+[0.142s] DEBUG:colcon:Parsed command line arguments: Namespace(allow_overriding=[], ament_cmake_args=None, base_paths=['.'], build_base='build', catkin_cmake_args=None, catkin_skip_building_tests=False, cmake_args=None, cmake_clean_cache=False, cmake_clean_first=False, cmake_force_configure=False, cmake_target=None, cmake_target_skip_unavailable=False, continue_on_error=False, event_handlers=None, executor='parallel', ignore_user_meta=False, install_base='install', log_base=None, log_level=None, main=<bound method BuildVerb.main of <colcon_core.verb.build.BuildVerb object at 0x7f694d76e400>>, merge_install=False, metas=['./colcon.meta'], packages_above=None, packages_above_and_dependencies=None, packages_above_depth=None, packages_end=None, packages_ignore=None, packages_ignore_regex=None, packages_select=None, packages_select_build_failed=False, packages_select_by_dep=None, packages_select_regex=None, packages_select_test_failures=False, packages_skip=None, packages_skip_build_finished=False, packages_skip_by_dep=None, packages_skip_regex=None, packages_skip_test_passed=False, packages_skip_up_to=None, packages_start=None, packages_up_to=None, packages_up_to_regex=None, parallel_workers=12, paths=None, symlink_install=False, test_result_base=None, verb_extension=<colcon_core.verb.build.BuildVerb object at 0x7f694d76e400>, verb_name='build', verb_parser=<colcon_defaults.argument_parser.defaults.DefaultArgumentsDecorator object at 0x7f694d76e940>)
+[0.164s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) check parameters
+[0.164s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) check parameters
+[0.164s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) check parameters
+[0.164s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) check parameters
+[0.164s] Level 1:colcon.colcon_core.package_discovery:discover_packages(colcon_meta) discover
+[0.164s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) discover
+[0.164s] INFO:colcon.colcon_core.package_discovery:Crawling recursively for packages in '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface'
+[0.164s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ignore', 'ignore_ament_install']
+[0.165s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore'
+[0.165s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ignore_ament_install'
+[0.165s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_pkg']
+[0.165s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_pkg'
+[0.165s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['colcon_meta']
+[0.165s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'colcon_meta'
+[0.165s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extensions ['ros']
+[0.165s] Level 1:colcon.colcon_core.package_identification:_identify(.) by extension 'ros'
+[0.184s] DEBUG:colcon.colcon_core.package_identification:Package '.' with type 'ros.ament_cmake' and name 'aruco_interface'
+[0.184s] Level 1:colcon.colcon_core.package_discovery:discover_packages(recursive) using defaults
+[0.184s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) discover
+[0.184s] Level 1:colcon.colcon_core.package_discovery:discover_packages(ignore) using defaults
+[0.184s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) discover
+[0.184s] Level 1:colcon.colcon_core.package_discovery:discover_packages(path) using defaults
+[0.202s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) check parameters
+[0.202s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) discover
+[0.204s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 1 installed packages in /home/ben/Desktop/swarm_crawler/software/swarm_crawler/install
+[0.206s] DEBUG:colcon.colcon_installed_package_information.package_discovery:Found 350 installed packages in /opt/ros/galactic
+[0.208s] Level 1:colcon.colcon_core.package_discovery:discover_packages(prefix_path) using defaults
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'aruco_interface' build argument 'cmake_args' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'aruco_interface' build argument 'cmake_target' from command line to 'None'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'aruco_interface' build argument 'cmake_target_skip_unavailable' from command line to 'False'
+[0.296s] Level 5:colcon.colcon_core.verb:set package 'aruco_interface' build argument 'cmake_clean_cache' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aruco_interface' build argument 'cmake_clean_first' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aruco_interface' build argument 'cmake_force_configure' from command line to 'False'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aruco_interface' build argument 'ament_cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aruco_interface' build argument 'catkin_cmake_args' from command line to 'None'
+[0.297s] Level 5:colcon.colcon_core.verb:set package 'aruco_interface' build argument 'catkin_skip_building_tests' from command line to 'False'
+[0.297s] DEBUG:colcon.colcon_core.verb:Building package 'aruco_interface' with the following arguments: {'ament_cmake_args': None, 'build_base': '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface', 'catkin_cmake_args': None, 'catkin_skip_building_tests': False, 'cmake_args': None, 'cmake_clean_cache': False, 'cmake_clean_first': False, 'cmake_force_configure': False, 'cmake_target': None, 'cmake_target_skip_unavailable': False, 'install_base': '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface', 'merge_install': False, 'path': '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface', 'symlink_install': False, 'test_result_base': None}
+[0.297s] INFO:colcon.colcon_core.executor:Executing jobs using 'parallel' executor
+[0.300s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete
+[0.300s] INFO:colcon.colcon_ros.task.ament_cmake.build:Building ROS package in '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface' with build type 'ament_cmake'
+[0.301s] INFO:colcon.colcon_cmake.task.cmake.build:Building CMake package in '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface'
+[0.305s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_core.shell.bat': Not used on non-Windows systems
+[0.305s] INFO:colcon.colcon_core.shell:Skip shell extension 'powershell' for command environment: Not usable outside of PowerShell
+[0.305s] DEBUG:colcon.colcon_core.shell:Skip shell extension 'dsv' for command environment
+[0.319s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoking command in '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/galactic /usr/bin/cmake --build /home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface -- -j12 -l12
+[0.945s] DEBUG:colcon.colcon_core.event_handler.log_command:Invoked command in '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/galactic /usr/bin/cmake --build /home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface -- -j12 -l12
+[0.966s] Level 1:colcon.colcon_core.environment:create_environment_scripts_only(aruco_interface)
+[0.970s] Level 1:colcon.colcon_core.environment:checking '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface' for CMake module files
+[0.971s] Level 1:colcon.colcon_core.environment:checking '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface' for CMake config files
+[0.971s] Level 1:colcon.colcon_core.shell:create_environment_hook('aruco_interface', 'cmake_prefix_path')
+[0.972s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/share/aruco_interface/hook/cmake_prefix_path.ps1'
+[0.973s] INFO:colcon.colcon_core.shell:Creating environment descriptor '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/share/aruco_interface/hook/cmake_prefix_path.dsv'
+[0.973s] INFO:colcon.colcon_core.shell:Creating environment hook '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/share/aruco_interface/hook/cmake_prefix_path.sh'
+[0.974s] Level 1:colcon.colcon_core.environment:checking '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/bin'
+[0.974s] Level 1:colcon.colcon_core.environment:checking '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/lib/pkgconfig/aruco_interface.pc'
+[0.974s] Level 1:colcon.colcon_core.environment:checking '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/lib/python3.8/site-packages'
+[0.974s] Level 1:colcon.colcon_core.environment:checking '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/bin'
+[0.976s] INFO:colcon.colcon_core.shell:Creating package script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/share/aruco_interface/package.ps1'
+[0.976s] INFO:colcon.colcon_core.shell:Creating package descriptor '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/share/aruco_interface/package.dsv'
+[0.977s] INFO:colcon.colcon_core.shell:Creating package script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/share/aruco_interface/package.sh'
+[0.977s] INFO:colcon.colcon_core.shell:Creating package script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/share/aruco_interface/package.bash'
+[0.978s] INFO:colcon.colcon_core.shell:Creating package script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/share/aruco_interface/package.zsh'
+[0.978s] Level 1:colcon.colcon_core.environment:create_file_with_runtime_dependencies(/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/aruco_interface/share/colcon-core/packages/aruco_interface)
+[0.989s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:closing loop
+[0.989s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:loop closed
+[0.989s] DEBUG:colcon.colcon_parallel_executor.executor.parallel:run_until_complete finished with '2'
+[0.989s] DEBUG:colcon.colcon_core.event_reactor:joining thread
+[0.996s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.terminal_notifier': Not used on non-Darwin systems
+[0.996s] INFO:colcon.colcon_core.plugin_system:Skipping extension 'colcon_notification.desktop_notification.win32': Not used on non-Windows systems
+[0.997s] INFO:colcon.colcon_notification.desktop_notification:Sending desktop notification using 'notify2'
+[1.104s] DEBUG:colcon.colcon_core.event_reactor:joined thread
+[1.108s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/local_setup.ps1'
+[1.109s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/_local_setup_util_ps1.py'
+[1.112s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/setup.ps1'
+[1.115s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/local_setup.sh'
+[1.116s] INFO:colcon.colcon_core.shell:Creating prefix util module '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/_local_setup_util_sh.py'
+[1.117s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/setup.sh'
+[1.120s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/local_setup.bash'
+[1.120s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/setup.bash'
+[1.122s] INFO:colcon.colcon_core.shell:Creating prefix script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/local_setup.zsh'
+[1.122s] INFO:colcon.colcon_core.shell:Creating prefix chain script '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/install/setup.zsh'

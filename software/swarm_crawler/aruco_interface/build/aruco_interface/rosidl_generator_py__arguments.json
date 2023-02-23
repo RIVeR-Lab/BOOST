@@ -1,0 +1,24 @@
+{
+  "package_name": "aruco_interface",
+  "output_dir": "/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface/rosidl_generator_py/aruco_interface",
+  "template_dir": "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource",
+  "idl_tuples": [
+    "/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface/rosidl_adapter/aruco_interface:msg/ArucoMarkers.idl"
+  ],
+  "target_dependencies": [
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../../../lib/rosidl_generator_py/rosidl_generator_py",
+    "/opt/ros/galactic/lib/python3.8/site-packages/rosidl_generator_py/__init__.py",
+    "/opt/ros/galactic/lib/python3.8/site-packages/rosidl_generator_py/generate_py_impl.py",
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource/_action_pkg_typesupport_entry_point.c.em",
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource/_action.py.em",
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource/_idl_pkg_typesupport_entry_point.c.em",
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource/_idl_support.c.em",
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource/_idl.py.em",
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource/_msg_pkg_typesupport_entry_point.c.em",
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource/_msg_support.c.em",
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource/_msg.py.em",
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource/_srv_pkg_typesupport_entry_point.c.em",
+    "/opt/ros/galactic/share/rosidl_generator_py/cmake/../resource/_srv.py.em",
+    "/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface/rosidl_adapter/aruco_interface/msg/ArucoMarkers.idl"
+  ]
+}

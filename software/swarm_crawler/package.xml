@@ -36,6 +36,7 @@
   <exec_depend>python3-numpy</exec_depend>
   <test_depend>ament_lint_auto</test_depend>
   <test_depend>ament_lint_common</test_depend>
+  <exec_depend>depthimage_to_laserscan</exec_depend>
   
   <!-- aruco visualization -->
   <build_depend>rosidl_default_generators</build_depend>

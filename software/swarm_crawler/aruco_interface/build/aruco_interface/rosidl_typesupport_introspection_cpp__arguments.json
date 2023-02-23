@@ -1,0 +1,19 @@
+{
+  "package_name": "aruco_interface",
+  "output_dir": "/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface/rosidl_typesupport_introspection_cpp/aruco_interface",
+  "template_dir": "/opt/ros/galactic/share/rosidl_typesupport_introspection_cpp/resource",
+  "idl_tuples": [
+    "/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface/rosidl_adapter/aruco_interface:msg/ArucoMarkers.idl"
+  ],
+  "target_dependencies": [
+    "/opt/ros/galactic/lib/rosidl_typesupport_introspection_cpp/rosidl_typesupport_introspection_cpp",
+    "/opt/ros/galactic/lib/python3.8/site-packages/rosidl_typesupport_introspection_cpp/__init__.py",
+    "/opt/ros/galactic/share/rosidl_typesupport_introspection_cpp/resource/idl__rosidl_typesupport_introspection_cpp.hpp.em",
+    "/opt/ros/galactic/share/rosidl_typesupport_introspection_cpp/resource/idl__type_support.cpp.em",
+    "/opt/ros/galactic/share/rosidl_typesupport_introspection_cpp/resource/msg__rosidl_typesupport_introspection_cpp.hpp.em",
+    "/opt/ros/galactic/share/rosidl_typesupport_introspection_cpp/resource/msg__type_support.cpp.em",
+    "/opt/ros/galactic/share/rosidl_typesupport_introspection_cpp/resource/srv__rosidl_typesupport_introspection_cpp.hpp.em",
+    "/opt/ros/galactic/share/rosidl_typesupport_introspection_cpp/resource/srv__type_support.cpp.em",
+    "/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface/rosidl_adapter/aruco_interface/msg/ArucoMarkers.idl"
+  ]
+}

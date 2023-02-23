@@ -1,0 +1,22 @@
+[0.017s] Invoking command in '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/galactic /usr/bin/cmake --build /home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface -- -j12 -l12
+[0.052s] -- Found ament_cmake: 1.1.6 (/opt/ros/galactic/share/ament_cmake/cmake)
+[0.071s] -- Using PYTHON_EXECUTABLE: /usr/bin/python3
+[0.134s] -- Found rosidl_default_generators: 1.1.1 (/opt/ros/galactic/share/rosidl_default_generators/cmake)
+[0.136s] -- Using all available rosidl_typesupport_c: rosidl_typesupport_fastrtps_c;rosidl_typesupport_introspection_c
+[0.143s] -- Found rosidl_adapter: 2.2.3 (/opt/ros/galactic/share/rosidl_adapter/cmake)
+[0.248s] -- Found OpenSSL: /usr/lib/x86_64-linux-gnu/libcrypto.so (found version "1.1.1f")  
+[0.276s] -- Found FastRTPS: /opt/ros/galactic/include  
+[0.361s] -- Using all available rosidl_typesupport_cpp: rosidl_typesupport_fastrtps_cpp;rosidl_typesupport_introspection_cpp
+[0.407s] -- Found PythonInterp: /usr/bin/python3 (found version "3.8.10") 
+[0.518s] CMake Error at /opt/ros/galactic/share/rosidl_cmake/cmake/rosidl_generate_interfaces.cmake:229 (message):
+[0.518s]   Packages installing interfaces must include
+[0.518s]   '<member_of_group>rosidl_interface_packages</member_of_group>' in their
+[0.518s]   package.xml
+[0.519s] Call Stack (most recent call first):
+[0.519s]   CMakeLists.txt:17 (rosidl_generate_interfaces)
+[0.519s] 
+[0.519s] 
+[0.520s] -- Configuring incomplete, errors occurred!
+[0.520s] See also "/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface/CMakeFiles/CMakeOutput.log".
+[0.529s] make: *** [Makefile:222: cmake_check_build_system] Error 1
+[0.531s] Invoked command in '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface' returned '2': CMAKE_PREFIX_PATH=${CMAKE_PREFIX_PATH}:/opt/ros/galactic /usr/bin/cmake --build /home/ben/Desktop/swarm_crawler/software/swarm_crawler/aruco_interface/build/aruco_interface -- -j12 -l12

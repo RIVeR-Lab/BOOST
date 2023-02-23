@@ -1,9 +1,6 @@
 #!/usr/bin/env python3
 
 # Publishes a coordinate transformation between an ArUco marker and a camera
-# Author:
-# - Addison Sears-Collins
-# - https://automaticaddison.com
 
 # Import the necessary ROS 2 libraries
 import rclpy  # Python library for ROS 2
@@ -16,6 +13,7 @@ from geometry_msgs.msg import TransformStamped  # Handles TransformStamped messa
 from sensor_msgs.msg import Image  # Image is the message type
 from tf2_ros import TransformBroadcaster
 from geometry_msgs.msg import PoseArray, Pose
+# from minibot-aruco-launch import minibot_id
 # from aruco_interface import ArucoMarkers
 
 
@@ -23,6 +21,10 @@ from geometry_msgs.msg import PoseArray, Pose
 import cv2  # OpenCV library
 import numpy as np  # Import Numpy library
 from scipy.spatial.transform import Rotation as R
+
+# TODO: update this to iterate through the specific aruco markers that we are using 
+
+headless = False
 
 # The different ArUco dictionaries built into the OpenCV library.
 ARUCO_DICT = {
@@ -57,16 +59,19 @@ class ArucoNode(Node):
         """
         # Initiate the Node class's constructor and give it a name
         super().__init__('aruco_node')
+        image_topic_string =  '/minibot_a_d435/color/image_raw'
+        # image_topic_string =  '/minibot_a_t265/fisheye2/image_raw'
 
         # Declare parameters
         self.declare_parameter("aruco_dictionary_name", "DICT_4X4_50")
         self.declare_parameter("aruco_marker_side_length", 0.05)
         self.declare_parameter(
-            "camera_calibration_parameters_filename", ".calibration_chessboard.yaml")
+            "camera_calibration_parameters_filename", ".realsense_calibration.yaml")
+        # self.declare_parameter(
+        #     "camera_calibration_parameters_filename", ".t265_calibration.yaml")
 
-        # self.declare_parameter("camera_calibration_parameters_filename", "/.calibration_chessboard.yaml")
-        # self.declare_parameter("image_topic", "/depth_camera/image_raw")
-        self.declare_parameter("image_topic", "/camera/color/image_raw")
+        self.declare_parameter("image_topic", image_topic_string)
+        # self.declare_parameter("image_topic", "/camera/color/image_raw")
         self.declare_parameter("aruco_marker_name", "aruco_marker")
 
         # Read parameters
@@ -74,8 +79,8 @@ class ArucoNode(Node):
             "aruco_dictionary_name").get_parameter_value().string_value
         self.aruco_marker_side_length = self.get_parameter(
             "aruco_marker_side_length").get_parameter_value().double_value
-        # self.camera_calibration_parameters_filename = self.get_parameter(
-        #   "camera_calibration_parameters_filename").get_parameter_value().string_value
+        self.camera_calibration_parameters_filename = self.get_parameter(
+          "camera_calibration_parameters_filename").get_parameter_value().string_value
         image_topic = self.get_parameter(
             "image_topic").get_parameter_value().string_value
         self.aruco_marker_name = self.get_parameter(
@@ -89,7 +94,7 @@ class ArucoNode(Node):
         # Load the camera parameters from the saved file
         # test = getcwd()
         cv_file = cv2.FileStorage(
-            '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/scripts/calibration_chessboard.yaml', cv2.FILE_STORAGE_READ)
+            '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/scripts/realsense_calibration.yaml', cv2.FILE_STORAGE_READ)
         # cv_file = cv2.FileStorage(
         #   '~/', cv2.FILE_STORAGE_READ)
         self.mtx = cv_file.getNode('K').mat()
@@ -163,13 +168,12 @@ class ArucoNode(Node):
                 # Create the coordinate transform
                 t = TransformStamped()
                 t.header.stamp = self.get_clock().now().to_msg()
-                t.header.frame_id = 'base_link'
+                # t.header.frame_id = 'base_link'
+                t.header.frame_id = 'camera_link'
+                # t.header.frame_id = 'aruco_marker'
                 # t.header.frame_id = 'map'
                 # t.header.frame_id = 'map'
-
-
                 t.child_frame_id = self.aruco_marker_name
-
                 # Store the translation (i.e. position) information
                 # t.transform.translation.x = tvecs[i][0][0]
                 # t.transform.translation.y = tvecs[i][0][1]
@@ -213,10 +217,10 @@ class ArucoNode(Node):
                 cv2.drawFrameAxes(current_frame, self.mtx,
                                   self.dst, rvecs[i], tvecs[i], 0.05)
             self.poses_pub.publish(pose_array)
-
         # Display image for testing
-        cv2.imshow("camera", current_frame)
-        cv2.waitKey(1)
+        if(headless == False):
+            cv2.imshow("camera", current_frame)
+            cv2.waitKey(1)
 
 
 def main(args=None):
