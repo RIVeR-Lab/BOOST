@@ -23,7 +23,7 @@ import numpy as np  # Import Numpy library
 from scipy.spatial.transform import Rotation as R
 
 # TODO: update this to iterate through the specific aruco markers that we are using 
-
+# TODO: make aruco estimation better.
 headless = False
 
 # The different ArUco dictionaries built into the OpenCV library.
