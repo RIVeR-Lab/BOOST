@@ -1,15 +1,17 @@
-cd ~ 
-#clone this current git repository, and checkout the software branch
-https://github.com/davidantaki/swarm_crawler.git
-cd swarm_crawler
-cd software
-git checkout software 
+# cd ~ 
+# #clone this current git repository, and checkout the software branch
+# git clone https://github.com/davidantaki/swarm_crawler.git
+# cd swarm_crawler
+# cd software
+# git checkout software 
 
 #install jtop
 sudo apt-get install python3-pip
 sudo pip3 install -U jetson-stats
-
+    
 sudo apt-get install gparted -y
+# resize the partition to fill the entire sd card
+
 sudo apt-get install git -y
 sudo apt-get install vim -y
 sudo apt-get install terminator -y
