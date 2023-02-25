@@ -83,7 +83,8 @@ rosdep update
 rosdep install --from-paths src --ignore-src -y --skip-keys "fastcdr rti-connext-dds-5.3.1 urdfdom_headers"
 
 
-
+cd ~/swarm_crawler/software/scripts
+./setup_repo.sh
 
 
 
