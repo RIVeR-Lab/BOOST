@@ -59,13 +59,13 @@ cd ~
 git clone 
 
 
-cd ~
-cd swarm_crawler
+cd ~/swarm_crawler
 cd software
 git checkout software
-
+cd scripts
+./setup_repo.sh
 #colcon build everything 
-./scripts/setup_repo.sh
+
 
 
 
