@@ -40,7 +40,7 @@ if(BUILD_TESTING)
 endif()
 
 install(
-  DIRECTORY config launch maps meshes models params rviz src urdf worlds swarm_crawler 
+  DIRECTORY config launch maps meshes models params rviz urdf worlds swarm_crawler 
   DESTINATION share/${PROJECT_NAME}
 )
 
