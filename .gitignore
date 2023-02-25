@@ -6,3 +6,4 @@ software/swarm_crawler/install/
 # ignore realsense-ros install and build files -- those are proprietary to your system and should not be shared
 software/realsense-ros/install/
 software/realsense-ros/build/
+software/realsense-ros/log/
