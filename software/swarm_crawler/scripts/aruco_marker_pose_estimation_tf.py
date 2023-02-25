@@ -2,6 +2,11 @@
 
 # Publishes a coordinate transformation between an ArUco marker and a camera
 
+# Import Python libraries
+import cv2  # OpenCV library
+import numpy as np  # Import Numpy library
+from scipy.spatial.transform import Rotation as R
+import os # for get cwd
 # Import the necessary ROS 2 libraries
 import rclpy  # Python library for ROS 2
 import scipy
@@ -16,11 +21,6 @@ from geometry_msgs.msg import PoseArray, Pose
 # from minibot-aruco-launch import minibot_id
 # from aruco_interface import ArucoMarkers
 
-
-# Import Python libraries
-import cv2  # OpenCV library
-import numpy as np  # Import Numpy library
-from scipy.spatial.transform import Rotation as R
 
 # TODO: update this to iterate through the specific aruco markers that we are using 
 # TODO: make aruco estimation better.
@@ -92,9 +92,11 @@ class ArucoNode(Node):
                 args["type"]))
 
         # Load the camera parameters from the saved file
-        # test = getcwd()
-        cv_file = cv2.FileStorage(
-            '/home/ben/Desktop/swarm_crawler/software/swarm_crawler/scripts/realsense_calibration.yaml', cv2.FILE_STORAGE_READ)
+        cwd = os.getcwd()
+        # print ("CURRENT DIRECTORY IS :",test)
+        # self.get_logger().info("CURRENT DIRECTORY IS :",test)
+
+        cv_file = cv2.FileStorage(cwd + '/scripts/realsense_calibration.yaml', cv2.FILE_STORAGE_READ)
         # cv_file = cv2.FileStorage(
         #   '~/', cv2.FILE_STORAGE_READ)
         self.mtx = cv_file.getNode('K').mat()
