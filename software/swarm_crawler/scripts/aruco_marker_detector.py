@@ -15,6 +15,14 @@ from geometry_msgs.msg import TransformStamped # Handles TransformStamped messag
 from sensor_msgs.msg import Image # Image is the message type
 from std_msgs.msg import Bool # Handles boolean messages
 from std_msgs.msg import Int32 # Handles int 32 type message
+from geometry_msgs.msg import PoseArray, Pose
+from tf2_ros import TransformBroadcaster
+from scipy.spatial.transform import Rotation as R
+import numpy as np  # Import Numpy library
+
+import scipy
+
+import os
 
 # Import Python libraries
 import cv2 # OpenCV library
@@ -53,15 +61,10 @@ class ArucoNode(Node):
     super().__init__('aruco_node')
 
     # Declare parameters
-    # self.declare_parameter("aruco_dictionary_name", "DICT_ARUCO_ORIGINAL")
     self.declare_parameter("aruco_dictionary_name", "DICT_4X4_50")
-
     self.declare_parameter("aruco_marker_side_length", 0.05)
-    # self.declare_parameter("camera_calibration_parameters_filename", "swarm_crawler/scripts/calibration_chessboard.yaml")
-    # self.declare_parameter("image_topic", "/depth_camera/image_raw")
-    self.declare_parameter("image_topic", "/camera/color/image_raw")
-# 
-    # /camera/color/image_raw
+    self.declare_parameter("camera_calibration_parameters_filename", "swarm_crawler/scripts/calibration_chessboard.yaml")
+    self.declare_parameter("image_topic", "/minibot_a_d435/color/image_raw")
     self.declare_parameter("aruco_marker_name", "aruco_marker")
     
     # Read parameters
@@ -76,13 +79,12 @@ class ArucoNode(Node):
     if ARUCO_DICT.get(aruco_dictionary_name, None) is None:
       self.get_logger().info("[INFO] ArUCo tag of '{}' is not supported".format(
         args["type"]))
-        
-    # Load the camera parameters from the saved file
-    # cv_file = cv2.FileStorage(
-    #   self.camera_calibration_parameters_filename, cv2.FILE_STORAGE_READ) 
-    # self.mtx = cv_file.getNode('K').mat()
-    # self.dst = cv_file.getNode('D').mat()
-    # cv_file.release()
+    cwd = os.getcwd()
+    cv_file = cv2.FileStorage(cwd + '/scripts/realsense_calibration.yaml', cv2.FILE_STORAGE_READ)
+        # cv_file = cv2.FileStorage(
+        #   '~/', cv2.FILE_STORAGE_READ)
+    self.mtx = cv_file.getNode('K').mat()
+    self.dst = cv_file.getNode('D').mat()
     
     # Load the ArUco dictionary
     self.get_logger().info("[INFO] detecting '{}' markers...".format(
@@ -90,6 +92,7 @@ class ArucoNode(Node):
     self.this_aruco_dictionary = cv2.aruco.getPredefinedDictionary(ARUCO_DICT[aruco_dictionary_name])
     # self.this_aruco_parameters = cv2.aruco.DetectorParameters_create()
     self.this_aruco_parameters = cv2.aruco.DetectorParameters()
+    self.tfbroadcaster = TransformBroadcaster(self)
 
     
     # Create the subscriber. This subscriber will receive an Image
@@ -147,12 +150,69 @@ class ArucoNode(Node):
       M = cv2.moments(corners[0][0])
       cX = int(M["m10"] / M["m00"])
       cY = int(M["m01"] / M["m00"])
+
+      rvecs, tvecs, obj_points = cv2.aruco.estimatePoseSingleMarkers(
+                corners,
+                self.aruco_marker_side_length,
+                self.mtx,
+                self.dst)
       
       self.offset_aruco_marker = cX - int(image_width/2)
       aruco_center_offset_msg.data = self.offset_aruco_marker
 
       cv2.putText(current_frame, "Center Offset: " + str(self.offset_aruco_marker), (cX - 40, cY - 40), 
         cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2) 
+      
+      cv2.drawFrameAxes(current_frame, self.mtx,
+                                  self.dst, rvecs[0], tvecs[0], 0.05)
+      
+      for i, marker_id in enumerate(marker_ids):
+
+                # Create the coordinate transform
+                t = TransformStamped()
+                t.header.stamp = self.get_clock().now().to_msg()
+                # t.header.frame_id = 'base_link'
+                t.header.frame_id = 'camera_link'
+                # t.header.frame_id = 'aruco_marker'
+                # t.header.frame_id = 'map'
+                # t.header.frame_id = 'map'
+                t.child_frame_id = 'aruco_marker'
+                # Store the translation (i.e. position) information
+                # t.transform.translation.x = tvecs[i][0][0]
+                # t.transform.translation.y = tvecs[i][0][1]
+                # t.transform.translation.z = tvecs[i][0][2]
+                # fixed
+                t.transform.translation.y = tvecs[i][0][0]
+                t.transform.translation.z = tvecs[i][0][1]
+                t.transform.translation.x = tvecs[i][0][2]
+
+                # Store the rotation information
+                rotation_matrix = np.eye(4)
+                rotation_matrix[0:3, 0:3] = cv2.Rodrigues(
+                    np.array(rvecs[i][0]))[0]
+                r = R.from_matrix(rotation_matrix[0:3, 0:3])
+                quat = r.as_quat()
+
+                # Quaternion format
+                t.transform.rotation.x = quat[0]
+                t.transform.rotation.y = quat[1]
+                t.transform.rotation.z = quat[2]
+                t.transform.rotation.w = quat[3]
+                # self.get_logger().info('broadcasting transform')
+                self.tfbroadcaster.sendTransform(t)
+
+                # Send the transform
+                # pose_array.header.frame_id = t.header.frame_id
+
+                pose = Pose()
+                pose.position.x = tvecs[i][0][0]
+                pose.position.y = tvecs[i][0][1]
+                pose.position.z = tvecs[i][0][2]
+                pose.orientation.x = quat[0]
+                pose.orientation.y = quat[1]
+                pose.orientation.z = quat[2]
+                pose.orientation.w = quat[3]
+                # pose_array.poses.append(pose)
 
     # Publish if ArUco marker has been detected or not
     self.publisher_aruco_marker_detected.publish(aruco_detected_flag)

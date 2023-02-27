@@ -24,6 +24,9 @@ from geometry_msgs.msg import PoseArray, Pose
 
 # TODO: update this to iterate through the specific aruco markers that we are using 
 # TODO: make aruco estimation better.
+# TODO: make aruco marker publisher that publishes the aruco marker poses in the world frame
+# TODO: implement logic to subscribe to a topic that indicates which aruco marker to track
+# TODO: implement logic to choose which aruco marker to track based on the aruco marker that is closest to the robot
 headless = False
 
 # The different ArUco dictionaries built into the OpenCV library.

@@ -19,6 +19,7 @@ robot_name = 'minibot_a' # TODO: make this a exec bash command that retrieves th
 #  TODO: fix the namespace issue
 def generate_launch_description():
     package_name = 'swarm_crawler'
+    nav_to_charging_dock_script = 'navigate_to_aruco_v1.py'
     
     # Set the path to this package.
     pkg_share = FindPackageShare(package='swarm_crawler').find('swarm_crawler')
@@ -44,8 +45,7 @@ def generate_launch_description():
     # Launch configuration variables specific to simulation
 
     map_file_path = 'maps/hospital_world/hospital_world.yaml'
-    static_map_path = os.path.join(pkg_share, map_file_path)
-
+    static_map_path = os.path.join(pkg_share, map_file_path)  
     gui = LaunchConfiguration('gui')
     urdf_model = LaunchConfiguration('urdf_model')
     rviz_config_file = LaunchConfiguration('rviz_config_file')
@@ -57,15 +57,8 @@ def generate_launch_description():
     map_yaml_file = LaunchConfiguration('map')
     params_file = LaunchConfiguration('params_file')
     autostart = LaunchConfiguration('autostart')
-    
-    # start_map_to_base_link_transform_cmd = Node(
-    # package=package_name,
-    # executable='map_to_base_link_transform.py')
 
-    # start_base_link_to_aruco_marker_transform_cmd = Node(
-    # package=package_name,
-    # executable='base_link_to_aruco_marker_transform.py')
-    # # Declare the launch arguments
+
 
     # NAME SPACE CREATION  
     declare_namespace_cmd = DeclareLaunchArgument(
@@ -179,36 +172,10 @@ def generate_launch_description():
        parameters=[robot_localization_file_path, {'use_sim_time': use_sim_time}]
     )
 
-    # robot_localization_realsenses_launch.py'
-    # )
-    
+
     teleop = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(os.path.join( 'launch', 'controller-teleop.launch.py'))
     ,launch_arguments={'namespace':namespace}.items())#,
-    # condition=IfCondition(PythonExpression([use_simulator, ' and not ', headless])))
-    #   start_gazebo_server_cmd = IncludeLaunchDescription(
-    #     PythonLaunchDescriptionSource(os.path.join(pkg_gazebo_ros, 'launch', 'gzserver.launch.py')),
-    #     condition=IfCondition(use_simulator),
-    #     launch_arguments={'world': world}.items())
-
-    # launch_realsense_d435 = IncludeLaunchDescription(
-    # PythonLaunchDescriptionSource(os.path.join('../../realsense-ros/realsense2_camera/launch/rs_launch.py'))
-    # , launch_arguments={'camera_name':namespace}.items())#,
-    # , launch_arguments={'camera_name': "minibot_a_d435","serial_no":"'830112071549'"}.items())#,
-
-    # launch_realsense_t265 = IncludeLaunchDescription(
-    # PythonLaunchDescriptionSource(os.path.join('/home/ben/Desktop/realsenseTest/realsense-ros/realsense2_camera/launch/rs_launch.py'))
-    # , launch_arguments={'camera_name':"minibot_a_t265"}.items())#,
-
-    realsense = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join('/home/ben/Desktop/realsenseTest/realsense-ros/realsense2_camera/launch/rs_launch.py'))
-    , launch_arguments={'camera_name':namespace}.items())#,
-    #  ros2 launch realsense2_camera rs_launch.py enable_fisheye1:=false enable_fisheye2:=false camera_name:=Minibot1T265
-    # teleop\
-    # teleop= Node(
-    #     package=package_name,
-    #     executable='aruco_marker_pose_estimation_tf.py',
-    #     parameters=[{'use_sim_time': use_sim_time}])    
 
     # NAVIGATION 2
     start_nav2_cmd = IncludeLaunchDescription(
@@ -231,9 +198,6 @@ def generate_launch_description():
         output='screen',
         arguments=['-d', rviz_config_file])
 
-    # from ament_index_python.packages import get_package_share_directory
-    # from launch import LaunchDescription
-    # from launch_ros.actions import Node
     depthimage_to_laserscan_yaml_path =  os.path.join(pkg_share, 'config/depthimage_to_laserscan.yaml')
     
     start_depthimage_to_laserscan_cmd = Node(
@@ -295,7 +259,6 @@ def generate_launch_description():
 
     #aruco marker traversal
       # Launch navigation to the charging dock
-    nav_to_charging_dock_script = 'navigate_to_charging_dock_v2.py'
 
     start_navigate_to_charging_dock_cmd = Node(
     package='swarm_crawler',
@@ -326,7 +289,7 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd)
 
     # STARTING ARUCO MARKER POSE TRANSFORM
-    ld.add_action(start_aruco_marker_pose_transform_cmd)
+    # ld.add_action(start_aruco_marker_pose_transform_cmd)
 
     # STARTING STATE PUBLISHER NODES
     ld.add_action(start_joint_state_publisher_cmd)
@@ -357,7 +320,17 @@ def generate_launch_description():
     launch_arguments = {'namespace': ''}.items())
     # ld.add_action(start_nav2)
 
+      # Start ArUco marker detector node
+    start_aruco_marker_detector_cmd = Node(
+    package=package_name,
+    executable='aruco_marker_detector.py')  
+
+    # AUTONOMOUS DOCKING
+    ld.add_action(start_aruco_marker_detector_cmd)
+    ld.add_action(start_navigate_to_charging_dock_cmd)
+
     # navigation stuff
+
     ld.add_action(robot_localization_node)
     ld.add_action(declare_params_file_cmd)
     ld.add_action(declare_slam_cmd)
@@ -374,5 +347,7 @@ def generate_launch_description():
     #   navigator.goToPose(staging_area_pose) #THIS MIGHT BE IT!
 
     return ld
+
+# ros2 topic pub /battery_status sensor_msgs/BatteryState '{voltage: 2.16, percentage: 0.24, power_supply_status: 3}' 
 
 

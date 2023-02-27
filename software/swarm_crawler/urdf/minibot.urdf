@@ -63,7 +63,7 @@
   <link name="base_link">
     <visual>
       <!-- <origin xyz="0 0 -0.05" rpy="1.5707963267949 0 3.141592654"/> -->
-      <origin xyz="0.10 0 .040" rpy="0 0 0"/>
+      <origin xyz="0.0 0 .040" rpy="0 0 0"/>
 
       <geometry>
         <box size="${base_length} ${base_width} ${base_height}"/>
@@ -232,18 +232,22 @@
 <link name="odom_frame"/> -->
 
   
-<joint name="extraneous_joint" type="fixed">
+<joint name="t265_joint" type="fixed">
     <parent link="camera_link"/>
     <child link="minibot_a_t265_pose_frame"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <!-- <child link="minibot_a_t265_link"/> -->
+
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
   </joint> 
 
   <link name="minibot_a_t265_pose_frame"/>
+  <!-- <link name="minibot_a_t265_link"/> -->
+
 
 <joint name="d435_joint" type="fixed">
     <parent link="camera_link"/>
     <child link="minibot_a_d435_link"/>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
   </joint> 
 
   <link name="minibot_a_d435_link"/>

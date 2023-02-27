@@ -11,7 +11,7 @@ sudo pip3 install -U jetson-stats
 #install gparted
 sudo apt-get install gparted -y
 
-# ros foxy install
+# ros galactic install
 locale  # check for UTF-8
 
 sudo apt update && sudo apt install locales
@@ -36,23 +36,26 @@ sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o
 sudo apt upgrade
 sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
 
-sudo apt install ros-foxy-desktop python3-argcomplete
+sudo apt install ros-galactic-desktop python3-argcomplete
 
 sudo apt install ros-dev-tools
 
 
-#install ros foxy and alll required dependencies
-# sudo apt-get install ros-foxy-desktop
-sudo apt-get install ros-foxy-navigation2
+#install ros galactic and alll required dependencies
+# sudo apt-get install ros-galactic-desktop
+sudo apt-get install ros-galactic-navigation2 
+sudo apt install ros-galactic-nav2-simple-commander
+sudo apt-get install ros-galactic-depthimage-to-laserscan 
+# sudo apt-get install ros-galactic-ekf-localization &&
+sudo apt-get install ros-galactic-nav2-bringup 
+sudo apt-get install ros-galactic-robot-localization 
+sudo apt-get install ros-galactic-xacro 
+sudo apt-get install ros-galactic-joint-state-publisher 
+sudo apt-get install ros-galactic-joint-state-publisher-gui 
+sudo apt-get install ros–galactic-vision-opencv 
 
-sudo apt-get install ros-foxy-depthimage-to-laserscan
-sudo apt-get install ros-foxy-ekf-localization
-sudo apt-get install ros-foxy-nav2-bringup
-sudo apt-get install ros-foxy-robot-localization
-sudo apt-get install ros-foxy-xacro
-sudo apt-get install ros-foxy-joint-state-publisher
-sudo apt-get install ros-foxy-joint-state-publisher-gui
-sudo apt-get install ros–foxy-vision-opencv
+pip install opencv-contrib-python == 4.7.0.72
+pip install numpy == 1.21
 
 # download, then build from sources realsense-ros package
 cd ~

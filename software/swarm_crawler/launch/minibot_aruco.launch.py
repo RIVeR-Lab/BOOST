@@ -230,7 +230,7 @@ def generate_launch_description():
     # Add any actions
     ld.add_action(start_joint_state_publisher_cmd)
     ld.add_action(start_robot_state_publisher_cmd)
-    ld.add_action(start_joint_state_publisher_gui_node)
+    # ld.add_action(start_joint_state_publisher_gui_node)
 
     # ld.add_action(start_map_to_base_link_transform_cmd)
     # ld.add_action(start_base_link_to_aruco_marker_transform_cmd)
