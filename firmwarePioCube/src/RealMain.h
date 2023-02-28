@@ -9,6 +9,8 @@
 #include <HardwareSerial.h>
 #include <SPI.h>
 #include <Wire.h>
+#include <STM32encoder.h>
+#include "imu.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
@@ -17,12 +19,20 @@ class RealMain {
 public:
   RealMain()
       : mySerial4(UART4),
-        rosHandler(Serial2) {}
+        i2c1(PB9, PB8),
+        rosHandler(Serial2),
+        encLeft(TIM2),
+        encRight(TIM3),
+        imu(55, 0x28, i2c1) {}
   ~RealMain() {}
 
   // ------------------------------ DEVICES ------------------------------
   HardwareSerial mySerial4;
+  TwoWire i2c1;
   RosHandler rosHandler;
+  STM32encoder encLeft;
+  STM32encoder encRight;
+  IMU imu;
   // ----------------------------------------------------------------
 
   bool initialize() {
@@ -52,9 +62,11 @@ public:
     //   yield();
     // }
 #endif
+    LOGEVENT("Setup...");
 
     success = success && rosHandler.init();
-    LOGEVENT("Setup...");
+    success = success && imu.init();
+    
 
     // initPwm();
     // setPwm(5000, 50);
@@ -64,9 +76,12 @@ public:
     pinMode(R_WHEEL_FORW_PIN, OUTPUT);
     pinMode(R_WHEEL_BACK_PIN, OUTPUT);
 
+    
+
     return success;
   }
 
+  // Main Big Loop
   void loop() {
     while (1) {
       // Blink LED every 1 second
@@ -79,7 +94,15 @@ public:
         digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
       }
 
+      if(encLeft.isUpdated()){
+        LOGEVENT("Left Encoder: %d", encLeft.pos());
+      }
+      if(encRight.isUpdated()){
+        LOGEVENT("Right Encoder: %d", encRight.pos());
+      }
+
       rosHandler.loop();
+      imu.loop();
       // mySerial4.printf("looping\n");
 
       // analogWrite(L_WHEEL_FORW_PIN, 255);
@@ -88,6 +111,8 @@ public:
       // HAL_Delay(500);
       // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
       // HAL_Delay(10);
+
+
     }
   }
 
