@@ -39,6 +39,9 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
   bool RosHandler::loopHook() {
     bool success = true;
 
+    LOGINFO("chatter_msg size: %d", sizeof(str_msg));
+    LOGINFO("imu_msg size: %d", sizeof(bno055_imu_msg));
+
     // TODO: Check if ROS is connected
     // if(!nodeHandle.connected()){
     //     isRosConnected = false;
@@ -56,10 +59,14 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
 
     // Publish IMU data
     static uint32_t imuLastPub = 0;
-    if ((millis() - imuLastPub) > 1000) {
+    if ((millis() - imuLastPub) > 100) {
       imuLastPub = millis();
       success = success && realMain.imu.getAllImuData(bno055_imu_msg);
+      if(!success){
+        LOGERROR("Failed to read IMU data from BNO055.");
+      } else {
         bno055_imu_pub.publish(&bno055_imu_msg);
+      }
     }
 
     // For subscribers

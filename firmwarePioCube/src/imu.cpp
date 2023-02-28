@@ -1,4 +1,5 @@
 #include "imu.h"
+#include "RealMain.h"
 
 bool IMU::loopHook() {
 #if PRINT_IMU_DATA
@@ -56,6 +57,14 @@ bool IMU::getAllImuData(sensor_msgs::Imu &imu_msg) {
   imu_msg.linear_acceleration.x = linearAccelData.acceleration.x;
   imu_msg.linear_acceleration.y = linearAccelData.acceleration.y;
   imu_msg.linear_acceleration.z = linearAccelData.acceleration.z;
+
+  memset(imu_msg.orientation_covariance, 0.0, sizeof(imu_msg.orientation_covariance));
+  memset(imu_msg.angular_velocity_covariance, 0.0, sizeof(imu_msg.angular_velocity_covariance));
+  memset(imu_msg.linear_acceleration_covariance, 0.0, sizeof(imu_msg.linear_acceleration_covariance));
+
+  imu_msg.header.stamp = realMain.rosHandler.nodeHandle.now();
+  imu_msg.header.frame_id = "imu_link";
+  imu_msg.header.seq = 0;
 
   return success;
 }
