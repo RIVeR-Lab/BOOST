@@ -92,7 +92,6 @@ public:
         counter = millis();
         LOGEVENT("Looping...");
         Serial2.println("Looping...");
-        rosHandler.nodeHandle.loginfo("Looping...");
         digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
       }
 
