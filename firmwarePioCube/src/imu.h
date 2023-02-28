@@ -5,7 +5,9 @@
 #include <Adafruit_BNO055.h>
 #include <Adafruit_Sensor.h>
 #include <utility/imumaths.h>
+#include <sensor_msgs/Imu.h>
 #include "FakeThread.h"
+#include <geometry_msgs/Point.h>
 
 class IMU : public FakeThread {
 public:
@@ -13,23 +15,28 @@ public:
       : bno(sensorID, address, &bus) {}
 
   bool init() {
+    bool success = true;
+
     if (!bno.begin(OPERATION_MODE_NDOF)) {
       while (1) {
         LOGERROR("FAILED to init BNO055... Check your wiring or I2C ADDR!");
         delay(1000);
       }
     }
+
+    return success;
   }
 
-  void printAll();
+  
   bool loopHook() override;
-
-
+	bool getAllImuData(sensor_msgs::Imu &imu_msg);
+  
 private:
   Adafruit_BNO055 bno;
   /* Set the delay between fresh samples */
   uint16_t BNO055_SAMPLERATE_DELAY_MS = 1000;
 
+  void printAll();
   void printEvent(sensors_event_t* event);
 };
 

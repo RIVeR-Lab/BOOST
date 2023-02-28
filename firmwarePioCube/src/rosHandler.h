@@ -5,13 +5,16 @@
 #include <std_msgs/String.h>
 #include <std_msgs/Empty.h>
 #include <geometry_msgs/Twist.h>
+#include <sensor_msgs/Imu.h>
 #include "utils/log.h"
 #include <math.h>
 #include <algorithm>
+#include "FakeThread.h"
 
-class RosHandler {
+class RosHandler : public FakeThread {
 public:
-    RosHandler(HardwareSerial &serialPort) : nodeHardware(serialPort), chatter("chatter", &str_msg),
+    RosHandler(HardwareSerial &serialPort) : nodeHardware(serialPort), chatter("chatter", &str_msg), 
+    bno055_imu_pub("bno055_imu", &bno055_imu_msg),
     subDiffDrive("/cmd_vel", &subDiffDrive_cb) 
     {
 
@@ -38,26 +41,7 @@ public:
         return success;
     }
 
-    bool loop() {
-        static uint32_t counter = 0;
-        bool success = true;
-
-        // if(!nodeHandle.connected()){
-        //     isRosConnected = false;
-        // } else {
-            isRosConnected = true;
-            // Only publish chatter every 1 second
-            
-            if((millis() - counter) > 1000) {
-                counter = millis();
-                str_msg.data = str_msg_data.c_str();
-                chatter.publish( &str_msg );
-            }
-            nodeHandle.spinOnce();
-        // }
-
-        return success;
-    }
+    bool loopHook();
 
     ros::NodeHandle nodeHandle;
 
@@ -75,15 +59,21 @@ private:
     
 
 
-    // PUBLISHERS
+    /* -------------------------- PUBLISHERS -------------------------- */
+    // Chatter
     ros::Publisher chatter;
     std_msgs::String str_msg;
     std::string str_msg_data = "Chatter Topic: MCU blink!";
+    // IMUS
+    ros::Publisher bno055_imu_pub;
+    sensor_msgs::Imu bno055_imu_msg;
+    /* -------------------------- END PUBLISHERS -------------------------- */
 
-    // SUBSCRIBERS
+    /* -------------------------- SUBSCRIBERS -------------------------- */
     // For diff drive control
     ros::Subscriber<geometry_msgs::Twist> subDiffDrive;
     static void subDiffDrive_cb(const geometry_msgs::Twist &msg);
+    /* -------------------------- END SUBSCRIBERS -------------------------- */
 
 };
 

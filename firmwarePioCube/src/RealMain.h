@@ -65,7 +65,9 @@ public:
     LOGEVENT("Setup...");
 
     success = success && rosHandler.init();
+    #if ENABLE_IMU
     success = success && imu.init();
+    #endif
     
 
     // initPwm();
@@ -102,7 +104,9 @@ public:
       }
 
       rosHandler.loop();
+      #if ENABLE_IMU
       imu.loop();
+      #endif
       // mySerial4.printf("looping\n");
 
       // analogWrite(L_WHEEL_FORW_PIN, 255);

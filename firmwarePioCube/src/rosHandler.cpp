@@ -1,4 +1,5 @@
 #include "rosHandler.h"
+#include "RealMain.h"
 
 constexpr float RosHandler::WHEEL_BASE;
 constexpr float RosHandler::WHEEL_RADIUS;
@@ -7,6 +8,39 @@ constexpr float RosHandler::PWM_MAX;
 constexpr float RosHandler::MOTOR_RPM;
 constexpr float RosHandler::MOTOR_MIN_RAD_PER_SEC;
 constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
+
+bool RosHandler::loopHook() {
+        static uint32_t counter = 0;
+        bool success = true;
+
+        // TODO: Check if ROS is connected
+        // if(!nodeHandle.connected()){
+        //     isRosConnected = false;
+        // } else {
+            isRosConnected = true;
+
+            // TODO: Get rid of the duplicate code below.
+            // Publish Chatter
+            if((millis() - counter) > 1000) {
+                counter = millis();
+                str_msg.data = str_msg_data.c_str();
+                chatter.publish( &str_msg );
+            }
+
+            // Publish IMU data
+            if((millis() - counter) > 1000) {
+                counter = millis();
+                success = success && realMain.imu.getAllImuData(bno055_imu_msg);
+                bno055_imu_pub.publish(&str_msg );
+            }
+            
+
+            // For subscribers
+            nodeHandle.spinOnce();
+        // }
+
+        return success;
+    }
 
 // Map x value from [0 .. 1] to [out_min .. out_max]
 float mapPwm(float x, float out_min, float out_max)
