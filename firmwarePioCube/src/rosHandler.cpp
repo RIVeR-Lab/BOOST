@@ -59,7 +59,7 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
     if ((millis() - imuLastPub) > 1000) {
       imuLastPub = millis();
       success = success && realMain.imu.getAllImuData(bno055_imu_msg);
-      bno055_imu_pub.publish(&str_msg);
+        bno055_imu_pub.publish(&bno055_imu_msg);
     }
 
     // For subscribers
