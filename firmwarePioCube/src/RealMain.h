@@ -11,6 +11,7 @@
 #include <Wire.h>
 #include <STM32encoder.h>
 #include "imu.h"
+#include "config.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
