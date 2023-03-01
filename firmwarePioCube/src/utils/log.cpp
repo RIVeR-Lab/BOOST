@@ -13,9 +13,11 @@ bool log_printf_level(const char *file, uint32_t line, uint32_t level,
     const char *str = "%s:%u: ";
     bufferI += snprintf(buffer, bufSize - bufferI, str, file, line);
     vsnprintf(&(buffer[bufferI]), bufSize - bufferI, Format, arglist);
-#if LOGGING
+#if CONSOLE_LOGGING
     retc = Console.println(buffer);
     Console.flush();
+#endif
+#if ROS_LOGGING
     realMain.rosHandler.nodeHandle.loginfo(buffer);
 #endif
     va_end(arglist);
@@ -34,10 +36,12 @@ bool log_printf_error(const char *file, uint32_t line, const char *Format,
   const char *str = "%s:%u: ";
   bufferI += snprintf(buffer, bufSize - bufferI, str, file, line);
   vsnprintf(&(buffer[bufferI]), bufSize - bufferI, Format, arglist);
-#if LOGGING
+#if CONSOLE_LOGGING
   retc = Console.println(buffer);
   Console.flush();
-  realMain.rosHandler.nodeHandle.logerror(buffer);
+#endif
+#if ROS_LOGGING
+    realMain.rosHandler.nodeHandle.logerror(buffer);
 #endif
   va_end(arglist);
   return (retc);
