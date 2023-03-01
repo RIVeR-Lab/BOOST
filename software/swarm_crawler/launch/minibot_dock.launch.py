@@ -35,6 +35,7 @@ def generate_launch_description():
     nav2_params_path = os.path.join(pkg_share, nav2_params_path)
     nav2_dir = FindPackageShare(package='nav2_bringup').find('nav2_bringup') 
     nav2_launch_dir = os.path.join(nav2_dir, 'launch') 
+    depthimage_to_laserscan_yaml_path =  os.path.join('/home/ben/Desktop/swarm_crawler/software/swarm_crawler/config/depthimage_to_laserscan_params.yaml')
 
     slam = LaunchConfiguration('slam')
 
@@ -111,6 +112,11 @@ def generate_launch_description():
         name='params_file',
         default_value=nav2_params_path,
         description='Full path to the ROS2 parameters file to use for all launched nodes')
+    
+    declare_laserscan_params_file_cmd = DeclareLaunchArgument(
+        name='depthimage_to_laserscan_yaml_path',
+        default_value=depthimage_to_laserscan_yaml_path,
+        description='depthimage_to_laserscan parameters file')
         
 
     declare_slam_cmd = DeclareLaunchArgument(
@@ -171,6 +177,8 @@ def generate_launch_description():
        output='screen',
        parameters=[robot_localization_file_path, {'use_sim_time': use_sim_time}]
     )
+    
+
 
 
     teleop = IncludeLaunchDescription(
@@ -198,8 +206,6 @@ def generate_launch_description():
         output='screen',
         arguments=['-d', rviz_config_file])
 
-    depthimage_to_laserscan_yaml_path =  os.path.join(pkg_share, 'config/depthimage_to_laserscan.yaml')
-    
     start_depthimage_to_laserscan_cmd = Node(
             package='depthimage_to_laserscan',
             executable='depthimage_to_laserscan_node',
@@ -208,14 +214,15 @@ def generate_launch_description():
             remappings=[('depth','/minibot_a_d435/depth/image_rect_raw'),
                         ('depth_camera_info', '/minibot_a_d435/depth/camera_info'),
                         ('scan', '/minibot_a/scan'),
+                        # ('range_min', '0.45'),
                         ('depth_frame_id', 'minibot_a_d435_depth_frame'),
                         ('output_frame','minibot_a_d435_depth_frame' ),
-                        ('camera_depth_frame','minibot_a_d435_depth_frame' ),
+                        ('camera_depth_optical_frame','minibot_a_d435_depth_frame' ),
                         
 
                        ],
                         # ('camera_depth_frame', 'camera_link')],
-            parameters=[depthimage_to_laserscan_yaml_path])
+            parameters=[{depthimage_to_laserscan_yaml_path}])
     
 
 
@@ -288,6 +295,9 @@ def generate_launch_description():
     ld.add_action(declare_use_robot_state_pub_cmd)
     ld.add_action(declare_use_rviz_cmd)
 
+    ld.add_action(declare_laserscan_params_file_cmd)
+
+
     # STARTING ARUCO MARKER POSE TRANSFORM
     # ld.add_action(start_aruco_marker_pose_transform_cmd)
 
@@ -303,6 +313,12 @@ def generate_launch_description():
     # ld.add_action(start_map_static_transform_cmd)
     # necessary "camera_depth_frame" redundant transform-- couldnt figure out the cause. 
     ld.add_action(depth_frame)
+
+    start_depth_center_script = Node(
+        package=package_name,
+        executable='show_center_depth2.py')
+    
+    ld.add_action(start_depth_center_script)
 
 
     # ld.add_action(start_base_link_to_aruco_marker_transform_cmd)
@@ -327,7 +343,9 @@ def generate_launch_description():
 
     # AUTONOMOUS DOCKING
     ld.add_action(start_aruco_marker_detector_cmd)
-    ld.add_action(start_navigate_to_charging_dock_cmd)
+    # ld.add_action(start_navigate_to_charging_dock_cmd)
+
+
 
     # navigation stuff
 

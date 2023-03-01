@@ -127,6 +127,12 @@ def generate_launch_description():
         namespace=namespace,
         executable='aruco_marker_pose_estimation_tf.py',
         parameters=[{'use_sim_time': use_sim_time, 'image_topic':'/minibot_a_d435/color/image_raw',}])
+    
+    start_depth_center_script = Node(
+        package=package_name,
+        namespace=namespace,
+        executable='show_center_depth.py',
+        parameters=[])
 
     #ROBOT LOCALIZATION   using an Extended Kalman filter
     robot_localization_node = Node(
@@ -147,11 +153,11 @@ def generate_launch_description():
                         ('depth_camera_info', '/minibot_a_d435/depth/camera_info'),
                         ('scan', '/minibot_a/scan')],
                         # ('camera_depth_frame', 'camera_link')],
-            parameters=[depthimage_to_laserscan_yaml_path, ('use_sim_time', use_sim_time)])
+            params=[depthimage_to_laserscan_yaml_path, ('use_sim_time', use_sim_time)])
     
 
 
-
+    # ros2 run depthimage_to_laserscan depthimage_to_laserscan_node --remap range_min:=0 0.0 --remap depth:=/minibot_a_d435/depth/image_rect_raw --remap depth_camera_info:=/minibot_a_d435/depth/camera_info
     # robot_localization_realsenses_launch.py'
     # )
     
@@ -173,9 +179,9 @@ def generate_launch_description():
     # PythonLaunchDescriptionSource(os.path.join('/home/ben/Desktop/realsenseTest/realsense-ros/realsense2_camera/launch/rs_launch.py'))
     # , launch_arguments={'camera_name':"minibot_a_t265"}.items())#,
 
-    realsense = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join('/home/ben/Desktop/realsenseTest/realsense-ros/realsense2_camera/launch/rs_launch.py'))
-    , launch_arguments={'camera_name':namespace}.items())#,
+    # realsense = IncludeLaunchDescription(
+    # PythonLaunchDescriptionSource(os.path.join('/home/ben/Desktop/realsenseTest/realsense-ros/realsense2_camera/launch/rs_launch.py'))
+    # , launch_arguments={'camera_name':namespace}.items())#,
 #  ros2 launch realsense2_camera rs_launch.py enable_fisheye1:=false enable_fisheye2:=false camera_name:=Minibot1T265
     # teleop\
     # teleop= Node(
@@ -231,6 +237,7 @@ def generate_launch_description():
     ld.add_action(start_joint_state_publisher_cmd)
     ld.add_action(start_robot_state_publisher_cmd)
     # ld.add_action(start_joint_state_publisher_gui_node)
+    ld.add_action(start_depth_center_script)
 
     # ld.add_action(start_map_to_base_link_transform_cmd)
     # ld.add_action(start_base_link_to_aruco_marker_transform_cmd)

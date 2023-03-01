@@ -1,6 +1,6 @@
 sleep 1
 cd ..
-source /opt/ros/foxy/setup.bash
+source /opt/ros/galactic/setup.bash
 source swarm_crawler/install/setup.bash
 cd swarm_crawler
 
@@ -10,7 +10,7 @@ if [[ $PWD == *"jetson"* ]]; then
     colcon build && ros2 launch swarm_crawler minibot_dock.launch.py use_rviz:=False run_headless:=True autostart:=false
 else
     echo "Running on Desktop."
-    ros2 launch swarm_crawler minibot_dock.launch.py
+    colcon build && ros2 launch swarm_crawler minibot_dock.launch.py autostart:=False
 fi
 
 # colcon build && ros2 launch swarm_crawler minibot_aruco.launch.py 

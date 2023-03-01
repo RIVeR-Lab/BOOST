@@ -62,7 +62,7 @@ class ArucoNode(Node):
 
     # Declare parameters
     self.declare_parameter("aruco_dictionary_name", "DICT_4X4_50")
-    self.declare_parameter("aruco_marker_side_length", 0.05)
+    self.declare_parameter("aruco_marker_side_length", 0.085)  # in meters? 
     self.declare_parameter("camera_calibration_parameters_filename", "swarm_crawler/scripts/calibration_chessboard.yaml")
     self.declare_parameter("image_topic", "/minibot_a_d435/color/image_raw")
     self.declare_parameter("aruco_marker_name", "aruco_marker")

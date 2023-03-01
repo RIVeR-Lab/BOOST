@@ -84,8 +84,8 @@ class ImageListener(Node):
             return
 
 def main():
-    depth_image_topic = '/camera/depth/image_rect_raw'
-    depth_info_topic = '/camera/depth/camera_info'
+    depth_image_topic = '/minibot_a_d435/depth/image_rect_raw'
+    depth_info_topic = '/minibot_a_d435/depth/camera_info'
 
     print ()
     print ('show_center_depth.py')

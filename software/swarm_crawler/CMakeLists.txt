@@ -57,6 +57,8 @@ install(PROGRAMS
   # scripts/ros2_aruco_interfaces
   scripts/navigate_to_aruco_v1.py
   scripts/navigate_to_aruco_v2.py
+  scripts/show_center_depth2.py
+
 
   scripts/transforms/map_to_base_link_transform.py
   scripts/transforms/base_link_to_aruco_marker_transform.py
