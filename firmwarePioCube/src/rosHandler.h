@@ -14,7 +14,8 @@
 class RosHandler : public FakeThread {
 public:
   RosHandler(HardwareSerial &serialPort)
-      : nodeHardware(serialPort), chatter("chatter", &str_msg),
+      : FakeThread(LOOP_DELAY_MS), nodeHardware(serialPort),
+        chatter("chatter", &str_msg),
         bno055_imu_pub("bno055_imu", &bno055_imu_msg),
         subDiffDrive("/cmd_vel", &subDiffDrive_cb) {}
   ~RosHandler() {}
@@ -29,6 +30,7 @@ public:
 private:
   const HardwareSerial &nodeHardware;
   bool isRosConnected = false;
+  static constexpr uint32_t LOOP_DELAY_MS = 1;
 
   static constexpr float WHEEL_BASE = 0.2;    // (meters per radian)
   static constexpr float WHEEL_RADIUS = 0.02; // (meters per radian)

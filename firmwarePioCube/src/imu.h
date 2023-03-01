@@ -12,7 +12,7 @@
 class IMU : public FakeThread {
 public:
   IMU(int32_t sensorID, uint8_t address, TwoWire &bus)
-      : bno(sensorID, address, &bus) {}
+      : FakeThread(LOOP_DELAY_MS), bno(sensorID, address, &bus) {}
 
   bool init() {
     bool success = true;
