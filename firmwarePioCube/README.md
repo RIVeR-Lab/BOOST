@@ -13,6 +13,10 @@
   - wsl> lsusb
   - wsl> sudo chmod 777 /dev/ttyACM0
 
+### To give user permission to /dev/ttyUSBx, ttyACMx, and ttySx devices
+- These devices are in the dialout group, so add your user to that group
+  > $ sudo adduser myusername dialout
+
 ### Getting Data into ROS1 from MCU
 - http://wiki.ros.org/rosserial_arduino/Tutorials/Hello%20World
 - run roscore in one terminal
@@ -38,7 +42,13 @@
 - ROS2: >ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
 
-### ROSSerial TroubleShooting
-* [ERROR] [1677681154.605087]: Unable to sync with device; possible link problem or link software version mismatch such as hydro rosserial_python with groovy Arduino
+## ROSSerial TroubleShooting
+## [ERROR] [1677681154.605087]: Unable to sync with device; possible link problem or link software version mismatch such as hydro rosserial_python with groovy Arduino
   * Make sure Baud rates are matching
   * Make sure that LOGGING is off on the nucleo so that ONLY ROSserial stuff is is sent out over the serial port connected to the Jetson.
+
+## If serial isn't getting to jetson, but is getting to laptop
+* Make sure that the power configuration is correct on the NUCLEO board.
+* i.e. since we are using the STLink as a serial to USB adapter, the STLINK must be powered when the MCU is booted.
+* Make sure that we are powering USB through NUCLEO from the jetson.
+  * And if we are using external 5v to power NUCLEO that the correct jumpers are set.
