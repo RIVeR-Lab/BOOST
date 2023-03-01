@@ -2,6 +2,7 @@
 #include "RealMain.h"
 
 bool IMU::loopHook() {
+  LOGEVENT("IMU::loopHook()");
 #if PRINT_IMU_DATA
   printAll();
 #endif

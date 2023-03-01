@@ -100,10 +100,10 @@ public:
       }
 
       if(encLeft.isUpdated()){
-        LOGEVENT("Left Encoder: %d", encLeft.pos());
+        LOGEVENT("Left Encoder: %d\n", encLeft.pos());
       }
       if(encRight.isUpdated()){
-        LOGEVENT("Right Encoder: %d", encRight.pos());
+        LOGEVENT("Right Encoder: %d\n", encRight.pos());
       }
 
       #if ENABLE_ROSHANDLER

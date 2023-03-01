@@ -38,7 +38,7 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
 
   bool RosHandler::loopHook() {
     bool success = true;
-
+    LOGEVENT("RosHandler::loopHook()");
     LOGINFO("chatter_msg size: %d", sizeof(str_msg));
     LOGINFO("imu_msg size: %d", sizeof(bno055_imu_msg));
 
