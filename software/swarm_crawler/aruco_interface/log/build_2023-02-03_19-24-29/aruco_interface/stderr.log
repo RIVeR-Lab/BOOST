@@ -1,8 +1,0 @@
-CMake Error at /opt/ros/galactic/share/rosidl_cmake/cmake/rosidl_target_interfaces.cmake:37 (message):
-  rosidl_target_interfaces() the first argument 'publish_address_book' must
-  be a valid target name
-Call Stack (most recent call first):
-  CMakeLists.txt:22 (rosidl_target_interfaces)
-
-
-make: *** [Makefile:222: cmake_check_build_system] Error 1
