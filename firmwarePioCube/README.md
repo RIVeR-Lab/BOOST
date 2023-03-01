@@ -18,7 +18,7 @@
 - run roscore in one terminal
   - wsl> roscore
 - Run serial_node.py in another terminal
-  - wsl> rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=9600
+  - wsl> rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=57600
   - This will get all topics from the MCU.
 - Should now see the topic in ROS1 in another terminal
   - wsl> rostopic list

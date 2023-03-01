@@ -35,6 +35,7 @@ private:
   Adafruit_BNO055 bno;
   /* Set the delay between fresh samples */
   uint16_t BNO055_SAMPLERATE_DELAY_MS = 1000;
+  static constexpr uint32_t LOOP_DELAY_MS = 1000;
 
   void printAll();
   void printEvent(sensors_event_t* event);

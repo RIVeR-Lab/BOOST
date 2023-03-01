@@ -64,7 +64,10 @@ public:
 #endif
     LOGEVENT("Setup...");
 
+    #if ENABLE_ROSHANDLER
     success = success && rosHandler.init();
+    #endif
+    
     #if ENABLE_IMU
     success = success && imu.init();
     #endif
@@ -102,7 +105,10 @@ public:
         LOGEVENT("Right Encoder: %d", encRight.pos());
       }
 
+      #if ENABLE_ROSHANDLER
       rosHandler.loop();
+      #endif
+
       #if ENABLE_IMU
       imu.loop();
       #endif

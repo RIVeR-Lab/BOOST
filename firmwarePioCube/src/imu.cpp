@@ -105,7 +105,6 @@ void IMU::printAll() {
   Serial.println(mag);
 
   Serial.println("--");
-  delay(BNO055_SAMPLERATE_DELAY_MS);
 }
 
 // Taken from Adafruit Library
