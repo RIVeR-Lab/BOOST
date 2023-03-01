@@ -1,1 +1,11 @@
 .vscode/
+# ignore all build and install files
+software/swarm_crawler/build/
+software/swarm_crawler/log/
+software/swarm_crawler/install/
+software/swarm_crawler/launch/__pycache__/
+# ignore realsense-ros install and build files -- those are proprietary to your system and should not be shared
+software/realsense-ros/install/
+software/realsense-ros/build/
+software/realsense-ros/log/
+

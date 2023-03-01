@@ -1,0 +1,1 @@
+Invoking command in '/home/ben/Desktop/swarm_crawler/build/swarm_crawler': /usr/bin/cmake /home/ben/Desktop/swarm_crawler/software/swarm_crawler -DCMAKE_INSTALL_PREFIX=/home/ben/Desktop/swarm_crawler/install/swarm_crawler
