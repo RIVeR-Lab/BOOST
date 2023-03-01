@@ -22,7 +22,10 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
 
     // SETUP PUBLISHERS
     nodeHandle.advertise(chatter);
+
+    #if ENABLE_IMU
     nodeHandle.advertise(bno055_imu_pub);
+    #endif
 
     // SETUP SUBSCRIBERS
     nodeHandle.subscribe(subDiffDrive);
@@ -58,6 +61,7 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
     }
 
     // Publish IMU data
+    #if ENABLE_IMU
     static uint32_t imuLastPub = 0;
     if ((millis() - imuLastPub) > 100) {
       imuLastPub = millis();
@@ -68,6 +72,7 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
         bno055_imu_pub.publish(&bno055_imu_msg);
       }
     }
+    #endif
 
     // For subscribers
     nodeHandle.spinOnce();

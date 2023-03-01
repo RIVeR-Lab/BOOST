@@ -1,4 +1,5 @@
-#define LOGGING 0
+#define CONSOLE_LOGGING 0 // Logs raw serial over USB. DO NOT HAVE THIS ON WHEN USING ROSSERIAL!!!
+#define ROS_LOGGING 1 // Logs to ROS over ROS Serial using ROS packets
 
 #define ENABLE_ROSHANDLER 1
 
