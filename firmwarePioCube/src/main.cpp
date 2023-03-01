@@ -8,4 +8,5 @@ void setup() {
 
 void loop() {
   // Execution should not get here!!
+  Serial.print("!!!!!!!!!Execution should not get here!!!!!!!!!");
 }

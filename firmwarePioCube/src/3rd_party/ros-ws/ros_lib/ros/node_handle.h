@@ -182,8 +182,6 @@ public:
   /* This function goes in your loop() function, it handles
    *  serial input and callbacks for subscribers.
    */
-
-
   virtual int spinOnce() override
   {
     /* restart if timed out */
