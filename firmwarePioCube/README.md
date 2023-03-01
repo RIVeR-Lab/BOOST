@@ -36,3 +36,9 @@
 - http://wiki.ros.org/stdr_simulator/Tutorials/Teleop%20with%20teleop_twist_keyboard
 - ROS1: >rosrun teleop_twist_keyboard teleop_twist_keyboard.py cmd_vel:=cmd_vel
 - ROS2: >ros2 run teleop_twist_keyboard teleop_twist_keyboard
+
+
+### ROSSerial TroubleShooting
+* [ERROR] [1677681154.605087]: Unable to sync with device; possible link problem or link software version mismatch such as hydro rosserial_python with groovy Arduino
+  * Make sure Baud rates are matching
+  * Make sure that LOGGING is off on the nucleo so that ONLY ROSserial stuff is is sent out over the serial port connected to the Jetson.

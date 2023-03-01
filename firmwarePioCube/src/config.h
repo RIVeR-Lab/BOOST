@@ -1,4 +1,6 @@
-#define ENABLE_ROSHANDLER 0
+#define LOGGING 0
 
-#define PRINT_IMU_DATA 1
-#define ENABLE_IMU 1
+#define ENABLE_ROSHANDLER 1
+
+#define PRINT_IMU_DATA 0
+#define ENABLE_IMU 0
