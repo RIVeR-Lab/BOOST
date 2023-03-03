@@ -90,7 +90,7 @@ def generate_launch_description():
 
     declare_use_joint_state_publisher_cmd = DeclareLaunchArgument(
         name='gui',
-        default_value='True',
+        default_value='False',
         description='Flag to enable joint_state_publisher_gui')
 
     declare_use_robot_state_pub_cmd = DeclareLaunchArgument(
@@ -167,6 +167,7 @@ def generate_launch_description():
         package=package_name,
         namespace=namespace,
         executable='aruco_marker_pose_estimation_tf.py',
+        # parameters=[{'use_sim_time': use_sim_time, 'image_topic':'/minibot_a_t265/fisheye1/image_raw',}])
         parameters=[{'use_sim_time': use_sim_time, 'image_topic':'/minibot_a_d435/color/image_raw',}])
 
     #ROBOT LOCALIZATION using an Extended Kalman filter
@@ -331,7 +332,7 @@ def generate_launch_description():
     # STARTING STATE PUBLISHER NODES
     ld.add_action(start_joint_state_publisher_cmd)
     ld.add_action(start_robot_state_publisher_cmd)
-    ld.add_action(start_joint_state_publisher_gui_node)
+    # ld.add_action(start_joint_state_publisher_gui_node)
 
     # TRANSFORMS
     ld.add_action(start_odom_to_baselink_transform_cmd)

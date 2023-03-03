@@ -6,6 +6,35 @@ source realsense-ros/install/setup.bash
 # topic_odom_in:='/test_odom' 
 # initial_reset:=true 
 
+# create a variable that will take a argument as a string and place it in a variable.
+# if the argument is not provided, then the variable will be set to the default value
+# if [ -d "$1" ]
+# then
+#     echo "No argument supplied"
+#     echo "Using default value"
+#     # default value
+#     serial_no:="'845412111433'"
+# else
+#     echo "Argument supplied"
+#     echo "Using argument value"
+#     # argument value
+#     serial_no:="'$1'"
+# fi
+
+# if [ -d "$1" ]
+# then
+#     echo "No argument supplied"
+#     echo "Using default value"
+#     # default value
+#     serial_no:="'845412111433'"
+# else
+#     echo "Argument supplied"
+#     echo "Using argument value"
+#     # argument value
+#     serial_no:="'$1'"
+# fi
+
+
 # create a command line argument named "reset", and include it in the launch file
     # ros2 launch realsense2_camera rs_launch.py  initial_reset:=true  camera_name:=minibot_a_t265 "serial_no:='845412111433'" enable_gyro:=True enable_acel:=True enable_pose:=True 
     # ros2 launch realsense2_camera rs_launch.py enable_sync:=true  unite_imu_method:=2 camera_name:=minibot_a_t265 "serial_no:='845412111433'"  enable_gyro:=True enable_acel:=True enable_pose:=True # "unite_imu_method:='2'"
