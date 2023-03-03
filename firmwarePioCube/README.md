@@ -52,3 +52,13 @@
 * i.e. since we are using the STLink as a serial to USB adapter, the STLINK must be powered when the MCU is booted.
 * Make sure that we are powering USB through NUCLEO from the jetson.
   * And if we are using external 5v to power NUCLEO that the correct jumpers are set.
+
+
+# For running ROSserial and ros1_bridge
+>source ros1
+>roscore
+>rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=57600
+
+>source ros2
+>source ros1
+>ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
