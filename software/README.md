@@ -2,8 +2,8 @@
 
 #### **Add some ease of use to .bashrc. You only need to do this once.**
 
-* *`echo "export export ros2=/opt/ros/galactic/setup.bash" >  ~/.bashrc`*
-* *`echo "export export ros1=/opt/ros/noetic/setup.bash" >  ~/.bashrc`*
+* *`echo "export ros2=/opt/ros/galactic/setup.bash" >  ~/.bashrc`*
+* *`echo "export ros1=/opt/ros/noetic/setup.bash" >  ~/.bashrc`*
 
 And from from now on, before you run anything in a terminal in ros1, or ros2 you only need to say  :
 
