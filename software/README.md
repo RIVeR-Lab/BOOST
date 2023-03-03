@@ -10,6 +10,11 @@ And from from now on, before you run anything in a terminal in ros1, or ros2 you
 * *`source $ros1`*
 * *`source $ros2`*
 
+Adding rqt plugins:
+
+* `sudo apt-get install ros-galactic-rqt-*`
+* `rqt --force-discover`
+
 ## **Running Software Stack:**
 
 #### Build Realsense package ( If its your first time setup be sure build the realsense package)
@@ -19,12 +24,14 @@ And from from now on, before you run anything in a terminal in ros1, or ros2 you
 
 #### Boot Up Cameras on Jetson
 
+*In order to run commands on the jetson, you have to be on the same network*
+
 * *`cd software/scripts`*
 * In a terminal run :
   * *`./t265.launch.sh & ./d435.launch.sh`*
 
     * You can also run these independently.
-    * TODO: need to
+    * *If you go into these scripts, you can edit the id numbers of each device. I will soon add a command to automatically get these IDs.*
 * Killing the Camera Nodes:
   * `sudo pkill realsense2_camera_node`
 
