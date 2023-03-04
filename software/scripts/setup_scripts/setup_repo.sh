@@ -1,11 +1,11 @@
 cd ~/swarm_crawler
 #source ros 
-source /opt/ros/foxy/setup.bash
+source /opt/ros/galactic/setup.bash
 
 #build the swarm_crawler package
 cd ~/swarm_crawler
 cd software
-git checkout software 
+# git checkout software 
 cd swarm_crawler
 
 colcon build # --symlink-install
