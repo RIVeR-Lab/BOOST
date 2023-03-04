@@ -9,7 +9,7 @@
 sudo apt-get install python3-pip
 sudo pip3 install -U jetson-stats
 #install gparted
-sudo apt-get install gparted -y
+sudo apt-get install gparted -y # may want to do this prior. 
 
 # ros galactic install
 locale  # check for UTF-8
@@ -41,35 +41,33 @@ sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o
 # sudo apt install 
 
 #install ros galactic and alll required dependencies
-# sudo apt-get install ros-galactic-desktop
 sudo apt-get install ros-galactic-desktop python3-argcomplete ros-dev-tools ros-galactic-navigation2 ros-galactic-nav2-simple-commander ros-galactic-depthimage-to-laserscan ros-galactic-nav2-bringup ros-galactic-robot-localization ros-galactic-xacro ros-galactic-joint-state-publisher ros-galactic-joint-state-publisher-gui 
-# sudo apt install 
-# sudo apt-get install 
-# # sudo apt-get install ros-galactic-ekf-localization && 
-# sudo apt-get install 
-# sudo apt-get install 
-# sudo apt-get install 
-# sudo apt-get install
-# sudo apt-get install
-# sudo apt-get install
-echo "export CUDAXX_HOME=/usr/local/cuda-10.2" >> ~/.bashrc
+# install ros noetic and all required dependencies
+sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main" > /etc/apt/sources.list.d/ros-latest.list'
+sudo apt install curl # if you haven't already installed curl
+curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
+sudo apt update
+sudo apt install ros-noetic-ros-base ros-noetic-rosserial
 
+# fix cuda stuff 
+echo "export CUDAXX_HOME=/usr/local/cuda-10.2" >> ~/.bashrc
+ 
+# necessary changes to run aruco estimation on jetson
 pip install opencv-contrib-python == 4.7.0.72
 pip install numpy == 1.21
+pip3 install --upgrade scipy
 
-# download, then build from sources realsense-ros package
-# cd ~
-# git clone 
+#add ing ease of use to bash file
 echo "export ros2=/opt/ros/galactic/setup.bash" >>  ~/.bashrc
 echo "export ros1=/opt/ros/noetic/setup.bash" >>  ~/.bashrc
-# cd ~/swarm_crawler
-# cd software
-# git checkout merging-software-into-firmware
-# cd scripts
+
+# setup usb permissions
 sudo chmod 777 /dev/ttyACM0
 sudo adduser $USER dialout
+
+#build repo 
 ./setup_repo.sh
-#colcon build everything 
+
 
 
 
