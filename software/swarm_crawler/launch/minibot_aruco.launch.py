@@ -153,7 +153,7 @@ def generate_launch_description():
                         ('depth_camera_info', '/minibot_a_d435/depth/camera_info'),
                         ('scan', '/minibot_a/scan')],
                         # ('camera_depth_frame', 'camera_link')],
-            params=[depthimage_to_laserscan_yaml_path, ('use_sim_time', use_sim_time)])
+            parameters=[depthimage_to_laserscan_yaml_path, ('use_sim_time', use_sim_time)])
     
 
 
@@ -237,7 +237,6 @@ def generate_launch_description():
     ld.add_action(start_joint_state_publisher_cmd)
     ld.add_action(start_robot_state_publisher_cmd)
     # ld.add_action(start_joint_state_publisher_gui_node)
-    ld.add_action(start_depth_center_script)
 
     # ld.add_action(start_map_to_base_link_transform_cmd)
     # ld.add_action(start_base_link_to_aruco_marker_transform_cmd)

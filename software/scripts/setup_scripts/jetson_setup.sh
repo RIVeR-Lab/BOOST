@@ -46,7 +46,7 @@ sudo apt install ros-dev-tools
 sudo apt-get install ros-galactic-navigation2 
 sudo apt install ros-galactic-nav2-simple-commander
 sudo apt-get install ros-galactic-depthimage-to-laserscan 
-# sudo apt-get install ros-galactic-ekf-localization &&
+# sudo apt-get install ros-galactic-ekf-localization && 
 sudo apt-get install ros-galactic-nav2-bringup 
 sudo apt-get install ros-galactic-robot-localization 
 sudo apt-get install ros-galactic-xacro 

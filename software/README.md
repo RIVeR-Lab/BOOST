@@ -2,8 +2,8 @@
 
 #### **Add some ease of use to .bashrc. You only need to do this once.**
 
-* *`echo "export ros2=/opt/ros/galactic/setup.bash" >  ~/.bashrc`*
-* *`echo "export ros1=/opt/ros/noetic/setup.bash" >  ~/.bashrc`*
+* *`echo "export ros2=/opt/ros/galactic/setup.bash" >>  ~/.bashrc`*
+* *`echo "export ros1=/opt/ros/noetic/setup.bash" >>  ~/.bashrc`*
 
 And from from now on, before you run anything in a terminal in ros1, or ros2 you only need to say  :
 
@@ -59,7 +59,7 @@ sudo apt-get install ros-galactic-teleop-twist-joy
 
 To indicate Low battery run the following comand in a different terminal:
 
-`ros2 topic pub /battery_status sensor_msgs/BatteryState '{voltage: 2.16, percentage: 0.24, power_supply_status: 3}'`
+> `ros2 topic pub /battery_status sensor_msgs/BatteryState '{voltage: 2.16, percentage: 0.24, power_supply_status: 3}'`
 
 ## Installing Software Stack:
 
