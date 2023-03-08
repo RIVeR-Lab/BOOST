@@ -17,12 +17,11 @@ public:
   bool init() {
     bool success = true;
 
-    if (!bno.begin(OPERATION_MODE_NDOF)) {
-      while (1) {
-        LOGERROR("FAILED to init BNO055... Check your wiring or I2C ADDR!");
-        delay(1000);
-      }
+    while (!bno.begin(OPERATION_MODE_NDOF)) {
+      LOGERROR("FAILED to init BNO055... Check your wiring or I2C ADDR!");
+      delay(1000);
     }
+    LOGEVENT("BNO055 inited SUCCESSFULLY");
 
     return success;
   }
@@ -34,8 +33,8 @@ public:
 private:
   Adafruit_BNO055 bno;
   /* Set the delay between fresh samples */
-  uint16_t BNO055_SAMPLERATE_DELAY_MS = 1000;
-  static constexpr uint32_t LOOP_DELAY_MS = 1000;
+  // uint16_t BNO055_SAMPLERATE_DELAY_MS = 1000;
+  static constexpr uint32_t LOOP_DELAY_MS = 10;
 
   void printAll();
   void printEvent(sensors_event_t* event);

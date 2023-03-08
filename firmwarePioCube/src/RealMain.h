@@ -34,6 +34,8 @@ public:
   STM32encoder encLeft;
   STM32encoder encRight;
   IMU imu;
+  // HardwareTimer *rosHandlerTimer = new HardwareTimer(TIM4);
+
   // ----------------------------------------------------------------
 
   bool initialize() {
@@ -81,8 +83,18 @@ public:
     pinMode(L_WHEEL_BACK_PIN, OUTPUT);
     pinMode(R_WHEEL_FORW_PIN, OUTPUT);
     pinMode(R_WHEEL_BACK_PIN, OUTPUT);
-
+    // pinMode(L_WHEEL_FORW_PIN, OUTPUT);
+    // analogWrite(PA6, 255);
+    // while(1) {
+    //   analogWrite(R_WHEEL_BACK_PIN, 100);
+    //   // delay(1000);
+    //   // analogWrite(PA9, 0);
+    //   // delay(1000);
+    // }
     
+
+    // rosHandlerTimer->attachInterrupt([this]() { rosHandler.loop(); });
+    // rosHandlerTimer->setOverflow(1000, MICROSEC_FORMAT);  // 1ms
 
     return success;
   }

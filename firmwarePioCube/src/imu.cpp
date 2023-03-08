@@ -59,9 +59,12 @@ bool IMU::getAllImuData(sensor_msgs::Imu &imu_msg) {
   imu_msg.linear_acceleration.y = linearAccelData.acceleration.y;
   imu_msg.linear_acceleration.z = linearAccelData.acceleration.z;
 
-  memset(imu_msg.orientation_covariance, 0.0, sizeof(imu_msg.orientation_covariance));
-  memset(imu_msg.angular_velocity_covariance, 0.0, sizeof(imu_msg.angular_velocity_covariance));
-  memset(imu_msg.linear_acceleration_covariance, 0.0, sizeof(imu_msg.linear_acceleration_covariance));
+  memset(imu_msg.orientation_covariance, 0.0,
+         sizeof(imu_msg.orientation_covariance));
+  memset(imu_msg.angular_velocity_covariance, 0.0,
+         sizeof(imu_msg.angular_velocity_covariance));
+  memset(imu_msg.linear_acceleration_covariance, 0.0,
+         sizeof(imu_msg.linear_acceleration_covariance));
 
   imu_msg.header.stamp = realMain.rosHandler.nodeHandle.now();
   imu_msg.header.frame_id = "imu_link";
@@ -90,7 +93,7 @@ void IMU::printAll() {
 
   int8_t boardTemp = bno.getTemp();
   Serial.println();
-  Serial.print(F("temperature: "));
+  Serial.print(F(">temperature:"));
   Serial.println(boardTemp);
 
   uint8_t system, gyro, accel, mag = 0;
@@ -110,51 +113,58 @@ void IMU::printAll() {
 
 // Taken from Adafruit Library
 void IMU::printEvent(sensors_event_t *event) {
-  double x = -1000000, y = -1000000,
-         z = -1000000; // dumb values, easy to spot problem
+  float x = -1000000, y = -1000000,
+        z = -1000000; // dumb values, easy to spot problem
   if (event->type == SENSOR_TYPE_ACCELEROMETER) {
-    Serial.print("Accl:");
     x = event->acceleration.x;
     y = event->acceleration.y;
     z = event->acceleration.z;
+    Console.printf(">AcclX:%f\r\n", x);
+    Console.printf(">AcclY:%f\r\n", y);
+    Console.printf(">AcclZ:%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_ORIENTATION) {
-    Serial.print("Orient:");
     x = event->orientation.x;
     y = event->orientation.y;
     z = event->orientation.z;
+    Console.printf(">OrientX:%f\r\n", x);
+    Console.printf(">OrientY:%f\r\n", y);
+    Console.printf(">OrientZ:%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_MAGNETIC_FIELD) {
-    Serial.print("Mag:");
     x = event->magnetic.x;
     y = event->magnetic.y;
     z = event->magnetic.z;
+    Console.printf(">MagX:%f\r\n", x);
+    Console.printf(">MagY:%f\r\n", y);
+    Console.printf(">MagZ:%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_GYROSCOPE) {
-    Serial.print("Gyro:");
     x = event->gyro.x;
     y = event->gyro.y;
     z = event->gyro.z;
+    Console.printf(">GyroX:%f\r\n", x);
+    Console.printf(">GyroY:%f\r\n", y);
+    Console.printf(">GyroZ:%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_ROTATION_VECTOR) {
-    Serial.print("Rot:");
     x = event->gyro.x;
     y = event->gyro.y;
     z = event->gyro.z;
+    Console.printf(">RotX:%f\r\n", x);
+    Console.printf(">RotY:%f\r\n", y);
+    Console.printf(">RotZ:%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_LINEAR_ACCELERATION) {
-    Serial.print("Linear:");
     x = event->acceleration.x;
     y = event->acceleration.y;
     z = event->acceleration.z;
+    Console.printf(">LinearX:%f\r\n", x);
+    Console.printf(">LinearY:%f\r\n", y);
+    Console.printf(">LinearZ:%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_GRAVITY) {
-    Serial.print("Gravity:");
     x = event->acceleration.x;
     y = event->acceleration.y;
     z = event->acceleration.z;
+    Console.printf(">GravityX:%f\r\n", x);
+    Console.printf(">GravityY:%f\r\n", y);
+    Console.printf(">GravityZ:%f\r\n", z);
   } else {
-    Serial.print("Unk:");
+    LOGERROR("Unknown BNO055 Event Type");
   }
-
-  Serial.print("\tx= ");
-  Serial.print(x);
-  Serial.print(" |\ty= ");
-  Serial.print(y);
-  Serial.print(" |\tz= ");
-  Serial.println(z);
 }

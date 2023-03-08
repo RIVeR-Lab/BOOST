@@ -8,7 +8,6 @@ class FakeThread {
 public:
   FakeThread(uint32_t loopDelay)
       : LOOP_DELAY_MS(loopDelay) {}
-      : LOOP_DELAY_MS(loopDelay) {}
   ~FakeThread() {}
 
   virtual bool init() = 0;
@@ -16,7 +15,7 @@ public:
   bool loop();
 
 private:
-  const uint32_t LOOP_DELAY_MS;
+  uint32_t lastLoop = 0;
   const uint32_t LOOP_DELAY_MS;
 };
 
