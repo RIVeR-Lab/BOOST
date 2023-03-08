@@ -17,10 +17,11 @@ public:
   bool init() {
     bool success = true;
 
-    while (!bno.begin(OPERATION_MODE_NDOF)) {
+    while (!bno.begin(OPERATION_MODE_ACCONLY)) {
       LOGERROR("FAILED to init BNO055... Check your wiring or I2C ADDR!");
       delay(1000);
     }
+    bno.setExtCrystalUse(true);
     LOGEVENT("BNO055 inited SUCCESSFULLY");
 
     return success;
@@ -28,13 +29,21 @@ public:
 
   
   bool loopHook() override;
-	bool getAllImuData(sensor_msgs::Imu &imu_msg);
+	bool toRosImuMsg(sensor_msgs::Imu &imu_msg);
+  bool readInAllImuData();
   
 private:
   Adafruit_BNO055 bno;
-  /* Set the delay between fresh samples */
-  // uint16_t BNO055_SAMPLERATE_DELAY_MS = 1000;
   static constexpr uint32_t LOOP_DELAY_MS = 10;
+
+  // Last readings
+  sensors_event_t orientationDataEuler{};
+  sensors_event_t angVelocityData{};
+  sensors_event_t linearAccelData{};
+  sensors_event_t magnetometerData{};
+  sensors_event_t accelerometerData{};
+  sensors_event_t gravityData{};
+  imu::Quaternion orientationDataQuat{};
 
   void printAll();
   void printEvent(sensors_event_t* event);

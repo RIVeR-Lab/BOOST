@@ -3,6 +3,7 @@
 
 bool IMU::loopHook() {
   LOGEVENT("IMU::loopHook()");
+  readInAllImuData();
 #if PRINT_IMU_DATA
   printAll();
 #endif
@@ -33,12 +34,8 @@ bool IMU::loopHook() {
  * getTemp() Ambient temperature in degrees celsius 1Hz
  *
  */
-bool IMU::getAllImuData(sensor_msgs::Imu &imu_msg) {
+bool IMU::readInAllImuData() {
   bool success = true;
-
-  sensors_event_t orientationDataEuler, angVelocityData, linearAccelData,
-      magnetometerData, accelerometerData, gravityData;
-  imu::Quaternion orientationDataQuat;
   bno.getEvent(&orientationDataEuler, Adafruit_BNO055::VECTOR_EULER);
   bno.getEvent(&angVelocityData, Adafruit_BNO055::VECTOR_GYROSCOPE);
   bno.getEvent(&linearAccelData, Adafruit_BNO055::VECTOR_LINEARACCEL);
@@ -46,6 +43,13 @@ bool IMU::getAllImuData(sensor_msgs::Imu &imu_msg) {
   bno.getEvent(&accelerometerData, Adafruit_BNO055::VECTOR_ACCELEROMETER);
   bno.getEvent(&gravityData, Adafruit_BNO055::VECTOR_GRAVITY);
   orientationDataQuat = bno.getQuat();
+
+  return success;
+}
+
+// Convert IMU data to a ROS IMU message.
+bool IMU::toRosImuMsg(sensor_msgs::Imu &imu_msg) {
+  bool success = true;
 
   imu_msg.orientation.x = orientationDataQuat.x();
   imu_msg.orientation.y = orientationDataQuat.y();
@@ -72,19 +76,10 @@ bool IMU::getAllImuData(sensor_msgs::Imu &imu_msg) {
 
   return success;
 }
+
 // Taken from Adafruit Library
 void IMU::printAll() {
-  // could add VECTOR_ACCELEROMETER, VECTOR_MAGNETOMETER,VECTOR_GRAVITY...
-  sensors_event_t orientationData, angVelocityData, linearAccelData,
-      magnetometerData, accelerometerData, gravityData;
-  bno.getEvent(&orientationData, Adafruit_BNO055::VECTOR_EULER);
-  bno.getEvent(&angVelocityData, Adafruit_BNO055::VECTOR_GYROSCOPE);
-  bno.getEvent(&linearAccelData, Adafruit_BNO055::VECTOR_LINEARACCEL);
-  bno.getEvent(&magnetometerData, Adafruit_BNO055::VECTOR_MAGNETOMETER);
-  bno.getEvent(&accelerometerData, Adafruit_BNO055::VECTOR_ACCELEROMETER);
-  bno.getEvent(&gravityData, Adafruit_BNO055::VECTOR_GRAVITY);
-
-  printEvent(&orientationData);
+  printEvent(&orientationDataEuler);
   printEvent(&angVelocityData);
   printEvent(&linearAccelData);
   printEvent(&magnetometerData);
@@ -92,29 +87,30 @@ void IMU::printAll() {
   printEvent(&gravityData);
 
   int8_t boardTemp = bno.getTemp();
-  Serial.println();
-  Serial.print(F(">temperature:"));
-  Serial.println(boardTemp);
+  Console.println();
+  Console.print(F(">temperature:"));
+  Console.println(boardTemp);
 
   uint8_t system, gyro, accel, mag = 0;
   bno.getCalibration(&system, &gyro, &accel, &mag);
-  Serial.println();
-  Serial.print("Calibration: Sys=");
-  Serial.print(system);
-  Serial.print(" Gyro=");
-  Serial.print(gyro);
-  Serial.print(" Accel=");
-  Serial.print(accel);
-  Serial.print(" Mag=");
-  Serial.println(mag);
+  Console.println();
+  Console.print("Calibration: Sys=");
+  Console.print(system);
+  Console.print(" Gyro=");
+  Console.print(gyro);
+  Console.print(" Accel=");
+  Console.print(accel);
+  Console.print(" Mag=");
+  Console.println(mag);
 
-  Serial.println("--");
+  Console.println("--");
 }
 
 // Taken from Adafruit Library
 void IMU::printEvent(sensors_event_t *event) {
   float x = -1000000, y = -1000000,
         z = -1000000; // dumb values, easy to spot problem
+  Console.printf(">time(ms):%d\r\n", millis());
   if (event->type == SENSOR_TYPE_ACCELEROMETER) {
     x = event->acceleration.x;
     y = event->acceleration.y;
