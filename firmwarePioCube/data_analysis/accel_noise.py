@@ -86,7 +86,7 @@ freqaz, psdaz = signal.welch(az, FS, nperseg=1024, scaling='density')  # az
 # Convert to [ug / sqrt(Hz)]
 psdax = np.sqrt(psdax) * accel2ug
 psday = np.sqrt(psday) * accel2ug
-psdaz = np.sqrt(psdaz) * accel2ug
+psdaz = np.sqrt(psdaz) * accel2ug / 9.80665
 
 # psdgx = np.sqrt(psdgx)
 # psdgy = np.sqrt(psdgy)
