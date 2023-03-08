@@ -21,6 +21,17 @@ sudo killall -e static_transform_publisher
 sudo killall -e sync_slam_toolbox_node
 sudo killall -e lifecycle_manager
 sudo killall -e map_saver_server
+sudo killall -e bt_navigator
+sudo killall -e waypoint_follower
+sudo killall -e lifecycle_manager
+sudo killall -e planner_server
+sudo killall -e controller_server
+sudo killall -e recoveries_server
+sudo killall -e rviz2
+sudo pkill python3
+# sudo pkill _ros2_daemon
+sudoo pkill ros2
+
  
 
 

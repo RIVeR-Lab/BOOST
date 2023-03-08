@@ -1,33 +1,97 @@
-Code Structure
+# **Swarm Crawler Software Stack Guide**
 
-Steps to this to work on your own computer... 
+#### **Add some ease of use to .bashrc. You only need to do this once.**
+
+* *`echo "export ros2=/opt/ros/galactic/setup.bash" >>  ~/.bashrc`*
+* *`echo "export ros1=/opt/ros/noetic/setup.bash" >>  ~/.bashrc`*
+
+And from from now on, before you run anything in a terminal in ros1, or ros2 you only need to say  :
+
+* *`source $ros1`*
+* *`source $ros2`*
+
+Adding rqt plugins:
+
+* `sudo apt-get install ros-galactic-rqt-*`
+* `rqt --force-discover`
+
+## **Running Software Stack:**
+
+#### Build Realsense package ( If its your first time setup be sure build the realsense package)
+
+* *`cd software/realsense-ros`*
+* *`colcon build`*
+
+#### Boot Up Cameras on Jetson
+
+*In order to run commands on the jetson, you have to be on the same network*
+
+* *`cd software/scripts`*
+* In a terminal run :
+  * *`./t265.launch.sh & ./d435.launch.sh`*
+
+    * You can also run these independently.
+    * *If you go into these scripts, you can edit the id numbers of each device. I will soon add a command to automatically get these IDs.*
+* Killing the Camera Nodes:
+  * `sudo pkill realsense2_camera_node`
+
+#### Use Bluetooth Controller. Note: this publishes a message to /cmd_vel.
+
+Note: May need to install the following: sudo apt-get iinstall ros-galactic-joy
+sudo apt-get install ros-galactic-teleop-twist-joy
+
+* `cd software/scripts`
+* `./controller.sh`
+
+#### Launch nav2 stack. (will perform obstacle avoidance, driving to a pose)
+
+*Launch both cameras using the commands above*
+
+* `cd software/scripts`
+* `./jetsonnav2.sh`
+
+#### Launch aruco-detection and traversal (will navigate to aruco on the message that the battery is getting low)
+
+* `cd software/scripts`
+* `./jetson_aruco.sh`
+
+##### **As of right now, the minibot will start navigating to the aruco tag if it sees it, and the battery is low.**
+
+To indicate Low battery run the following comand in a different terminal:
+
+> `ros2 topic pub /battery_status sensor_msgs/BatteryState '{voltage: 2.16, percentage: 0.24, power_supply_status: 3}'`
+
+## Installing Software Stack:
+
+* `cd software/scripts`
+* `./jetson_setup.sh`
+
+## Code Structure -- Ignore everything Below This For Now
+
 TODO
 
-We are currently using ROS Galactic Geochrome. 
+We are currently using ROS Galactic Geochrome.
 
+Installing Realsense Dependencies:
 
-Installing Realsense Dependencies: 
-
-
-Installing ROS dependencies: 
-
+Installing ROS dependencies:
 
 sudo apt-get install ros-galactic-(missing dependency)
-example: 
+example:
 sudo apt-get install ros-galactic-nav2
 
-After you do colcon build to build the repo, you can then do 
+After you do colcon build to build the repo, you can then do
 ros2 launch swarm_crawler minibot.launch.py
 
-the new folders such as build, install, and log will be ignored if you decide to push. 
+the new folders such as build, install, and log will be ignored if you decide to push.
 
-CONTROLLER OPERATION:
+**CONTROLLER OPERATION:**
 sudo apt-get iinstall ros-galactic-joy
 sudo apt-get install ros-galactic-teleop-twist-joy
 
 Joy Node:
 ros2 run joy node
-nodes being published: 
+nodes being published:
 /joy
 /joy/set_feedback
 
@@ -57,3 +121,9 @@ T265 Serial Number: 845412111433
 ros2 launch realsense2_camera rs_launch.py camera:=cam_2 "serial_no:='845412111433'"
 
 ros2 launch realsense2_camera rs_launch.py camera_name:=minibot_a_t265 camera:=cam_1 "serial_no:='845412111433'"
+
+RQT:
+
+sudo apt-get install ros-galactic-rqt-*
+
+rqt --force-discover
