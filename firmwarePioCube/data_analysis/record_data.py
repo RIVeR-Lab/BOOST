@@ -3,10 +3,11 @@ import csv
 import time
 import numpy as np
 import pandas as pd
+from datetime import datetime
 
 serial_port = "COM12"
 baud = 57600
-fileName="analog-data.csv"
+fileName=datetime.now().strftime("%Y%m%d%H%M%S-") + "analog-data.csv"
 data_labels_to_read = ['>time(ms)', '>AcclX(m/s^2)', '>AcclY(m/s^2)', '>AcclZ(m/s^2)']
 
 # Open port and csv
@@ -15,7 +16,7 @@ print("Connected to STM32 port:" + serial_port)
 
 FS = 100.0 # sample freq Hz
 TS = 1.0 / FS # sample period
-time_to_collect_sec = 5.0 # 5*60
+time_to_collect_sec = 5*60
 n_samples = time_to_collect_sec / TS # how many samples to collect
 print_labels = False
 line = 0 #start at 0 because our header is 0 (not real data)
