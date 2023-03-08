@@ -119,51 +119,44 @@ void IMU::printEvent(sensors_event_t *event) {
     x = event->acceleration.x;
     y = event->acceleration.y;
     z = event->acceleration.z;
-    Console.printf(">AcclX:%f\r\n", x);
-    Console.printf(">AcclY:%f\r\n", y);
-    Console.printf(">AcclZ:%f\r\n", z);
+    Console.printf(">AcclX(m/s^2):%f\r\n", x);
+    Console.printf(">AcclY(m/s^2):%f\r\n", y);
+    Console.printf(">AcclZ(m/s^2):%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_ORIENTATION) {
     x = event->orientation.x;
     y = event->orientation.y;
     z = event->orientation.z;
-    Console.printf(">OrientX:%f\r\n", x);
-    Console.printf(">OrientY:%f\r\n", y);
-    Console.printf(">OrientZ:%f\r\n", z);
+    Console.printf(">OrientX(deg):%f\r\n", x);
+    Console.printf(">OrientY(deg):%f\r\n", y);
+    Console.printf(">OrientZ(deg):%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_MAGNETIC_FIELD) {
     x = event->magnetic.x;
     y = event->magnetic.y;
     z = event->magnetic.z;
-    Console.printf(">MagX:%f\r\n", x);
-    Console.printf(">MagY:%f\r\n", y);
-    Console.printf(">MagZ:%f\r\n", z);
+    Console.printf(">MagX(uT):%f\r\n", x);
+    Console.printf(">MagY(uT):%f\r\n", y);
+    Console.printf(">MagZ(uT):%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_GYROSCOPE) {
     x = event->gyro.x;
     y = event->gyro.y;
     z = event->gyro.z;
-    Console.printf(">GyroX:%f\r\n", x);
-    Console.printf(">GyroY:%f\r\n", y);
-    Console.printf(">GyroZ:%f\r\n", z);
-  } else if (event->type == SENSOR_TYPE_ROTATION_VECTOR) {
-    x = event->gyro.x;
-    y = event->gyro.y;
-    z = event->gyro.z;
-    Console.printf(">RotX:%f\r\n", x);
-    Console.printf(">RotY:%f\r\n", y);
-    Console.printf(">RotZ:%f\r\n", z);
+    Console.printf(">GyroX(rad/s):%f\r\n", x);
+    Console.printf(">GyroY(rad/s):%f\r\n", y);
+    Console.printf(">GyroZ(rad/s):%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_LINEAR_ACCELERATION) {
     x = event->acceleration.x;
     y = event->acceleration.y;
     z = event->acceleration.z;
-    Console.printf(">LinearX:%f\r\n", x);
-    Console.printf(">LinearY:%f\r\n", y);
-    Console.printf(">LinearZ:%f\r\n", z);
+    Console.printf(">LinearX(m/s^2):%f\r\n", x);
+    Console.printf(">LinearY(m/s^2):%f\r\n", y);
+    Console.printf(">LinearZ(m/s^2):%f\r\n", z);
   } else if (event->type == SENSOR_TYPE_GRAVITY) {
     x = event->acceleration.x;
     y = event->acceleration.y;
     z = event->acceleration.z;
-    Console.printf(">GravityX:%f\r\n", x);
-    Console.printf(">GravityY:%f\r\n", y);
-    Console.printf(">GravityZ:%f\r\n", z);
+    Console.printf(">GravityX(m/s^2):%f\r\n", x);
+    Console.printf(">GravityY(m/s^2):%f\r\n", y);
+    Console.printf(">GravityZ(m/s^2):%f\r\n", z);
   } else {
     LOGERROR("Unknown BNO055 Event Type");
   }
