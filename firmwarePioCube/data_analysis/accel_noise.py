@@ -16,6 +16,11 @@ time = dataArr[:, 0]  # ms
 ax = dataArr[:, 2]
 ay = dataArr[:, 3]
 az = dataArr[:, 4]
+# remove the first 10 rows
+time = time[10:]
+ax = ax[10:]
+ay = ay[10:]
+az = az[10:]
 # gx = dataArr[:, 3] * (180 / np.pi)  # deg/s
 # gy = dataArr[:, 4] * (180 / np.pi)
 # gz = dataArr[:, 5] * (180 / np.pi)
@@ -67,7 +72,7 @@ plt.grid()
 ########## Compute Power Spectral Density (PSD) ##########
 
 # Conversion factor: m/s/s -> ug (micro G's)
-accel2ug = 1e6 # / 9.80665
+accel2ug = 1e6 / 9.80665
 
 # Compute PSD via Welch algorithm
 freqax, psdax = signal.welch(ax, FS, nperseg=1024, scaling='density')  # ax
