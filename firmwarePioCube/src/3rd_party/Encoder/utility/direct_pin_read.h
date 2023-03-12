@@ -85,6 +85,12 @@
 #define PIN_TO_BITMASK(pin)             pin
 #define DIRECT_PIN_READ(base, pin)      digitalRead(pin)
 
+#elif defined(NUCLEO_F446RE_CUSTOM)
+#define IO_REG_TYPE                     uint32_t
+#define PIN_TO_BASEREG(pin)             (0)
+#define PIN_TO_BITMASK(pin)             pin
+#define DIRECT_PIN_READ(base, pin)      digitalRead(pin)
+
 #elif defined(__arc__) /* Arduino101/Genuino101 specifics */
 
 #include "scss_registers.h"

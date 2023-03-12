@@ -15,7 +15,7 @@ public:
   bool init() {
     bool success = true;
 
-    while (!bno.begin(OPERATION_MODE_ACCONLY)) {
+    while (!bno.begin(OPERATION_MODE_NDOF)) {
       LOGERROR("FAILED to init BNO055... Check your wiring or I2C ADDR!");
       delay(1000);
     }

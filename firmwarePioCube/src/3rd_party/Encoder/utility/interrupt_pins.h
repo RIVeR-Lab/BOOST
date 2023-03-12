@@ -383,6 +383,12 @@
   #define CORE_INT19_PIN	19
   // #define CORE_INT20_PIN	A6
   // #define CORE_INT21_PIN	A7
+  
+  // NUCLEO_F446RE_CUSTOM
+#elif defined(NUCLEO_F446RE_CUSTOM)
+  #define CORE_NUM_INTERRUPT	2
+  #define CORE_INT0_PIN		A0  // PA0
+  #define CORE_INT1_PIN		A1  // PA1
 #endif
 #endif
 

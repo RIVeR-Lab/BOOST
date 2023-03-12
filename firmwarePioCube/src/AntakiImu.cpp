@@ -5,7 +5,7 @@ AntakiImu::AntakiImu(int32_t sensorID, uint8_t address, TwoWire &bus)
     : FakeThread(LOOP_DELAY_MS), bno(sensorID, address, &bus) {}
 
 bool AntakiImu::loopHook() {
-  LOGEVENT("IMU::loopHook()");
+  LOGDEBUG("IMU::loopHook()");
   readInAllImuData();
 #if PRINT_IMU_DATA
   printAll();

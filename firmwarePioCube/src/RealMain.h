@@ -12,6 +12,7 @@
 #include "AntakiImu.h"
 #include <STM32encoder.h>
 #include "config.h"
+#include "utils.h"
 // #include "EncoderManager.h"
 
 extern void _Error_Handler(const char *msg, int val);
@@ -40,7 +41,6 @@ public:
   // EncoderManager encManager;
   // HardwareTimer *rosHandlerTimer = new HardwareTimer(TIM4);
   // HardwareTimer *l_encoder_tim = new HardwareTimer(TIM2);
-  // l_encoder_tim.setMode(1, TIMER_OUTPUT_COMPARE_PWM1, PA_0);
   // l_encoder_tim.setOverflow(1000, HERTZ_FORMAT);
 
 
@@ -65,9 +65,9 @@ public:
       yield();
     }
   
-    mySerial4.end();
-    mySerial4.setRx(PA_1);
-    mySerial4.setTx(PA_0);
+    // mySerial4.end();
+    // mySerial4.setRx(PA_1);
+    // mySerial4.setTx(PA_0);
     // mySerial4.begin(RosHandler::rosSerialBaud);
     // while(!mySerial4){
     //   yield();
@@ -101,6 +101,17 @@ public:
     // }
     
 
+    // l_encoder_tim->setMode(1, TIMER_OUTPUT_COMPARE_PWM1, PA_5);
+    // l_encoder_tim->setMode(2, TIMER_OUTPUT_COMPARE_PWM1, PB_3);
+    // TIM_TypeDef *Instance = (TIM_TypeDef *)pinmap_peripheral(digitalPinToPinName(PA_5), PinMap_PWM);
+    // uint32_t channel = STM_PIN_CHANNEL(pinmap_function(digitalPinToPinName(PA_5), PinMap_PWM));
+
+    // LL_GPIO_SetAFPin_8_15(port, ll_pin, afnum);
+    // LL_GPIO_SetAFPin_0_7(port, ll_pin, afnum);
+
+    // pinModeAF(PA_5, GPIO_AF1_TIM2);
+    // pinModeAF(PB_3, GPIO_AF1_TIM2);
+
     // rosHandlerTimer->attachInterrupt([this]() { rosHandler.loop(); });
     // rosHandlerTimer->setOverflow(1000, MICROSEC_FORMAT);  // 1ms
 
@@ -119,9 +130,12 @@ public:
         digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
       }
 
+      
       if(encLeft.isUpdated()){
         LOGEVENT("Left Encoder: %d\n", encLeft.pos());
       }
+      // LOGEVENT("Left Encoder Is Started: %d\n", encLeft.isStarted());
+      // LOGEVENT("Left Encoder: %d\n", encLeft.pos());
       // if(encRight.isUpdated()){
       //   LOGEVENT("Right Encoder: %d\n", encRight.pos());
       // }
