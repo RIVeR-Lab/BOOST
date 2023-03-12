@@ -17,7 +17,7 @@ sudo apt -y satisfy ros-noetic-rosserial
 sudo apt -y install ros-noetic-rosserial
 sudo apt -y install ros-noetic-teleop-twist-keyboard
 
-echo "Installing ROS2 Foxy Bare Bones..."
+echo "Installing ROS2 galactic Bare Bones..."
 # Update time locale
 sudo apt update && sudo apt -y install locales
 sudo locale-gen en_US en_US.UTF-8
@@ -39,10 +39,10 @@ sudo apt update
 sudo apt upgrade
 
 # Bares Bones
-sudo apt -y install ros-foxy-ros-base python3-argcomplete
+sudo apt -y install ros-galactic-ros-base python3-argcomplete
 
 # Install Other ROS2 Packages
-sudo apt -y install ros-foxy-ros1-bridge
+sudo apt -y install ros-galactic-ros1-bridge
 
 
 
