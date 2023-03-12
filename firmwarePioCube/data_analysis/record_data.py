@@ -16,7 +16,7 @@ print("Connected to STM32 port:" + serial_port)
 
 FS = 100.0 # sample freq Hz
 TS = 1.0 / FS # sample period
-time_to_collect_sec = 5*60
+time_to_collect_sec = 5 #5*60
 n_samples = time_to_collect_sec / TS # how many samples to collect
 print_labels = False
 line = 0 #start at 0 because our header is 0 (not real data)
