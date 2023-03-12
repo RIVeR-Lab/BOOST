@@ -152,16 +152,16 @@
 
 // Motor Pins
 #ifndef L_WHEEL_FORW_PIN
-  #define L_WHEEL_FORW_PIN  PA6
+  #define L_WHEEL_FORW_PIN  PB6
 #endif
 #ifndef L_WHEEL_BACK_PIN
-  #define L_WHEEL_BACK_PIN  PA7
+  #define L_WHEEL_BACK_PIN  PB7
 #endif
 #ifndef R_WHEEL_FORW_PIN
-  #define R_WHEEL_FORW_PIN  PB7
+  #define R_WHEEL_FORW_PIN  PA7
 #endif
 #ifndef R_WHEEL_BACK_PIN
-  #define R_WHEEL_BACK_PIN  PB6
+  #define R_WHEEL_BACK_PIN  PA9 // PA6
 #endif
 
 // Default pin used for 'Serial' instance (ex: ST-Link)

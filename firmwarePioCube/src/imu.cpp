@@ -1,7 +1,10 @@
 #include "imu.h"
 #include "RealMain.h"
 
-bool IMU::loopHook() {
+DavidImu::DavidImu(int32_t sensorID, uint8_t address, TwoWire &bus)
+    : FakeThread(LOOP_DELAY_MS), bno(sensorID, address, &bus) {}
+
+bool DavidImu::loopHook() {
   LOGEVENT("IMU::loopHook()");
   readInAllImuData();
 #if PRINT_IMU_DATA
@@ -34,7 +37,7 @@ bool IMU::loopHook() {
  * getTemp() Ambient temperature in degrees celsius 1Hz
  *
  */
-bool IMU::readInAllImuData() {
+bool DavidImu::readInAllImuData() {
   bool success = true;
   bno.getEvent(&orientationDataEuler, Adafruit_BNO055::VECTOR_EULER);
   bno.getEvent(&angVelocityData, Adafruit_BNO055::VECTOR_GYROSCOPE);
@@ -48,7 +51,7 @@ bool IMU::readInAllImuData() {
 }
 
 // Convert IMU data to a ROS IMU message.
-bool IMU::toRosImuMsg(sensor_msgs::Imu &imu_msg) {
+bool DavidImu::toRosImuMsg(sensor_msgs::Imu &imu_msg) {
   bool success = true;
 
   imu_msg.orientation.x = orientationDataQuat.x();
@@ -78,7 +81,7 @@ bool IMU::toRosImuMsg(sensor_msgs::Imu &imu_msg) {
 }
 
 // Taken from Adafruit Library
-void IMU::printAll() {
+void DavidImu::printAll() {
   printEvent(&orientationDataEuler);
   printEvent(&angVelocityData);
   printEvent(&linearAccelData);
@@ -107,7 +110,7 @@ void IMU::printAll() {
 }
 
 // Taken from Adafruit Library
-void IMU::printEvent(sensors_event_t *event) {
+void DavidImu::printEvent(sensors_event_t *event) {
   float x = -1000000, y = -1000000,
         z = -1000000; // dumb values, easy to spot problem
   Console.printf(">time(ms):%d\r\n", millis());

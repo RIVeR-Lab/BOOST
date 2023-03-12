@@ -9,9 +9,10 @@
 #include <HardwareSerial.h>
 #include <SPI.h>
 #include <Wire.h>
-#include <STM32encoder.h>
 #include "imu.h"
+#include <STM32encoder.h>
 #include "config.h"
+// #include "EncoderManager.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
@@ -22,19 +23,26 @@ public:
       : mySerial4(UART4),
         i2c1(PB9, PB8),
         rosHandler(Serial2),
-        encLeft(TIM2),
-        encRight(TIM3),
-        imu(55, 0x28, i2c1) {}
+        imu(55, 0x28, i2c1),
+        encLeft(TIM2)
+        // encRight(TIM3),
+         {}
   ~RealMain() {}
 
   // ------------------------------ DEVICES ------------------------------
   HardwareSerial mySerial4;
   TwoWire i2c1;
   RosHandler rosHandler;
+  DavidImu imu;
   STM32encoder encLeft;
-  STM32encoder encRight;
-  IMU imu;
+  // STM32encoder encRight;
+  
+  // EncoderManager encManager;
   // HardwareTimer *rosHandlerTimer = new HardwareTimer(TIM4);
+  // HardwareTimer *l_encoder_tim = new HardwareTimer(TIM2);
+  // l_encoder_tim.setMode(1, TIMER_OUTPUT_COMPARE_PWM1, PA_0);
+  // l_encoder_tim.setOverflow(1000, HERTZ_FORMAT);
+
 
   // ----------------------------------------------------------------
 
@@ -114,9 +122,9 @@ public:
       if(encLeft.isUpdated()){
         LOGEVENT("Left Encoder: %d\n", encLeft.pos());
       }
-      if(encRight.isUpdated()){
-        LOGEVENT("Right Encoder: %d\n", encRight.pos());
-      }
+      // if(encRight.isUpdated()){
+      //   LOGEVENT("Right Encoder: %d\n", encRight.pos());
+      // }
 
       #if ENABLE_ROSHANDLER
       rosHandler.loop();

@@ -1,5 +1,5 @@
-#ifndef _IMU_H_
-#define _IMU_H_
+#ifndef _DAVID_IMU_H_
+#define _DAVID_IMU_H_
 
 #include "utils/log.h"
 #include <Adafruit_BNO055.h>
@@ -8,11 +8,9 @@
 #include <sensor_msgs/Imu.h>
 #include "FakeThread.h"
 #include <geometry_msgs/Point.h>
-
-class IMU : public FakeThread {
+class DavidImu : public FakeThread {
 public:
-  IMU(int32_t sensorID, uint8_t address, TwoWire &bus)
-      : FakeThread(LOOP_DELAY_MS), bno(sensorID, address, &bus) {}
+  DavidImu(int32_t sensorID, uint8_t address, TwoWire &bus);
 
   bool init() {
     bool success = true;
@@ -49,4 +47,4 @@ private:
   void printEvent(sensors_event_t* event);
 };
 
-#endif // _IMU_H_
+#endif // _DAVID_IMU_H_

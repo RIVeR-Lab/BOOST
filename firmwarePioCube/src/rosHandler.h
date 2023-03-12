@@ -24,6 +24,7 @@ public:
 
   bool init();
   bool loopHook();
+  // void isrCallback() { loopHook(); }
 
   ros::NodeHandle nodeHandle;
 
