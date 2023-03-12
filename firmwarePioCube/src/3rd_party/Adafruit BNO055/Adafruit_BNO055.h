@@ -288,7 +288,7 @@ public:
   void setAxisRemap(adafruit_bno055_axis_remap_config_t remapcode);
   void setAxisSign(adafruit_bno055_axis_remap_sign_t remapsign);
   void getRevInfo(adafruit_bno055_rev_info_t *);
-  void setExtCrystalUse(boolean usextal);
+  void setExtCrystalUse(bool usextal);
   void getSystemStatus(uint8_t *system_status, uint8_t *self_test_result,
                        uint8_t *system_error);
   void getCalibration(uint8_t *system, uint8_t *gyro, uint8_t *accel,
