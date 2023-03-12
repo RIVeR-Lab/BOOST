@@ -164,6 +164,20 @@
   #define R_WHEEL_BACK_PIN  PA9 // PA6
 #endif
 
+// Encoder pins
+#ifndef L_ENCODER_PIN1
+  #define L_ENCODER_PIN1  PA0 // TIM5_CH1
+#endif
+#ifndef L_ENCODER_PIN2
+  #define L_ENCODER_PIN2  PA1 // TIM5_CH2
+#endif
+#ifndef R_ENCODER_PIN1
+  #define R_ENCODER_PIN1  PA5 // TIM2_CH1
+#endif
+#ifndef R_ENCODER_PIN2
+  #define R_ENCODER_PIN2  PB3 // TIM2_CH2
+#endif
+
 // Default pin used for 'Serial' instance (ex: ST-Link)
 // Mandatory for Firmata
 #ifndef PIN_SERIAL_RX

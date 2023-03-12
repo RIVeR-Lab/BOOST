@@ -10,6 +10,7 @@
 #include <sensor_msgs/Imu.h>
 #include <std_msgs/Empty.h>
 #include <std_msgs/String.h>
+#include <std_msgs/Int32.h>
 
 class RosHandler : public FakeThread {
 public:
@@ -17,7 +18,10 @@ public:
       : FakeThread(LOOP_DELAY_MS), nodeHardware(serialPort),
         chatter("chatter", &str_msg),
         bno055_imu_pub("bno055_imu", &bno055_imu_msg),
-        subDiffDrive("/cmd_vel", &subDiffDrive_cb) {}
+        subDiffDrive("/cmd_vel", &subDiffDrive_cb),
+        encoder_left_pub("encoder_left", &encoder_left_msg),
+        encoder_right_pub("encoder_right", &encoder_right_msg)
+         {}
   ~RosHandler() {}
 
   static constexpr uint32_t rosSerialBaud = 57600;
@@ -51,6 +55,11 @@ private:
   // IMUS
   ros::Publisher bno055_imu_pub;
   sensor_msgs::Imu bno055_imu_msg;
+  // Encoder
+  ros::Publisher encoder_left_pub;
+  ros::Publisher encoder_right_pub;
+  std_msgs::Int32 encoder_left_msg;
+  std_msgs::Int32 encoder_right_msg;
   /* -------------------------- END PUBLISHERS -------------------------- */
 
   /* -------------------------- SUBSCRIBERS -------------------------- */

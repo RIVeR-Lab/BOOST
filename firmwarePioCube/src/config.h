@@ -5,3 +5,5 @@
 
 #define PRINT_IMU_DATA 0
 #define ENABLE_IMU 0
+
+#define ENABLE_ENCODERS 1

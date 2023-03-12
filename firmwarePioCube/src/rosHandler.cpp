@@ -75,6 +75,18 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
     }
     #endif
 
+    // Publish Encoder data
+    #if ENABLE_ENCODERS
+    static uint32_t encoderLastPub = 0;
+    if ((millis() - encoderLastPub) > 100) {
+      encoderLastPub = millis();
+      encoder_left_msg.data = realMain.encLeft.read();
+      encoder_right_msg.data = realMain.encRight.read();
+      encoder_left_pub.publish(&encoder_left_msg);
+      encoder_right_pub.publish(&encoder_right_msg);
+    }
+    #endif
+
     // For subscribers
     nodeHandle.spinOnce();
     // }

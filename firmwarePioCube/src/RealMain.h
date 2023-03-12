@@ -13,6 +13,7 @@
 #include <STM32encoder.h>
 #include "config.h"
 #include "utils.h"
+#include "Encoder.h"
 // #include "EncoderManager.h"
 
 extern void _Error_Handler(const char *msg, int val);
@@ -25,8 +26,8 @@ public:
         i2c1(PB9, PB8),
         rosHandler(Serial2),
         imu(55, 0x28, i2c1),
-        encLeft(TIM2)
-        // encRight(TIM3),
+        encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
+        encRight(R_ENCODER_PIN1, R_ENCODER_PIN2)
          {}
   ~RealMain() {}
 
@@ -35,15 +36,8 @@ public:
   TwoWire i2c1;
   RosHandler rosHandler;
   AntakiImu imu;
-  STM32encoder encLeft;
-  // STM32encoder encRight;
-  
-  // EncoderManager encManager;
-  // HardwareTimer *rosHandlerTimer = new HardwareTimer(TIM4);
-  // HardwareTimer *l_encoder_tim = new HardwareTimer(TIM2);
-  // l_encoder_tim.setOverflow(1000, HERTZ_FORMAT);
-
-
+  Encoder encLeft;
+  Encoder encRight;
   // ----------------------------------------------------------------
 
   bool initialize() {
@@ -91,14 +85,6 @@ public:
     pinMode(L_WHEEL_BACK_PIN, OUTPUT);
     pinMode(R_WHEEL_FORW_PIN, OUTPUT);
     pinMode(R_WHEEL_BACK_PIN, OUTPUT);
-    // pinMode(L_WHEEL_FORW_PIN, OUTPUT);
-    // analogWrite(PA6, 255);
-    // while(1) {
-    //   analogWrite(R_WHEEL_BACK_PIN, 100);
-    //   // delay(1000);
-    //   // analogWrite(PA9, 0);
-    //   // delay(1000);
-    // }
     
 
     // l_encoder_tim->setMode(1, TIMER_OUTPUT_COMPARE_PWM1, PA_5);
@@ -129,16 +115,6 @@ public:
         Serial2.println("Looping...");
         digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
       }
-
-      
-      if(encLeft.isUpdated()){
-        LOGEVENT("Left Encoder: %d\n", encLeft.pos());
-      }
-      // LOGEVENT("Left Encoder Is Started: %d\n", encLeft.isStarted());
-      // LOGEVENT("Left Encoder: %d\n", encLeft.pos());
-      // if(encRight.isUpdated()){
-      //   LOGEVENT("Right Encoder: %d\n", encRight.pos());
-      // }
 
       #if ENABLE_ROSHANDLER
       rosHandler.loop();
