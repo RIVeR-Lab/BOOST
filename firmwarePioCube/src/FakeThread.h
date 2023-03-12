@@ -6,9 +6,7 @@
 
 class FakeThread {
 public:
-  FakeThread(): LOOP_DELAY_MS(1000){}
-  FakeThread(uint32_t loopDelay)
-      : LOOP_DELAY_MS(loopDelay) {}
+  FakeThread(uint32_t loopDelay) : LOOP_DELAY_MS(loopDelay) {}
   ~FakeThread() {}
 
   virtual bool init() = 0;

@@ -2,15 +2,15 @@
 #define _DAVID_IMU_H_
 
 #include "utils/log.h"
-#include <Adafruit_BNO055.h>
+#include "Adafruit_BNO055.h"
 #include <Adafruit_Sensor.h>
 #include <utility/imumaths.h>
 #include <sensor_msgs/Imu.h>
 #include "FakeThread.h"
 #include <geometry_msgs/Point.h>
-class DavidImu : public FakeThread {
+class AntakiImu : public FakeThread {
 public:
-  DavidImu(int32_t sensorID, uint8_t address, TwoWire &bus);
+  AntakiImu(int32_t sensorID, uint8_t address, TwoWire &bus);
 
   bool init() {
     bool success = true;

@@ -9,7 +9,7 @@
 #include <HardwareSerial.h>
 #include <SPI.h>
 #include <Wire.h>
-#include "imu.h"
+#include "AntakiImu.h"
 #include <STM32encoder.h>
 #include "config.h"
 // #include "EncoderManager.h"
@@ -33,7 +33,7 @@ public:
   HardwareSerial mySerial4;
   TwoWire i2c1;
   RosHandler rosHandler;
-  DavidImu imu;
+  AntakiImu imu;
   STM32encoder encLeft;
   // STM32encoder encRight;
   
