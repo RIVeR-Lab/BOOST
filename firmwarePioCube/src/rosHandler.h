@@ -15,20 +15,20 @@
 class RosHandler : public FakeThread {
 public:
   RosHandler(HardwareSerial &serialPort)
-      : FakeThread(LOOP_DELAY_MS), nodeHardware(serialPort),
+      : FakeThread(LOOP_DELAY_MS, LOG_LOOP_DELAY_MS), nodeHardware(serialPort),
         chatter("chatter", &str_msg),
         bno055_imu_pub("bno055_imu", &bno055_imu_msg),
-        subDiffDrive("/cmd_vel", &subDiffDrive_cb),
         encoder_left_pub("encoder_left", &encoder_left_msg),
-        encoder_right_pub("encoder_right", &encoder_right_msg)
-         {}
+        encoder_right_pub("encoder_right", &encoder_right_msg),
+        subDiffDrive("/cmd_vel", &subDiffDrive_cb)
+        {}
   ~RosHandler() {}
 
   static constexpr uint32_t rosSerialBaud = 57600;
 
   bool init();
-  bool loopHook();
-  // void isrCallback() { loopHook(); }
+  bool loopHook() override;
+  bool logLoopHook() override;
 
   ros::NodeHandle nodeHandle;
 
@@ -36,6 +36,7 @@ private:
   const HardwareSerial &nodeHardware;
   bool isRosConnected = false;
   static constexpr uint32_t LOOP_DELAY_MS = 1;
+  static constexpr uint32_t LOG_LOOP_DELAY_MS = 500;
 
   static constexpr float WHEEL_BASE = 0.2;    // (meters per radian)
   static constexpr float WHEEL_RADIUS = 0.02; // (meters per radian)

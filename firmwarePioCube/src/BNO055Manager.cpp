@@ -1,14 +1,16 @@
 #include "BNO055Manager.h"
 #include "RealMain.h"
 
-BNO055Manager::BNO055Manager(int32_t sensorID, uint8_t address, TwoWire &bus)
-    : FakeThread(LOOP_DELAY_MS), bno(sensorID, address, &bus) {}
-
 bool BNO055Manager::loopHook() {
-  LOGDEBUG("IMU::loopHook()");
+  LOGDEBUG("%s", __func__);
   readInAllImuData();
+  return true;
+}
+
+bool BNO055Manager::logLoopHook() {
 #if PRINT_IMU_DATA
-  printAll();
+  LOGEVENT("%s", __func__);
+  logAll();
 #endif
   return true;
 }
@@ -81,7 +83,7 @@ bool BNO055Manager::toRosImuMsg(sensor_msgs::Imu &imu_msg) {
 }
 
 // Taken from Adafruit Library
-void BNO055Manager::printAll() {
+void BNO055Manager::logAll() {
   printEvent(&orientationDataEuler);
   printEvent(&angVelocityData);
   printEvent(&linearAccelData);

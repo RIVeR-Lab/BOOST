@@ -94,6 +94,13 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
     return success;
   }
 
+  bool RosHandler::logLoopHook() {
+    #if ENABLE_ROSMANAGER_LOGLOOP
+    LOGEVENT("%s", __func__);
+    #endif 
+    return true;
+  }
+
   // Map x value from [0 .. 1] to [out_min .. out_max]
   float mapPwm(float x, float out_min, float out_max) {
     return x * (out_max - out_min) + out_min;

@@ -9,11 +9,12 @@
 #include <HardwareSerial.h>
 #include <SPI.h>
 #include <Wire.h>
-#include "AntakiImu.h"
+#include "BNO055Manager.h"
 #include <STM32encoder.h>
 #include "config.h"
 #include "utils.h"
 #include "Encoder.h"
+#include "TXB0104PWR.h"
 #include "OdometryManager.h"
 
 extern void _Error_Handler(const char *msg, int val);
@@ -27,18 +28,22 @@ public:
         imu(55, 0x28, i2c1),
         encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
         encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
+        encoderLvlShifter(ENCODER_LVL_SHIFTER_EN),
         rosHandler(Serial2),
-        odomManager(encLeft, encRight)
+        odomManager(encLeft, encRight, encoderLvlShifter)
         {}
   ~RealMain() {}
-  friend class rosHandler;
+  
+  friend class RosHandler;
+  friend class BNO055Manager;
 private:
   // ------------------------------ DEVICES ------------------------------
   HardwareSerial mySerial4;
   TwoWire i2c1;
-  AntakiImu imu;
+  BNO055Manager imu;
   Encoder encLeft;
   Encoder encRight;
+  TXB0104PWR encoderLvlShifter;
   // ------------------------------ END DEVICES ------------------------------
 
   // ------------------------------ FAKE THREADS ------------------------------
@@ -82,8 +87,9 @@ public:
     success = success && imu.init();
     #endif
     
-    pinMode(LVL_SHIFT_EN_PIN, OUTPUT);
-    digitalWrite(LVL_SHIFT_EN_PIN, HIGH);
+    #if ENABLE_ODOMETRY
+    success = success && odomManager.init();
+    #endif
 
     // initPwm();
     // setPwm(5000, 50);
@@ -131,16 +137,13 @@ public:
       imu.loop();
       #endif
 
+      #if ENABLE_ODOMETRY 
+      odomManager.loop();
+      #endif
+
+
       // Print encoder pos if it changed
-      static int32_t lastLeftPos = 0;
-      static int32_t lastRightPos = 0;
-      int32_t leftPos = encLeft.read();
-      int32_t rightPos = encRight.read();
-      if (leftPos != lastLeftPos || rightPos != lastRightPos) {
-        lastLeftPos = leftPos;
-        lastRightPos = rightPos;
-        LOGEVENT("Left: %d, Right: %d", leftPos, rightPos);
-      }
+
       // mySerial4.printf("looping\n");
 
       // analogWrite(L_WHEEL_FORW_PIN, 255);

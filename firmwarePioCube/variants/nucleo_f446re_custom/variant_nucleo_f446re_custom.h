@@ -11,6 +11,8 @@
  *******************************************************************************
  */
 #pragma once
+#include <stdint.h>
+
 
 /*----------------------------------------------------------------------------
  *        STM32 pins number
@@ -129,6 +131,8 @@
   #define USER_BTN              PC13
 #endif
 
+static const uint32_t NOPIN = 0xFFFFFFFF;
+
 // Timer Definitions
 // Use TIM6/TIM7 when possible as servo and tone don't need GPIO output pin
 #ifndef TIMER_TONE
@@ -174,7 +178,7 @@
 #endif
 
 // Level Shift
-#define LVL_SHIFT_EN_PIN  PB5
+#define ENCODER_LVL_SHIFTER_EN  PB5
 
 /* Extra HAL modules */
 #if !defined(HAL_DAC_MODULE_DISABLED)
