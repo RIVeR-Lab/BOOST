@@ -3,19 +3,18 @@
 
 #include "RealMain.h"
 #include "pins.h"
-#include "rosHandler.h"
 #include "utils/log.h"
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include <SPI.h>
 #include <Wire.h>
-#include "BNO055Manager.h"
-#include <STM32encoder.h>
 #include "config.h"
 #include "utils.h"
 #include "Encoder.h"
 #include "TXB0104PWR.h"
 #include "OdometryManager.h"
+#include "BNO055Manager.h"
+#include "rosHandler.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
@@ -25,12 +24,13 @@ public:
   RealMain()
       : mySerial4(UART4),
         i2c1(PB9, PB8),
-        imu(55, 0x28, i2c1),
+        imu(55, 0x28, &i2c1),
         encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
         encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
         encoderLvlShifter(ENCODER_LVL_SHIFTER_EN),
         rosHandler(Serial2),
-        odomManager(encLeft, encRight, encoderLvlShifter)
+        odomManager(encLeft, encRight, encoderLvlShifter),
+        imuManager(imu)
         {}
   ~RealMain() {}
   
@@ -40,7 +40,7 @@ private:
   // ------------------------------ DEVICES ------------------------------
   HardwareSerial mySerial4;
   TwoWire i2c1;
-  BNO055Manager imu;
+  Adafruit_BNO055 imu;
   Encoder encLeft;
   Encoder encRight;
   TXB0104PWR encoderLvlShifter;
@@ -49,6 +49,7 @@ private:
   // ------------------------------ FAKE THREADS ------------------------------
   RosHandler rosHandler;
   OdometryManager odomManager;
+  BNO055Manager imuManager;
   // ------------------------------ END FAKE THREADS ------------------------------
   
 public:
@@ -84,7 +85,7 @@ public:
     #endif
     
     #if ENABLE_IMU
-    success = success && imu.init();
+    success = success && imuManager.init();
     #endif
     
     #if ENABLE_ODOMETRY
@@ -120,26 +121,12 @@ public:
       #endif
 
       #if ENABLE_IMU
-      imu.loop();
+      imuManager.loop();
       #endif
 
       #if ENABLE_ODOMETRY 
       odomManager.loop();
       #endif
-
-
-      // Print encoder pos if it changed
-
-      // mySerial4.printf("looping\n");
-
-      // analogWrite(L_WHEEL_FORW_PIN, 255);
-      // LOGEVENT("ADC vRef Read (mV): %d", readVref());
-      // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
-      // HAL_Delay(500);
-      // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-      // HAL_Delay(10);
-
-
     }
   }
 

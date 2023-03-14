@@ -10,9 +10,9 @@
 #include <utility/imumaths.h>
 class BNO055Manager : public FakeThread {
 public:
-  BNO055Manager(int32_t sensorID, uint8_t address, TwoWire &bus)
+  BNO055Manager(Adafruit_BNO055 &_bno)
       : FakeThread(LOOP_DELAY_MS, LOG_LOOP_DELAY_MS),
-        bno(sensorID, address, &bus){};
+        bno(_bno){};
 
   bool init() {
     bool success = true;
@@ -33,7 +33,7 @@ public:
   bool readInAllImuData();
 
 private:
-  Adafruit_BNO055 bno;
+  Adafruit_BNO055 &bno;
   static constexpr uint32_t LOOP_DELAY_MS = 10;
   static constexpr uint32_t LOG_LOOP_DELAY_MS = 500;
 
