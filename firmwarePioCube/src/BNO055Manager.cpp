@@ -1,10 +1,10 @@
-#include "AntakiImu.h"
+#include "BNO055Manager.h"
 #include "RealMain.h"
 
-AntakiImu::AntakiImu(int32_t sensorID, uint8_t address, TwoWire &bus)
+BNO055Manager::BNO055Manager(int32_t sensorID, uint8_t address, TwoWire &bus)
     : FakeThread(LOOP_DELAY_MS), bno(sensorID, address, &bus) {}
 
-bool AntakiImu::loopHook() {
+bool BNO055Manager::loopHook() {
   LOGDEBUG("IMU::loopHook()");
   readInAllImuData();
 #if PRINT_IMU_DATA
@@ -37,7 +37,7 @@ bool AntakiImu::loopHook() {
  * getTemp() Ambient temperature in degrees celsius 1Hz
  *
  */
-bool AntakiImu::readInAllImuData() {
+bool BNO055Manager::readInAllImuData() {
   bool success = true;
   bno.getEvent(&orientationDataEuler, Adafruit_BNO055::VECTOR_EULER);
   bno.getEvent(&angVelocityData, Adafruit_BNO055::VECTOR_GYROSCOPE);
@@ -51,7 +51,7 @@ bool AntakiImu::readInAllImuData() {
 }
 
 // Convert IMU data to a ROS IMU message.
-bool AntakiImu::toRosImuMsg(sensor_msgs::Imu &imu_msg) {
+bool BNO055Manager::toRosImuMsg(sensor_msgs::Imu &imu_msg) {
   bool success = true;
 
   imu_msg.orientation.x = orientationDataQuat.x();
@@ -81,7 +81,7 @@ bool AntakiImu::toRosImuMsg(sensor_msgs::Imu &imu_msg) {
 }
 
 // Taken from Adafruit Library
-void AntakiImu::printAll() {
+void BNO055Manager::printAll() {
   printEvent(&orientationDataEuler);
   printEvent(&angVelocityData);
   printEvent(&linearAccelData);
@@ -110,7 +110,7 @@ void AntakiImu::printAll() {
 }
 
 // Taken from Adafruit Library
-void AntakiImu::printEvent(sensors_event_t *event) {
+void BNO055Manager::printEvent(sensors_event_t *event) {
   float x = -1000000, y = -1000000,
         z = -1000000; // dumb values, easy to spot problem
   Console.printf(">time(ms):%d\r\n", millis());

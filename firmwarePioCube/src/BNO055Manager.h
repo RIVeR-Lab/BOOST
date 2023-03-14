@@ -8,9 +8,9 @@
 #include <sensor_msgs/Imu.h>
 #include "FakeThread.h"
 #include <geometry_msgs/Point.h>
-class AntakiImu : public FakeThread {
+class BNO055Manager : public FakeThread {
 public:
-  AntakiImu(int32_t sensorID, uint8_t address, TwoWire &bus);
+  BNO055Manager(int32_t sensorID, uint8_t address, TwoWire &bus);
 
   bool init() {
     bool success = true;
