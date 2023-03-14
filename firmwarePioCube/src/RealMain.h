@@ -28,13 +28,13 @@ public:
         encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
         encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
         encoderLvlShifter(ENCODER_LVL_SHIFTER_EN),
-        rosHandler(Serial2),
+        rosManager(Serial2),
         odomManager(encLeft, encRight, encoderLvlShifter),
         imuManager(imu)
         {}
   ~RealMain() {}
   
-  friend class RosHandler;
+  friend class RosManager;
   friend class BNO055Manager;
 private:
   // ------------------------------ DEVICES ------------------------------
@@ -47,7 +47,7 @@ private:
   // ------------------------------ END DEVICES ------------------------------
 
   // ------------------------------ FAKE THREADS ------------------------------
-  RosHandler rosHandler;
+  RosManager rosManager;
   OdometryManager odomManager;
   BNO055Manager imuManager;
   // ------------------------------ END FAKE THREADS ------------------------------
@@ -65,7 +65,7 @@ public:
     Serial2.end();
     Serial2.setRx(PA_3);
     Serial2.setTx(PA_2);
-    Serial2.begin(RosHandler::rosSerialBaud);
+    Serial2.begin(RosManager::rosSerialBaud);
     while (!Serial2) {
       yield();
     }
@@ -73,7 +73,7 @@ public:
     // mySerial4.end();
     // mySerial4.setRx(PA_1);
     // mySerial4.setTx(PA_0);
-    // mySerial4.begin(RosHandler::rosSerialBaud);
+    // mySerial4.begin(RosManager::rosSerialBaud);
     // while(!mySerial4){
     //   yield();
     // }
@@ -81,7 +81,7 @@ public:
     LOGEVENT("Setup...");
 
     #if ENABLE_ROSHANDLER
-    success = success && rosHandler.init();
+    success = success && rosManager.init();
     #endif
     
     #if ENABLE_IMU
@@ -117,7 +117,7 @@ public:
       }
 
       #if ENABLE_ROSHANDLER
-      rosHandler.loop();
+      rosManager.loop();
       #endif
 
       #if ENABLE_IMU

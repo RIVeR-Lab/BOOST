@@ -75,7 +75,7 @@ bool BNO055Manager::toRosImuMsg(sensor_msgs::Imu &imu_msg) {
   memset(imu_msg.linear_acceleration_covariance, 0.0,
          sizeof(imu_msg.linear_acceleration_covariance));
 
-  imu_msg.header.stamp = realMain.rosHandler.nodeHandle.now();
+  imu_msg.header.stamp = realMain.rosManager.nodeHandle.now();
   imu_msg.header.frame_id = "imu_link";
   imu_msg.header.seq = 0;
 

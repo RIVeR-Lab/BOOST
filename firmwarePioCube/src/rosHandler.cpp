@@ -1,17 +1,17 @@
 #include "rosHandler.h"
 #include "RealMain.h"
 
-constexpr float RosHandler::WHEEL_BASE;
-constexpr float RosHandler::WHEEL_RADIUS;
-constexpr float RosHandler::PWM_MIN;
-constexpr float RosHandler::PWM_MAX;
-constexpr float RosHandler::MOTOR_RPM;
-constexpr float RosHandler::MOTOR_MIN_RAD_PER_SEC;
-constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
+constexpr float RosManager::WHEEL_BASE;
+constexpr float RosManager::WHEEL_RADIUS;
+constexpr float RosManager::PWM_MIN;
+constexpr float RosManager::PWM_MAX;
+constexpr float RosManager::MOTOR_RPM;
+constexpr float RosManager::MOTOR_MIN_RAD_PER_SEC;
+constexpr float RosManager::MOTOR_MAX_RAD_PER_SEC;
 
 
 
-  bool RosHandler::init() {
+  bool RosManager::init() {
     bool success = true;
 
     // SETUP HARDWARE AND ROS NODE
@@ -39,9 +39,9 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
     return success;
   }
 
-  bool RosHandler::loopHook() {
+  bool RosManager::loopHook() {
     bool success = true;
-    // LOGEVENT("RosHandler::loopHook()");
+    // LOGEVENT("RosManager::loopHook()");
     // LOGINFO("chatter_msg size: %d", sizeof(str_msg));
     // LOGINFO("imu_msg size: %d", sizeof(bno055_imu_msg));
 
@@ -94,7 +94,7 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
     return success;
   }
 
-  bool RosHandler::logLoopHook() {
+  bool RosManager::logLoopHook() {
     #if ENABLE_ROSMANAGER_LOGLOOP
     LOGEVENT("%s", __func__);
     #endif 
@@ -129,7 +129,7 @@ constexpr float RosHandler::MOTOR_MAX_RAD_PER_SEC;
    *
    * @param msg The unicycle model containing the linear and angular velocity.
    */
-  void RosHandler::subDiffDrive_cb(const geometry_msgs::Twist &msg) {
+  void RosManager::subDiffDrive_cb(const geometry_msgs::Twist &msg) {
     //   if (!_connected)
     //   {
     //     stop();

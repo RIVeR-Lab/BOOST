@@ -12,9 +12,9 @@
 #include <std_msgs/String.h>
 #include <std_msgs/Int32.h>
 
-class RosHandler : public FakeThread {
+class RosManager : public FakeThread {
 public:
-  RosHandler(HardwareSerial &serialPort)
+  RosManager(HardwareSerial &serialPort)
       : FakeThread(LOOP_DELAY_MS, LOG_LOOP_DELAY_MS), nodeHardware(serialPort),
         chatter("chatter", &str_msg),
         bno055_imu_pub("bno055_imu", &bno055_imu_msg),
@@ -22,7 +22,7 @@ public:
         encoder_right_pub("encoder_right", &encoder_right_msg),
         subDiffDrive("/cmd_vel", &subDiffDrive_cb)
         {}
-  ~RosHandler() {}
+  ~RosManager() {}
 
   static constexpr uint32_t rosSerialBaud = 57600;
 
