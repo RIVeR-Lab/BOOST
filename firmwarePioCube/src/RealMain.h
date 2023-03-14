@@ -14,7 +14,7 @@
 #include "config.h"
 #include "utils.h"
 #include "Encoder.h"
-// #include "EncoderManager.h"
+#include "OdometryManager.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
@@ -24,26 +24,32 @@ public:
   RealMain()
       : mySerial4(UART4),
         i2c1(PB9, PB8),
-        rosHandler(Serial2),
         imu(55, 0x28, i2c1),
         encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
-        encRight(R_ENCODER_PIN1, R_ENCODER_PIN2)
-         {}
+        encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
+        rosHandler(Serial2),
+        odomManager(encLeft, encRight)
+        {}
   ~RealMain() {}
-
+  friend class rosHandler;
+private:
   // ------------------------------ DEVICES ------------------------------
   HardwareSerial mySerial4;
   TwoWire i2c1;
-  RosHandler rosHandler;
   AntakiImu imu;
   Encoder encLeft;
   Encoder encRight;
-  // ----------------------------------------------------------------
+  // ------------------------------ END DEVICES ------------------------------
 
+  // ------------------------------ FAKE THREADS ------------------------------
+  RosHandler rosHandler;
+  OdometryManager odomManager;
+  // ------------------------------ END FAKE THREADS ------------------------------
+  
+public:
   bool initialize() {
     bool success = true;
     delay(2000);
-    pinMode(LED_BUILTIN, OUTPUT);
 
 #if NUCLEO_F767ZI_CUSTOM
     serial2.setRx(PD_6);
@@ -55,7 +61,6 @@ public:
     Serial2.setTx(PA_2);
     Serial2.begin(RosHandler::rosSerialBaud);
     while (!Serial2) {
-      digitalWrite(LED_BUILTIN, HIGH);
       yield();
     }
   
@@ -77,6 +82,8 @@ public:
     success = success && imu.init();
     #endif
     
+    pinMode(LVL_SHIFT_EN_PIN, OUTPUT);
+    digitalWrite(LVL_SHIFT_EN_PIN, HIGH);
 
     // initPwm();
     // setPwm(5000, 50);
@@ -113,7 +120,7 @@ public:
         counter = millis();
         LOGEVENT("Looping...");
         Serial2.println("Looping...");
-        digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+        // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
       }
 
       #if ENABLE_ROSHANDLER
@@ -123,6 +130,17 @@ public:
       #if ENABLE_IMU
       imu.loop();
       #endif
+
+      // Print encoder pos if it changed
+      static int32_t lastLeftPos = 0;
+      static int32_t lastRightPos = 0;
+      int32_t leftPos = encLeft.read();
+      int32_t rightPos = encRight.read();
+      if (leftPos != lastLeftPos || rightPos != lastRightPos) {
+        lastLeftPos = leftPos;
+        lastRightPos = rightPos;
+        LOGEVENT("Left: %d, Right: %d", leftPos, rightPos);
+      }
       // mySerial4.printf("looping\n");
 
       // analogWrite(L_WHEEL_FORW_PIN, 255);
@@ -136,10 +154,10 @@ public:
     }
   }
 
-private:
-  bool initialized = false;
-
   bool deinitialize();
+
+private:
+  bool initialized = false;  
 };
 
 // The one and only main thread allocated statically.

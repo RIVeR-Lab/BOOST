@@ -2,7 +2,7 @@
 #include "RealMain.h"
 
 bool OdometryManager::loopHook() {
-  LOGEVENT("EncoderManager::loopHook()");
+  LOGEVENT("OdometryManager::loopHook()");
 
   return true;
 }

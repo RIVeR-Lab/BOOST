@@ -124,13 +124,6 @@
 #define NUM_DIGITAL_PINS        52
 #define NUM_ANALOG_INPUTS       16
 
-// On-board LED pin number
-#define LED_GREEN               PA5
-#define LED_LD2                 LED_GREEN
-#ifndef LED_BUILTIN
-  #define LED_BUILTIN           LED_GREEN
-#endif
-
 // On-board user button
 #ifndef USER_BTN
   #define USER_BTN              PC13
@@ -165,18 +158,11 @@
 #endif
 
 // Encoder pins
-#ifndef L_ENCODER_PIN1
-  #define L_ENCODER_PIN1  PA0 // TIM5_CH1
-#endif
-#ifndef L_ENCODER_PIN2
-  #define L_ENCODER_PIN2  PA1 // TIM5_CH2
-#endif
-#ifndef R_ENCODER_PIN1
-  #define R_ENCODER_PIN1  PA5 // TIM2_CH1
-#endif
-#ifndef R_ENCODER_PIN2
-  #define R_ENCODER_PIN2  PB3 // TIM2_CH2
-#endif
+// J4
+#define L_ENCODER_PIN1  PA0 // TIM5_CH1
+#define L_ENCODER_PIN2  PA1 // TIM5_CH2
+#define R_ENCODER_PIN1  PA5 // TIM2_CH1
+#define R_ENCODER_PIN2  PB3 // TIM2_CH2
 
 // Default pin used for 'Serial' instance (ex: ST-Link)
 // Mandatory for Firmata
@@ -186,6 +172,9 @@
 #ifndef PIN_SERIAL_TX
   #define PIN_SERIAL_TX         PA2
 #endif
+
+// Level Shift
+#define LVL_SHIFT_EN_PIN  PB5
 
 /* Extra HAL modules */
 #if !defined(HAL_DAC_MODULE_DISABLED)

@@ -1,34 +1,27 @@
 #ifndef _IMU_H_
 #define _IMU_H_
 
-#include "utils/log.h"
+#include "Encoder.h"
 #include "FakeThread.h"
-#include "STM32encoder.h"
+#include "utils/log.h"
 
 class OdometryManager : public FakeThread {
 public:
-  OdometryManager()
-      : FakeThread(LOOP_DELAY_MS) {}
+  OdometryManager(Encoder left, Encoder right)
+      : FakeThread(LOOP_DELAY_MS), leftEncoder(left), rightEncoder(right) {}
 
   bool init() {
     bool success = true;
-
-    // l_encoder.attach();
-
     LOGEVENT("Encoder initiated SUCCESSFULLY");
     return success;
   }
 
-  
   bool loopHook() override;
-  
-private:
-  static constexpr uint32_t LOOP_DELAY_MS = 10;
-  static void l_encoder_callback(void) {
 
-  }
-  // STM32encoder l_encoder;
-  // STM32encoder r_encoder;
+private:
+  static constexpr uint32_t LOOP_DELAY_MS = 500;
+  Encoder leftEncoder;
+  Encoder rightEncoder;
 };
 
 #endif // _IMU_H_

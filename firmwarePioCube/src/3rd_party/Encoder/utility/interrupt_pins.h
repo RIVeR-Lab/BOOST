@@ -386,9 +386,11 @@
   
   // NUCLEO_F446RE_CUSTOM
 #elif defined(NUCLEO_F446RE_CUSTOM)
-  #define CORE_NUM_INTERRUPT	2
-  #define CORE_INT0_PIN		A0  // PA0
-  #define CORE_INT1_PIN		A1  // PA1
+  #define CORE_NUM_INTERRUPT	4
+  #define CORE_INT0_PIN		L_ENCODER_PIN1
+  #define CORE_INT1_PIN		L_ENCODER_PIN2
+  #define CORE_INT2_PIN		R_ENCODER_PIN1
+  #define CORE_INT3_PIN		R_ENCODER_PIN2
 #endif
 #endif
 
