@@ -18,7 +18,7 @@ bool log_printf_level(const char *file, uint32_t line, uint32_t level,
     Console.flush();
 #endif
 #if ROS_LOGGING
-    realMain.rosHandler.nodeHandle.loginfo(buffer);
+    realMain.rosManager.nodeHandle.loginfo(buffer);
 #endif
     va_end(arglist);
   }
@@ -41,7 +41,7 @@ bool log_printf_error(const char *file, uint32_t line, const char *Format,
   Console.flush();
 #endif
 #if ROS_LOGGING
-    realMain.rosHandler.nodeHandle.logerror(buffer);
+    realMain.rosManager.nodeHandle.logerror(buffer);
 #endif
   va_end(arglist);
   return (retc);

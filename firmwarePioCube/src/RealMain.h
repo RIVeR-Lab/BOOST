@@ -3,15 +3,21 @@
 
 #include "RealMain.h"
 #include "pins.h"
-#include "rosHandler.h"
 #include "utils/log.h"
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include <SPI.h>
 #include <Wire.h>
-#include <STM32encoder.h>
-#include "imu.h"
 #include "config.h"
+#include "utils.h"
+#include "Encoder.h"
+#include "TXB0104PWR.h"
+#include "OdometryManager.h"
+#include "BNO055Manager.h"
+#include "RosManager.h"
+#include "L293N.h"
+#include "DriveManager.h"
+#include "GpsManager.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
@@ -20,26 +26,49 @@ class RealMain {
 public:
   RealMain()
       : mySerial4(UART4),
+        uart3Gps(USART3),
         i2c1(PB9, PB8),
-        rosHandler(Serial2),
-        encLeft(TIM2),
-        encRight(TIM3),
-        imu(55, 0x28, i2c1) {}
+        imu(55, 0x28, &i2c1),
+        encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
+        encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
+        encoderLvlShifter(ENCODER_LVL_SHIFTER_EN),
+        mtrCtrl(L_WHEEL_FORW_PIN, L_WHEEL_BACK_PIN, R_WHEEL_FORW_PIN, R_WHEEL_BACK_PIN),
+        gps(uart3Gps, GPS_RX_PIN, GPS_TX_PIN, GPS_RESET_N_PIN, GPS_1PPS_PIN, GPS_FORCE_ON_N_PIN),
+        rosManager(Serial2),
+        odomManager(encLeft, encRight, encoderLvlShifter),
+        imuManager(imu),
+        drvManager(mtrCtrl),
+        gpsManager(gps)
+        {}
   ~RealMain() {}
-
+  
+  friend class RosManager;
+  friend class BNO055Manager;
+private:
   // ------------------------------ DEVICES ------------------------------
   HardwareSerial mySerial4;
+  HardwareSerial uart3Gps;
   TwoWire i2c1;
-  RosHandler rosHandler;
-  STM32encoder encLeft;
-  STM32encoder encRight;
-  IMU imu;
-  // ----------------------------------------------------------------
+  Adafruit_BNO055 imu;
+  Encoder encLeft;
+  Encoder encRight;
+  TXB0104PWR encoderLvlShifter;
+  L293N mtrCtrl;
+  SL871 gps;
+  // ------------------------------ END DEVICES ------------------------------
 
+  // ------------------------------ FAKE THREADS ------------------------------
+  RosManager rosManager;
+  OdometryManager odomManager;
+  BNO055Manager imuManager;
+  DriveManager drvManager;
+  GpsManager gpsManager;
+  // ------------------------------ END FAKE THREADS ------------------------------
+  
+public:
   bool initialize() {
     bool success = true;
     delay(2000);
-    pinMode(LED_BUILTIN, OUTPUT);
 
 #if NUCLEO_F767ZI_CUSTOM
     serial2.setRx(PD_6);
@@ -49,16 +78,15 @@ public:
     Serial2.end();
     Serial2.setRx(PA_3);
     Serial2.setTx(PA_2);
-    Serial2.begin(RosHandler::rosSerialBaud);
+    Serial2.begin(RosManager::rosSerialBaud);
     while (!Serial2) {
-      digitalWrite(LED_BUILTIN, HIGH);
       yield();
     }
   
-    mySerial4.end();
-    mySerial4.setRx(PA_1);
-    mySerial4.setTx(PA_0);
-    // mySerial4.begin(RosHandler::rosSerialBaud);
+    // mySerial4.end();
+    // mySerial4.setRx(PA_1);
+    // mySerial4.setTx(PA_0);
+    // mySerial4.begin(RosManager::rosSerialBaud);
     // while(!mySerial4){
     //   yield();
     // }
@@ -66,13 +94,20 @@ public:
     LOGEVENT("Setup...");
 
     #if ENABLE_ROSHANDLER
-    success = success && rosHandler.init();
+    success = success && rosManager.init();
     #endif
     
     #if ENABLE_IMU
-    success = success && imu.init();
+    success = success && imuManager.init();
     #endif
     
+    #if ENABLE_ODOMETRY
+    success = success && odomManager.init();
+    #endif
+
+    #if ENABLE_GPS
+    success = success && gpsManager.init();
+    #endif
 
     // initPwm();
     // setPwm(5000, 50);
@@ -81,8 +116,7 @@ public:
     pinMode(L_WHEEL_BACK_PIN, OUTPUT);
     pinMode(R_WHEEL_FORW_PIN, OUTPUT);
     pinMode(R_WHEEL_BACK_PIN, OUTPUT);
-
-    
+  
 
     return success;
   }
@@ -96,40 +130,31 @@ public:
         counter = millis();
         LOGEVENT("Looping...");
         Serial2.println("Looping...");
-        digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-      }
-
-      if(encLeft.isUpdated()){
-        LOGEVENT("Left Encoder: %d\n", encLeft.pos());
-      }
-      if(encRight.isUpdated()){
-        LOGEVENT("Right Encoder: %d\n", encRight.pos());
+        // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
       }
 
       #if ENABLE_ROSHANDLER
-      rosHandler.loop();
+      rosManager.loop();
       #endif
 
       #if ENABLE_IMU
-      imu.loop();
+      imuManager.loop();
       #endif
-      // mySerial4.printf("looping\n");
 
-      // analogWrite(L_WHEEL_FORW_PIN, 255);
-      // LOGEVENT("ADC vRef Read (mV): %d", readVref());
-      // LOGEVENT("ADC Read (mV): %d", readVoltage(readVref(), PA3));
-      // HAL_Delay(500);
-      // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-      // HAL_Delay(10);
+      #if ENABLE_ODOMETRY 
+      odomManager.loop();
+      #endif
 
-
+      #if ENABLE_GPS
+      gpsManager.loop();
+      #endif
     }
   }
 
-private:
-  bool initialized = false;
-
   bool deinitialize();
+
+private:
+  bool initialized = false;  
 };
 
 // The one and only main thread allocated statically.
