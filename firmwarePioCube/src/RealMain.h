@@ -1,23 +1,23 @@
 #ifndef _SRC_REALMAIN_H
 #define _SRC_REALMAIN_H
 
+#include "BNO055Manager.h"
+#include "DriveManager.h"
+#include "Encoder.h"
+#include "GpsManager.h"
+#include "L293N.h"
+#include "OdometryManager.h"
 #include "RealMain.h"
+#include "RosManager.h"
+#include "TXB0104PWR.h"
+#include "config.h"
 #include "pins.h"
+#include "utils.h"
 #include "utils/log.h"
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include <SPI.h>
 #include <Wire.h>
-#include "config.h"
-#include "utils.h"
-#include "Encoder.h"
-#include "TXB0104PWR.h"
-#include "OdometryManager.h"
-#include "BNO055Manager.h"
-#include "RosManager.h"
-#include "L293N.h"
-#include "DriveManager.h"
-#include "GpsManager.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
@@ -25,25 +25,22 @@ extern void _Error_Handler(const char *msg, int val);
 class RealMain {
 public:
   RealMain()
-      : mySerial4(UART4),
-        uart3Gps(USART3),
-        i2c1(PB9, PB8),
-        imu(55, 0x28, &i2c1),
-        encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
+      : mySerial4(UART4), uart3Gps(USART3), i2c1(PB9, PB8),
+        imu(55, 0x28, &i2c1), encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
         encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
         encoderLvlShifter(ENCODER_LVL_SHIFTER_EN),
-        mtrCtrl(L_WHEEL_FORW_PIN, L_WHEEL_BACK_PIN, R_WHEEL_FORW_PIN, R_WHEEL_BACK_PIN),
-        gps(uart3Gps, GPS_RX_PIN, GPS_TX_PIN, GPS_RESET_N_PIN, GPS_1PPS_PIN, GPS_FORCE_ON_N_PIN),
-        rosManager(Serial2),
-        odomManager(encLeft, encRight, encoderLvlShifter),
-        imuManager(imu),
-        drvManager(mtrCtrl),
-        gpsManager(gps)
-        {}
+        mtrCtrl(L_WHEEL_FORW_PIN, L_WHEEL_BACK_PIN, R_WHEEL_FORW_PIN,
+                R_WHEEL_BACK_PIN),
+        gps(uart3Gps, GPS_RX_PIN, GPS_TX_PIN, GPS_RESET_N_PIN, GPS_1PPS_PIN,
+            GPS_FORCE_ON_N_PIN),
+        rosManager(Serial2), odomManager(encLeft, encRight, encoderLvlShifter),
+        imuManager(imu), drvManager(mtrCtrl), gpsManager(gps) {}
   ~RealMain() {}
-  
+
   friend class RosManager;
   friend class BNO055Manager;
+  friend class GpsManager;
+
 private:
   // ------------------------------ DEVICES ------------------------------
   HardwareSerial mySerial4;
@@ -63,8 +60,9 @@ private:
   BNO055Manager imuManager;
   DriveManager drvManager;
   GpsManager gpsManager;
-  // ------------------------------ END FAKE THREADS ------------------------------
-  
+  // ------------------------------ END FAKE THREADS
+  // ------------------------------
+
 public:
   bool initialize() {
     bool success = true;
@@ -82,32 +80,25 @@ public:
     while (!Serial2) {
       yield();
     }
-  
-    // mySerial4.end();
-    // mySerial4.setRx(PA_1);
-    // mySerial4.setTx(PA_0);
-    // mySerial4.begin(RosManager::rosSerialBaud);
-    // while(!mySerial4){
-    //   yield();
-    // }
 #endif
+
     LOGEVENT("Setup...");
 
-    #if ENABLE_ROSHANDLER
+#if ENABLE_ROSHANDLER
     success = success && rosManager.init();
-    #endif
-    
-    #if ENABLE_IMU
-    success = success && imuManager.init();
-    #endif
-    
-    #if ENABLE_ODOMETRY
-    success = success && odomManager.init();
-    #endif
+#endif
 
-    #if ENABLE_GPS
+#if ENABLE_IMU
+    success = success && imuManager.init();
+#endif
+
+#if ENABLE_ODOMETRY
+    success = success && odomManager.init();
+#endif
+
+#if ENABLE_GPS
     success = success && gpsManager.init();
-    #endif
+#endif
 
     // initPwm();
     // setPwm(5000, 50);
@@ -116,7 +107,6 @@ public:
     pinMode(L_WHEEL_BACK_PIN, OUTPUT);
     pinMode(R_WHEEL_FORW_PIN, OUTPUT);
     pinMode(R_WHEEL_BACK_PIN, OUTPUT);
-  
 
     return success;
   }
@@ -133,28 +123,28 @@ public:
         // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
       }
 
-      #if ENABLE_ROSHANDLER
+#if ENABLE_ROSHANDLER
       rosManager.loop();
-      #endif
+#endif
 
-      #if ENABLE_IMU
+#if ENABLE_IMU
       imuManager.loop();
-      #endif
+#endif
 
-      #if ENABLE_ODOMETRY 
+#if ENABLE_ODOMETRY
       odomManager.loop();
-      #endif
+#endif
 
-      #if ENABLE_GPS
+#if ENABLE_GPS
       gpsManager.loop();
-      #endif
+#endif
     }
   }
 
   bool deinitialize();
 
 private:
-  bool initialized = false;  
+  bool initialized = false;
 };
 
 // The one and only main thread allocated statically.
