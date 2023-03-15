@@ -7,9 +7,8 @@
 #include "main.h"
 #include "config.h"
 
-#define LOG_LEVEL LOGLEVEL_ERROR
-
 enum {
+  LOGLEVEL_NONE,          // no logging
   LOGLEVEL_FREERTOS,         // lowest normal level
   LOGLEVEL_VERBOSE,
   LOGLEVEL_INFO,

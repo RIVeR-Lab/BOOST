@@ -1,3 +1,5 @@
+#define LOG_LEVEL LOGLEVEL_ERROR
+
 #define CONSOLE_LOGGING 1 // Logs raw serial over USB. DO NOT HAVE THIS ON WHEN USING ROSSERIAL!!!
 #define ROS_LOGGING 0 // Logs to ROS over ROS Serial using ROS packets
 
@@ -11,5 +13,5 @@
 #define ENABLE_ODOMETRY 1
 
 #define ENABLE_GPS 1
-#define ENABLE_GPS_LOGLOOP 1
+#define ENABLE_GPS_LOGLOOP 0
 #define GPS_DEBUG 0

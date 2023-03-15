@@ -3,8 +3,8 @@
 
 #include "Arduino.h"
 #include "HardwareSerial.h"
-#include "utils/log.h"
 #include "data/GpsDatagram.h"
+#include "utils/log.h"
 
 class SL871 {
 public:
@@ -17,6 +17,9 @@ public:
       : uart(_uart), sl871RxPin(_sl871RxPin), sl871TxPin(_sl871TxPin),
         resetPin(_resetPin), ppsPin(_1ppsPin), forceOnNPin(_forceOnNPin) {}
   ~SL871() {}
+  static constexpr float GPS_HORIZONTAL_ACCURACY_METERS = 2.5;
+  static constexpr float GLONASS_HORIZONTAL_ACCURACY_METERS = 2.6;
+  static constexpr float BEIDOU_HORIZONTAL_ACCURACY_METERS = 10.2;
 
   bool init() {
     LOGEVENT("Intializing SL871 rxPin=%d, txPin=%d.", sl871RxPin, sl871TxPin);
@@ -31,43 +34,9 @@ public:
   }
 
   bool reset();
-  // bool send(uint8_t *data, uint32_t len);
 
-  /**
-   * @return number of bytes received, -1 if error.
-  */
-  int recv(uint8_t *data, uint32_t len) {
-    int ret = -1;
-    uint32_t i = 0;
-    //     int bytes = u3.available();
-    // if(bytes >= 255) {
-    //   Serial2.println("Too many bytes!");
-    // }
-    // while(bytes > 0) {
-    //   Serial2.printf("%d", u3.read());
-    //   bytes--;
-    //   if(bytes == 0) {
-    //     Serial2.println();
-    //   }
-    // }
-    LOGEVENT("uart.available() = %d", uart.available());
-    while (i < len && uart.available()) {
-      int temp = uart.read();
-      // No data left.
-      if (temp == -1) {
-        ret = -1;
-        break;
-      } else {
-        data[i] = (uint8_t)temp;
-        i++;
-        ret = i;
-      }
-    }
-    // LOGEVENT("SL871 received %d bytes.", i);
-    
-    return ret;
-  }
   HardwareSerial &uart;
+
 private:
   static constexpr unsigned long DEFAULT_BAUDRATE = 9600;
 
@@ -76,7 +45,6 @@ private:
   const uint32_t resetPin = NOPIN;
   const uint32_t ppsPin = NOPIN;
   const uint32_t forceOnNPin = NOPIN;
-  
 };
 
 #endif // _SL871_H_

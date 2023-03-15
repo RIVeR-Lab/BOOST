@@ -13,7 +13,7 @@ bool GpsManager::loopHook() {
   success = success && processGpsData();
 
   // Check if we lost GPA signal/comms and try to re-init it.
-  if(!checkLastGoodGpsReading()) {
+  if (!checkLastGoodGpsReading()) {
     gps.init();
   }
   return true;
@@ -128,4 +128,42 @@ bool GpsManager::processGpsData() {
   lastFailedChecksumCount = gpsDataNMEADecoder.failedChecksum();
 
   return success;
+}
+
+std::array<float, 9>
+GpsManager::positionCovarianceDiag(float hdop,
+                                   float idealHorizontalMeasurementError) {
+  std::array<float, 9> diag;
+  diag.fill(0.0);
+  float std_dev = hdop * idealHorizontalMeasurementError;
+  float cov = std_dev * std_dev;
+  diag[0] = cov;
+  diag[4] = cov;
+  diag[8] = cov;
+  return diag;
+}
+
+sensor_msgs::NavSatFix GpsManager::toRosMsg() {
+  sensor_msgs::NavSatFix msg;
+  msg.header.stamp = ros::Time::now();
+  msg.header.frame_id = "gps";
+  if (isGpsFixed()) {
+    msg.status.status = sensor_msgs::NavSatStatus::STATUS_FIX;
+  } else {
+    msg.status.status = sensor_msgs::NavSatStatus::STATUS_NO_FIX;
+  }
+  msg.latitude = lastGoodGpsReading.location.lat();
+  msg.longitude = lastGoodGpsReading.location.lng();
+  msg.altitude = lastGoodGpsReading.altitude.meters();
+
+  // Get the covariance matrix for lat lng
+  std::array<float, 9> diag = positionCovarianceDiag(
+      lastGoodGpsReading.hdop.hdop(), gps.GPS_HORIZONTAL_ACCURACY_METERS);
+  msg.position_covariance[0] = diag[0];
+  msg.position_covariance[4] = diag[4];
+  msg.position_covariance[8] = diag[8];
+  msg.position_covariance_type =
+      sensor_msgs::NavSatFix::COVARIANCE_TYPE_DIAGONAL_KNOWN;
+
+  return msg;
 }
