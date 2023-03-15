@@ -18,7 +18,7 @@ public:
   ~SL871() {}
 
   bool init() {
-    LOGEVENT("Intializing SL871.");
+    LOGEVENT("Intializing SL871 rxPin=%d, txPin=%d.", sl871RxPin, sl871TxPin);
     uart.end();
     uart.setRx(sl871TxPin);
     uart.setTx(sl871RxPin);
@@ -37,7 +37,7 @@ public:
     delay(100);
     // SL871 reset pin should not be driven HIGH.
     // It has internal pullup.
-    digitalWrite(resetPin, INPUT_FLOATING);
+    pinMode(resetPin, INPUT_FLOATING);
     LOGEVENT("SL871 reset signal sent.");
     return success;
   }
@@ -49,6 +49,18 @@ public:
   int recv(uint8_t *data, uint32_t len) {
     int ret = -1;
     uint32_t i = 0;
+    //     int bytes = u3.available();
+    // if(bytes >= 255) {
+    //   Serial2.println("Too many bytes!");
+    // }
+    // while(bytes > 0) {
+    //   Serial2.printf("%d", u3.read());
+    //   bytes--;
+    //   if(bytes == 0) {
+    //     Serial2.println();
+    //   }
+    // }
+    LOGEVENT("uart.available() = %d", uart.available());
     while (i < len && uart.available()) {
       int temp = uart.read();
       // No data left.
@@ -62,14 +74,14 @@ public:
       }
     }
     // LOGEVENT("SL871 received %d bytes.", i);
-    LOGEVENT("uart.available() = %d", uart.available());
+    
     return ret;
   }
-
+  HardwareSerial &uart;
 private:
   static constexpr unsigned long DEFAULT_BAUDRATE = 9600;
 
-  HardwareSerial &uart;
+
   const uint32_t sl871RxPin = NOPIN;
   const uint32_t sl871TxPin = NOPIN;
   const uint32_t resetPin = NOPIN;

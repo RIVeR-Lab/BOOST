@@ -19,7 +19,7 @@ private:
   SL871 &gps;
   // We don't need to loop fast because we set motor speed when a new twist
   // message comes in.
-  static constexpr uint32_t LOOP_DELAY_MS = 1;
+  static constexpr uint32_t LOOP_DELAY_MS = 10;
   static constexpr uint32_t LOG_LOOP_DELAY_MS = LOOP_DELAY_MS;
 
   bool loopHook() override;
