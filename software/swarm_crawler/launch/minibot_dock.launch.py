@@ -105,7 +105,7 @@ def generate_launch_description():
     # autostart nav_2 stack
     declare_autostart_cmd = DeclareLaunchArgument(
         name='autostart', 
-        default_value='True',
+        default_value='False',
         description='Automatically startup the nav2 stack')
 
     declare_params_file_cmd = DeclareLaunchArgument(
@@ -318,7 +318,7 @@ def generate_launch_description():
         package=package_name,
         executable='show_center_depth2.py')
     
-    ld.add_action(start_depth_center_script)
+    # ld.add_action(start_depth_center_script)
 
 
     # ld.add_action(start_base_link_to_aruco_marker_transform_cmd)
@@ -343,7 +343,7 @@ def generate_launch_description():
 
     # AUTONOMOUS DOCKING
     ld.add_action(start_aruco_marker_detector_cmd)
-    # ld.add_action(start_navigate_to_charging_dock_cmd)
+    ld.add_action(start_navigate_to_charging_dock_cmd)
 
 
 

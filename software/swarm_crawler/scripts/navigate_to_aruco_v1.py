@@ -85,14 +85,14 @@ class ConnectToChargingDockNavigator(Node):
       # This node publishes the desired linear and angular velocity of the robot
       self.publisher_cmd_vel = self.create_publisher(
         Twist,
-        '/cmd_vel_2',
+        '/cmd_vel',
         10)  
       timer_period = 0.1
       self.timer = self.create_timer(timer_period, self.navigate_to_dock_staging_area)
 
       # Declare linear and angular velocities
-      self.linear_velocity = 0.08  # meters per second
-      self.angular_velocity = 0.03 # radians per second
+      self.linear_velocity = 0.4  # meters per second
+      self.angular_velocity = 0.63 # radians per second
       
       # Keep track of which goal we're headed towards
       self.goal_idx = 0
@@ -101,7 +101,9 @@ class ConnectToChargingDockNavigator(Node):
       self.obstacle_tolerance = 0.22
 
       # Center offset tolerance in pixels
-      self.center_offset_tolerance = 10
+      # self.center_offset_tolerance = 10
+      self.center_offset_tolerance = 50
+
       
       # Undocking distance
       self.undocking_distance = 0.50
@@ -397,7 +399,9 @@ class ArucoMarkerSubscriber(Node):
       Update obstacle distance.
       """
       global obstacle_distance_front
-      obstacle_distance_front = msg.ranges[179]
+      # obstacle_distance_front = msg.ranges[179]
+      obstacle_distance_front = msg.ranges[100]
+
         
 def main(args=None):
   """

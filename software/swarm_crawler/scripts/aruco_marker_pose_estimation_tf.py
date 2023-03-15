@@ -223,9 +223,9 @@ class ArucoNode(Node):
                                   self.dst, rvecs[i], tvecs[i], 0.05)
             self.poses_pub.publish(pose_array)
         # Display image for testing
-        if(headless == False):
-            cv2.imshow("camera", current_frame)
-            cv2.waitKey(1)
+        # if(headless == False):
+            # cv2.imshow("camera", current_frame)
+            # cv2.waitKey(1)
 
 
 def main(args=None):
