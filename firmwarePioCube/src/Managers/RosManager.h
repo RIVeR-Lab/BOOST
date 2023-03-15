@@ -26,7 +26,7 @@ public:
 
   static constexpr uint32_t rosSerialBaud = 57600;
 
-  bool init();
+  bool init() override;
   bool loopHook() override;
   bool logLoopHook() override;
 
@@ -37,16 +37,6 @@ private:
   bool isRosConnected = false;
   static constexpr uint32_t LOOP_DELAY_MS = 1;
   static constexpr uint32_t LOG_LOOP_DELAY_MS = 500;
-
-  static constexpr float WHEEL_BASE = 0.2;    // (meters per radian)
-  static constexpr float WHEEL_RADIUS = 0.02; // (meters per radian)
-  static constexpr float PWM_MIN = 0;
-  static constexpr float PWM_MAX = 255;
-  static constexpr float MOTOR_RPM = 60;
-  static constexpr float MOTOR_MAX_RAD_PER_SEC =
-      MOTOR_RPM * ((2.0 * M_PI) / 60.0); // rad/s
-  static constexpr float MOTOR_MIN_RAD_PER_SEC =
-      -MOTOR_MAX_RAD_PER_SEC; // rad/s
 
   /* -------------------------- PUBLISHERS -------------------------- */
   // Chatter

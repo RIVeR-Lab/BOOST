@@ -16,6 +16,7 @@
 #include "BNO055Manager.h"
 #include "RosManager.h"
 #include "L293N.h"
+#include "DriveManager.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
@@ -29,9 +30,11 @@ public:
         encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
         encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
         encoderLvlShifter(ENCODER_LVL_SHIFTER_EN),
+        mtrCtrl(L_WHEEL_FORW_PIN, L_WHEEL_BACK_PIN, R_WHEEL_FORW_PIN, R_WHEEL_BACK_PIN),
         rosManager(Serial2),
         odomManager(encLeft, encRight, encoderLvlShifter),
-        imuManager(imu)
+        imuManager(imu),
+        drvManager(mtrCtrl)
         {}
   ~RealMain() {}
   
@@ -52,6 +55,7 @@ private:
   RosManager rosManager;
   OdometryManager odomManager;
   BNO055Manager imuManager;
+  DriveManager drvManager;
   // ------------------------------ END FAKE THREADS ------------------------------
   
 public:
