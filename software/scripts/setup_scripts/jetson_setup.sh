@@ -47,7 +47,7 @@ sudo sh -c 'echo "deb http://packages.ros.org/ros/ubuntu $(lsb_release -sc) main
 sudo apt install curl # if you haven't already installed curl
 curl -s https://raw.githubusercontent.com/ros/rosdistro/master/ros.asc | sudo apt-key add -
 sudo apt update
-sudo apt install ros-noetic-ros-base ros-noetic-rosserial
+sudo apt install ros-noetic-ros-base ros-noetic-rosserial ros-galactic-ros1-bridge
 
 # fix cuda stuff 
 echo "export CUDAXX_HOME=/usr/local/cuda-10.2" >> ~/.bashrc
