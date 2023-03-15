@@ -14,7 +14,8 @@
 #include "TXB0104PWR.h"
 #include "OdometryManager.h"
 #include "BNO055Manager.h"
-#include "rosHandler.h"
+#include "RosManager.h"
+#include "L293N.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
@@ -44,6 +45,7 @@ private:
   Encoder encLeft;
   Encoder encRight;
   TXB0104PWR encoderLvlShifter;
+  L293N mtrCtrl;
   // ------------------------------ END DEVICES ------------------------------
 
   // ------------------------------ FAKE THREADS ------------------------------
