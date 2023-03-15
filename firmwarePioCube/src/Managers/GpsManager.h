@@ -13,6 +13,8 @@
 
 #define GPS_BUF_SIZE 512
 
+class RealMain;
+
 class GpsManager : public FakeThread {
 public:
   GpsManager(SL871 &_gps)
@@ -22,21 +24,25 @@ public:
   bool init() override;
 
 private:
+  static constexpr uint32_t LOOP_DELAY_MS = 100;
+  static constexpr uint32_t LOG_LOOP_DELAY_MS = 1000;
+
   SL871 &gps;
   RingBuffer<char, GPS_BUF_SIZE> gpsDataBuffer;
-  // We don't need to loop fast because we set motor speed when a new twist
-  // message comes in.
-  static constexpr uint32_t LOOP_DELAY_MS = 10;
-  static constexpr uint32_t LOG_LOOP_DELAY_MS = LOOP_DELAY_MS;
 
   bool loopHook() override;
   bool logLoopHook() override;
   bool readInGpsData();
   bool processGpsData();
+  bool checkLastGoodGpsReading();
 
   GpsDatagram lastGoodGpsReading;
   TinyGPSPlus gpsDataNMEADecoder;
+  // Statistics
+  uint32_t lastGoodGpsReadingTime = 0;
   uint32_t lastPassedChecksumCount = 0;
+  uint32_t lastFailedChecksumCount = 0;
+  static constexpr uint32_t GPS_MAX_AGE_MS = 30000;
 
 };
 

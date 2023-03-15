@@ -11,4 +11,5 @@
 #define ENABLE_ODOMETRY 1
 
 #define ENABLE_GPS 1
-#define GPS_DEBUG 1
+#define ENABLE_GPS_LOGLOOP 1
+#define GPS_DEBUG 0

@@ -23,8 +23,6 @@ struct GpsDatagram {
         hdop(_hdop), charsProcessed(_charsProcessed),
         sentencesWithFix(_sentencesWithFix), failedChecksum(_failedChecksum),
         passedChecksum(_passedChecksum) {}
-
-private:
   TinyGPSLocation location;
   TinyGPSDate date;
   TinyGPSTime time;
@@ -37,20 +35,6 @@ private:
   uint32_t sentencesWithFix;
   uint32_t failedChecksum;
   uint32_t passedChecksum;
-
-public:
-  TinyGPSLocation getLocation() { return location; }
-  TinyGPSDate getDate() { return date; }
-  TinyGPSTime getTime() { return time; }
-  TinyGPSSpeed getSpeed() { return speed; }
-  TinyGPSCourse getCourse() { return course; }
-  TinyGPSAltitude getAltitude() { return altitude; }
-  TinyGPSInteger getSatellites() { return satellites; }
-  TinyGPSHDOP getHdop() { return hdop; }
-  uint32_t getCharsProcessed() { return charsProcessed; }
-  uint32_t getSentencesWithFix() { return sentencesWithFix; }
-  uint32_t getFailedChecksum() { return failedChecksum; }
-  uint32_t getPassedChecksum() { return passedChecksum; }
 };
 static const uint32_t gpsDatagramSize = sizeof(GpsDatagram);
 
