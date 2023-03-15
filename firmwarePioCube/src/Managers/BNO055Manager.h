@@ -11,19 +11,25 @@
 class BNO055Manager : public FakeThread {
 public:
   BNO055Manager(Adafruit_BNO055 &_bno)
-      : FakeThread(LOOP_DELAY_MS, LOG_LOOP_DELAY_MS),
-        bno(_bno){};
+      : FakeThread(LOOP_DELAY_MS, LOG_LOOP_DELAY_MS), bno(_bno){};
 
   bool init() {
     bool success = true;
+     LOGEVENT("Initializing...");
 
-    while (!bno.begin(OPERATION_MODE_NDOF)) {
-      LOGERROR("FAILED to init BNO055... Check your wiring or I2C ADDR!");
-      delay(1000);
+    success = success && bno.begin(OPERATION_MODE_NDOF);
+    
+    if (success) {
+      bno.setExtCrystalUse(true);
     }
-    bno.setExtCrystalUse(true);
 
-    LOGEVENT("Initialized SUCCESSFULLY");
+    if (!success) {
+      LOGERROR("FAILED to init BNO055... Check your wiring or I2C ADDR!");
+      initted = false;
+    } else {
+      LOGEVENT("Initialized SUCCESSFULLY");
+      initted = true;
+    }
     return success;
   }
 
@@ -36,6 +42,7 @@ private:
   Adafruit_BNO055 &bno;
   static constexpr uint32_t LOOP_DELAY_MS = 10;
   static constexpr uint32_t LOG_LOOP_DELAY_MS = 500;
+  bool initted = false;
 
   // Last readings
   sensors_event_t orientationDataEuler{};

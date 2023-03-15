@@ -2,9 +2,14 @@
 #include "RealMain.h"
 
 bool BNO055Manager::loopHook() {
+  bool success = true;
   LOGDEBUG("%s", __func__);
-  readInAllImuData();
-  return true;
+  // if (!initted) {
+  //   success  = success && init();
+  // }
+
+  success = success && readInAllImuData();
+  return success;
 }
 
 bool BNO055Manager::logLoopHook() {

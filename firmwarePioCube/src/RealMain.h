@@ -17,6 +17,7 @@
 #include "RosManager.h"
 #include "L293N.h"
 #include "DriveManager.h"
+#include "GpsManager.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
@@ -25,16 +26,19 @@ class RealMain {
 public:
   RealMain()
       : mySerial4(UART4),
+        uart3Gps(USART3),
         i2c1(PB9, PB8),
         imu(55, 0x28, &i2c1),
         encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
         encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
         encoderLvlShifter(ENCODER_LVL_SHIFTER_EN),
         mtrCtrl(L_WHEEL_FORW_PIN, L_WHEEL_BACK_PIN, R_WHEEL_FORW_PIN, R_WHEEL_BACK_PIN),
+        gps(uart3Gps, GPS_RX_PIN, GPS_TX_PIN, GPS_RESET_N_PIN, GPS_1PPS_PIN, GPS_FORCE_ON_N_PIN),
         rosManager(Serial2),
         odomManager(encLeft, encRight, encoderLvlShifter),
         imuManager(imu),
-        drvManager(mtrCtrl)
+        drvManager(mtrCtrl),
+        gpsManager(gps)
         {}
   ~RealMain() {}
   
@@ -43,12 +47,14 @@ public:
 private:
   // ------------------------------ DEVICES ------------------------------
   HardwareSerial mySerial4;
+  HardwareSerial uart3Gps;
   TwoWire i2c1;
   Adafruit_BNO055 imu;
   Encoder encLeft;
   Encoder encRight;
   TXB0104PWR encoderLvlShifter;
   L293N mtrCtrl;
+  SL871 gps;
   // ------------------------------ END DEVICES ------------------------------
 
   // ------------------------------ FAKE THREADS ------------------------------
@@ -56,6 +62,7 @@ private:
   OdometryManager odomManager;
   BNO055Manager imuManager;
   DriveManager drvManager;
+  GpsManager gpsManager;
   // ------------------------------ END FAKE THREADS ------------------------------
   
 public:
@@ -98,6 +105,10 @@ public:
     success = success && odomManager.init();
     #endif
 
+    #if ENABLE_GPS
+    success = success && gpsManager.init();
+    #endif
+
     // initPwm();
     // setPwm(5000, 50);
     // initAdc();
@@ -132,6 +143,10 @@ public:
 
       #if ENABLE_ODOMETRY 
       odomManager.loop();
+      #endif
+
+      #if ENABLE_GPS
+      gpsManager.loop();
       #endif
     }
   }
