@@ -129,7 +129,7 @@ public:
       if ((millis() - counter) > 1000) {
         counter = millis();
         LOGEVENT("Looping...");
-        Serial2.println("Looping...");
+        // Serial2.println("Looping...");
         // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
       }
 

@@ -24,8 +24,8 @@ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 #ifndef __TinyGPSPlus_h
 #define __TinyGPSPlus_h
 
-#include "logging/log.h"
-#include "zephyr.h"
+#include "Arduino.h"
+#include "utils/log.h"
 #include <ctype.h>
 #include <limits.h>
 #include <math.h>
@@ -57,7 +57,7 @@ public:
   bool isValid() const { return valid; }
   bool isUpdated() const { return updated; }
   uint32_t age() const {
-    return valid ? k_uptime_get() - lastCommitTime : (uint32_t)ULONG_MAX;
+    return valid ? millis() - lastCommitTime : (uint32_t)ULONG_MAX;
   }
   const RawDegrees &rawLat() {
     updated = false;
@@ -88,7 +88,7 @@ public:
   bool isValid() const { return valid; }
   bool isUpdated() const { return updated; }
   uint32_t age() const {
-    return valid ? k_uptime_get() - lastCommitTime : (uint32_t)ULONG_MAX;
+    return valid ? millis() - lastCommitTime : (uint32_t)ULONG_MAX;
   }
 
   uint32_t value() {
@@ -116,7 +116,7 @@ public:
   bool isValid() const { return valid; }
   bool isUpdated() const { return updated; }
   uint32_t age() const {
-    return valid ? k_uptime_get() - lastCommitTime : (uint32_t)ULONG_MAX;
+    return valid ? millis() - lastCommitTime : (uint32_t)ULONG_MAX;
   }
 
   uint32_t value() {
@@ -145,7 +145,7 @@ public:
   bool isValid() const { return valid; }
   bool isUpdated() const { return updated; }
   uint32_t age() const {
-    return valid ? k_uptime_get() - lastCommitTime : (uint32_t)ULONG_MAX;
+    return valid ? millis() - lastCommitTime : (uint32_t)ULONG_MAX;
   }
   int32_t value() {
     updated = false;
@@ -169,7 +169,7 @@ public:
   bool isValid() const { return valid; }
   bool isUpdated() const { return updated; }
   uint32_t age() const {
-    return valid ? k_uptime_get() - lastCommitTime : (uint32_t)ULONG_MAX;
+    return valid ? millis() - lastCommitTime : (uint32_t)ULONG_MAX;
   }
   uint32_t value() {
     updated = false;
@@ -218,7 +218,7 @@ public:
   bool isUpdated() const { return updated; }
   bool isValid() const { return valid; }
   uint32_t age() const {
-    return valid ? k_uptime_get() - lastCommitTime : (uint32_t)ULONG_MAX;
+    return valid ? millis() - lastCommitTime : (uint32_t)ULONG_MAX;
   }
   const char *value() {
     updated = false;

@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include "HardwareSerial.h"
 #include "utils/log.h"
+#include "data/GpsDatagram.h"
 
 class SL871 {
 public:
@@ -29,18 +30,7 @@ public:
     return true;
   }
 
-  bool reset() {
-    bool success = true;
-    LOGEVENT("Sending SL871 reset signal.");
-    pinMode(resetPin, OUTPUT);
-    digitalWrite(resetPin, LOW);
-    delay(100);
-    // SL871 reset pin should not be driven HIGH.
-    // It has internal pullup.
-    pinMode(resetPin, INPUT_FLOATING);
-    LOGEVENT("SL871 reset signal sent.");
-    return success;
-  }
+  bool reset();
   // bool send(uint8_t *data, uint32_t len);
 
   /**
@@ -80,7 +70,6 @@ public:
   HardwareSerial &uart;
 private:
   static constexpr unsigned long DEFAULT_BAUDRATE = 9600;
-
 
   const uint32_t sl871RxPin = NOPIN;
   const uint32_t sl871TxPin = NOPIN;
