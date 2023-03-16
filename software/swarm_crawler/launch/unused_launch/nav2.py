@@ -104,7 +104,7 @@ def generate_launch_description():
                               'use_sim_time': use_sim_time,
                               'autostart': autostart,
                               'params_file': params_file,
-                              'use_lifecycle_mgr': 'false'}.items()),
+                              'use_lifecycle_mgr': 'True'}.items()),
 
         IncludeLaunchDescription(
             PythonLaunchDescriptionSource(os.path.join(launch_dir, 'navigation_launch.py')),

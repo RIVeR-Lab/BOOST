@@ -201,6 +201,7 @@ class ArucoNode(Node):
                 t.transform.rotation.w = quat[3]
                 # self.get_logger().info('broadcasting transform')
                 self.tfbroadcaster.sendTransform(t)
+                self.get_logger().info('X,Y,Z,W Rotations: ;' + str(t.transform.rotation.x) + ';' + str(t.transform.rotation.y) + ';' + str(t.transform.rotation.z) + ';' + str(t.transform.rotation.w))
 
                 # Send the transform
                 # pose_array.header.frame_id = t.header.frame_id

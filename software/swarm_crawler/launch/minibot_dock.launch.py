@@ -307,8 +307,8 @@ def generate_launch_description():
     ld.add_action(start_joint_state_publisher_gui_node)
 
     # TRANSFORMS
-    ld.add_action(start_odom_to_baselink_transform_cmd)
-    ld.add_action(start_aruco_marker_pose_static_transform_cmd)
+    # ld.add_action(start_odom_to_baselink_transform_cmd)
+    # ld.add_action(start_aruco_marker_pose_static_transform_cmd)
     # ld.add_action(start_odom_static_transform_cmd) # this is bad for SLAM. it will not expand the map.
     # ld.add_action(start_map_static_transform_cmd)
     # necessary "camera_depth_frame" redundant transform-- couldnt figure out the cause. 
@@ -331,9 +331,9 @@ def generate_launch_description():
 
     # Nav 2 launch 
     # the errors that occured with nav2 were primarily due to the namespace issue stuff 
-    start_nav2 = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(pkg_share,'launch','unused_launch' ,'nav2.py')),
-    launch_arguments = {'namespace': ''}.items())
+    # start_nav2 = IncludeLaunchDescription(
+    # PythonLaunchDescriptionSource(os.path.join(pkg_share,'launch','unused_launch' ,'nav2.py')),
+    # launch_arguments = {'namespace': ''}.items())
     # ld.add_action(start_nav2)
 
       # Start ArUco marker detector node

@@ -45,9 +45,15 @@ ekf_filter_node:
                        false, false, false,
                        false, false, false,
 
-                       true, true, true,
+                true, true, false,
+                #        true, true, true,
                        false, false, false,
                        false, false, false]
+
+        odom0_relative: true #new 
+        odom0_twist_rejection_threshold: 1.0
+        
+
 
         # # odom0_queue_size: 2
 
@@ -65,11 +71,14 @@ ekf_filter_node:
         imu0: /minibot_a_t265/gyro/sample # put the topic here 
         imu0_config: [false, false, false,
                 #       true,  true,  true,
-                false, false, false,
+                false, false, true,
 
                 false, false, false,
                 # true, true, true,
-                      true, true, true,
+                #       true, true, true,
+                false, false, true,
+                
+
                       true, true, true]
 
        
@@ -78,8 +87,8 @@ ekf_filter_node:
   # x, y, z,
   # roll, pitch, yaw, 
   # vx, vy, vz,
-  # vroll, vpitch, 
-  # vyaw, ax, ay, az. 
+  # vroll, vpitch, vyaw,
+  # ax, ay, az. 
   # In our example, we set everything in odom0_config to false except the
   # 1st, 2nd, 3rd, and 12th entries, which means the filter will only use the x, y, z,
   # and the vyaw values of odom0.
