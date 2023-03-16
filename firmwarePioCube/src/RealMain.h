@@ -99,15 +99,6 @@ public:
 #if ENABLE_GPS
     success = success && gpsManager.init();
 #endif
-
-    // initPwm();
-    // setPwm(5000, 50);
-    // initAdc();
-    pinMode(L_WHEEL_FORW_PIN, OUTPUT);
-    pinMode(L_WHEEL_BACK_PIN, OUTPUT);
-    pinMode(R_WHEEL_FORW_PIN, OUTPUT);
-    pinMode(R_WHEEL_BACK_PIN, OUTPUT);
-
     return success;
   }
 
