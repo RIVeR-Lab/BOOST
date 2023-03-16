@@ -1,6 +1,8 @@
 #include "RosManager.h"
 #include "RealMain.h"
 
+// TODO: Report firmware version
+
 bool RosManager::init() {
   bool success = true;
 
@@ -15,6 +17,15 @@ bool RosManager::init() {
 
 #if ENABLE_IMU
   nodeHandle.advertise(bno055_imu_pub);
+#endif
+
+#if ENABLE_ENCODERS
+  nodeHandle.advertise(encoder_left_pub);
+  nodeHandle.advertise(encoder_right_pub);
+#endif
+
+#if ENABLE_GPS
+  nodeHandle.advertise(gps_pub);
 #endif
 
   // SETUP SUBSCRIBERS
@@ -74,6 +85,16 @@ bool RosManager::loopHook() {
     encoder_right_msg.data = realMain.encRight.read();
     encoder_left_pub.publish(&encoder_left_msg);
     encoder_right_pub.publish(&encoder_right_msg);
+  }
+#endif
+
+// Publish GPS data
+#if ENABLE_GPS
+  static uint32_t gpsLastPub = 0;
+  if ((millis() - gpsLastPub) > 100) {
+    gpsLastPub = millis();
+    gps_msg = realMain.gpsManager.toRosMsg();
+    gps_pub.publish(&gps_msg);
   }
 #endif
 

@@ -64,75 +64,10 @@ private:
   // ------------------------------
 
 public:
-  bool initialize() {
-    bool success = true;
-    delay(2000);
-
-#if NUCLEO_F767ZI_CUSTOM
-    serial2.setRx(PD_6);
-    serial2.setTx(PD_5);
-#endif
-#if NUCLEO_F446RE_CUSTOM
-    Serial2.end();
-    Serial2.setRx(PA_3);
-    Serial2.setTx(PA_2);
-    Serial2.begin(RosManager::rosSerialBaud);
-    while (!Serial2) {
-      yield();
-    }
-#endif
-
-    LOGEVENT("Setup...");
-
-#if ENABLE_ROSHANDLER
-    success = success && rosManager.init();
-#endif
-
-#if ENABLE_IMU
-    success = success && imuManager.init();
-#endif
-
-#if ENABLE_ODOMETRY
-    success = success && odomManager.init();
-#endif
-
-#if ENABLE_GPS
-    success = success && gpsManager.init();
-#endif
-    return success;
-  }
-
-  // Main Big Loop
-  void loop() {
-    while (1) {
-      // Blink LED every 1 second
-      static uint32_t counter = 0;
-      if ((millis() - counter) > 1000) {
-        counter = millis();
-        LOGEVENT("Looping...");
-        // Serial2.println("Looping...");
-        // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
-      }
-
-#if ENABLE_ROSHANDLER
-      rosManager.loop();
-#endif
-
-#if ENABLE_IMU
-      imuManager.loop();
-#endif
-
-#if ENABLE_ODOMETRY
-      odomManager.loop();
-#endif
-
-#if ENABLE_GPS
-      gpsManager.loop();
-#endif
-    }
-  }
-
+  bool initialize();
   bool deinitialize();
+  // Main Big Loop
+  void loop();
 
 private:
   bool initialized = false;

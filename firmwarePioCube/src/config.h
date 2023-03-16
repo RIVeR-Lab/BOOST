@@ -1,6 +1,6 @@
-#define LOG_LEVEL LOGLEVEL_ERROR
+#define LOG_LEVEL LOGLEVEL_ERROR  // Used in utils/log.h
 
-#define CONSOLE_LOGGING 1 // Logs raw serial over USB. DO NOT HAVE THIS ON WHEN USING ROSSERIAL!!!
+#define CONSOLE_LOGGING 0 // Logs raw serial over USB. DO NOT HAVE THIS ON WHEN USING ROSSERIAL!!!
 #define ROS_LOGGING 0 // Logs to ROS over ROS Serial using ROS packets
 
 #define ENABLE_ROSMANAGER_LOGLOOP 0

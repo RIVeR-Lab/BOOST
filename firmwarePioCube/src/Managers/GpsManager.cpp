@@ -145,7 +145,7 @@ GpsManager::positionCovarianceDiag(float hdop,
 
 sensor_msgs::NavSatFix GpsManager::toRosMsg() {
   sensor_msgs::NavSatFix msg;
-  msg.header.stamp = ros::Time::now();
+  msg.header.stamp = realMain.rosManager.nodeHandle.now();
   msg.header.frame_id = "gps";
   if (isGpsFixed()) {
     msg.status.status = sensor_msgs::NavSatStatus::STATUS_FIX;

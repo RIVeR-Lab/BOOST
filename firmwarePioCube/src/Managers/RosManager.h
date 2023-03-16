@@ -11,6 +11,7 @@
 #include <std_msgs/Empty.h>
 #include <std_msgs/String.h>
 #include <std_msgs/Int32.h>
+#include <sensor_msgs/NavSatFix.h> 
 
 class RosManager : public FakeThread {
 public:
@@ -20,6 +21,7 @@ public:
         bno055_imu_pub("bno055_imu", &bno055_imu_msg),
         encoder_left_pub("encoder_left", &encoder_left_msg),
         encoder_right_pub("encoder_right", &encoder_right_msg),
+        gps_pub("gps", &gps_msg),
         subDiffDrive("/cmd_vel", &subDiffDrive_cb)
         {}
   ~RosManager() {}
@@ -51,6 +53,9 @@ private:
   ros::Publisher encoder_right_pub;
   std_msgs::Int32 encoder_left_msg;
   std_msgs::Int32 encoder_right_msg;
+  // GPS
+  ros::Publisher gps_pub;
+  sensor_msgs::NavSatFix gps_msg;
   /* -------------------------- END PUBLISHERS -------------------------- */
 
   /* -------------------------- SUBSCRIBERS -------------------------- */
