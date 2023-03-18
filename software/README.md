@@ -1,5 +1,17 @@
 # **Swarm Crawler Software Stack Guide**
 
+#### After plugging in the wifi module into power, wait until you see the swarm_crawler wifi network appear.
+
+WIFI name: **swarm_crawler**
+
+Wifi Password: **capstone**
+
+After connecting to the swarm_crawler, go to 
+
+**http://192.168.8.1,** the password at the dashboard is **capstone,**
+
+Go to the section that allows you to use the wifi module as a reapeter, and select the local wifi network you are on. This will allow you, and all the minibots to be on the same ROS network, and also access the internet. you will also be able to see the IP addresses of all the other devices connected to the network
+
 #### **Add some ease of use to .bashrc. You only need to do this once.**
 
 * *`echo "export ros2=/opt/ros/galactic/setup.bash" >>  ~/.bashrc`*
@@ -15,12 +27,12 @@ Adding rqt plugins:
 * `sudo apt-get install ros-galactic-rqt-*`
 * `rqt --force-discover`
 
-## **Running Software Stack:**
+## **Runnings Software Stack:**
 
 #### Build Realsense package ( If its your first time setup be sure build the realsense package)
 
 * *`cd software/realsense-ros`*
-* *`colcon build`*
+* *`colcon buildSS`*
 
 #### Boot Up Cameras on Jetson
 
