@@ -58,10 +58,9 @@ install(PROGRAMS
   scripts/navigate_to_aruco_v1.py
   scripts/navigate_to_aruco_v2.py
   scripts/show_center_depth2.py
-
-
   scripts/transforms/map_to_base_link_transform.py
   scripts/transforms/base_link_to_aruco_marker_transform.py
+  scripts/hub_lift_controlller.py
   DESTINATION lib/${PROJECT_NAME}
 )
 

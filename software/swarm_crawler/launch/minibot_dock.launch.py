@@ -84,7 +84,7 @@ def generate_launch_description():
 
     declare_use_joint_state_publisher_cmd = DeclareLaunchArgument(
         name='gui',
-        default_value='True',
+        default_value='False',
         description='Flag to enable joint_state_publisher_gui')
 
     declare_use_robot_state_pub_cmd = DeclareLaunchArgument(
@@ -94,7 +94,7 @@ def generate_launch_description():
 
     declare_use_rviz_cmd = DeclareLaunchArgument(
         name='use_rviz',
-        default_value='True',
+        default_value='False',
         description='Whether to start RVIZ')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
