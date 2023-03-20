@@ -39,12 +39,15 @@ bool RealMain::init() {
   Console.println("RealMain::Initializeing..."); // Bypass LOGGING
   LOGINFO("%s: %s", Version::getBuildTimestamp().c_str(),
           Version::getGitCommitSha1().c_str());
-  ROSLOGINFO("%s: %s", Version::getBuildTimestamp().c_str(),
-             Version::getGitCommitSha1().c_str());
 
+// TODO: Replace with XMacro
 #if ENABLE_ROSMANAGER
   success = rosManager.init() && success;
 #endif
+
+  // Has to be after rosManager.init() or it won't publish.
+  ROSLOGINFO("FIRMWARE_VERSION:%s:SHA%s", Version::getBuildTimestamp().c_str(),
+             Version::getGitCommitSha1().c_str());
 
 #if ENABLE_IMU
   success = imuManager.init() && success;
