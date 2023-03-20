@@ -37,9 +37,10 @@ bool RealMain::init() {
   }
   LOGEVENT("Initializing...");
   Console.println("RealMain::Initializeing..."); // Bypass LOGGING
-  LOGINFO("%s: %s", Version::getBuildTimestamp, Version::getGitCommitSha1);
-  ROSLOGINFO("%s: %s", Version::getBuildTimestamp, Version::getGitCommitSha1);
-
+  LOGINFO("%s: %s", Version::getBuildTimestamp().c_str(),
+          Version::getGitCommitSha1().c_str());
+  ROSLOGINFO("%s: %s", Version::getBuildTimestamp().c_str(),
+             Version::getGitCommitSha1().c_str());
 
 #if ENABLE_ROSMANAGER
   success = rosManager.init() && success;
