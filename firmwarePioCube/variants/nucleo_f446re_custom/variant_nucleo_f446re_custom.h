@@ -172,6 +172,7 @@
 #define L_ENCODER_PIN2  PA1 // TIM5_CH2
 #define R_ENCODER_PIN1  PA5 // TIM2_CH1
 #define R_ENCODER_PIN2  PB3 // TIM2_CH2
+#define ENCODER_LVL_SHIFTER_EN  PB5
 
 // GPS Pins
 #define GPS_RX_PIN PC10 // RX on the GPS
@@ -179,6 +180,14 @@
 #define GPS_RESET_N_PIN PA15
 #define GPS_1PPS_PIN PC12 // 1PPS on the GPS
 #define GPS_FORCE_ON_N_PIN PD2
+
+
+// LED Pins
+#define LED_1_PIN PC9
+#define LED_2_PIN PC7
+#define LED_3_PIN PC8
+#define LED_4_PIN PC6
+#define LED_4_PIN PB12
 
 // Default pin used for 'Serial' instance (ex: ST-Link)
 // Mandatory for Firmata
@@ -188,9 +197,6 @@
 #ifndef PIN_SERIAL_TX
   #define PIN_SERIAL_TX         PA2
 #endif
-
-// Level Shift
-#define ENCODER_LVL_SHIFTER_EN  PB5
 
 /* HAL modules */
 #define HAL_SD_MODULE_DISABLED
