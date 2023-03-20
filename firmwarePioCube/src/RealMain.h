@@ -17,6 +17,7 @@
 #include <HardwareSerial.h>
 #include <SPI.h>
 #include <Wire.h>
+#include "version.h"
 
 extern void _Error_Handler(const char *msg, int val);
 

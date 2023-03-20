@@ -35,8 +35,11 @@ bool RealMain::init() {
   while (!console6) {
     yield();
   }
-  LOGEVENT("Initializeing...");
+  LOGEVENT("Initializing...");
   Console.println("RealMain::Initializeing..."); // Bypass LOGGING
+  LOGINFO("%s: %s", Version::getBuildTimestamp, Version::getGitCommitSha1);
+  ROSLOGINFO("%s: %s", Version::getBuildTimestamp, Version::getGitCommitSha1);
+
 
 #if ENABLE_ROSMANAGER
   success = rosManager.init() && success;
