@@ -29,8 +29,8 @@ bool RealMain::init() {
   }
 #endif
   console6.end();
-  console6.setTx(PC_6);
-  console6.setRx(PC_7);
+  console6.setTx(SERIAL_CONSOLE_TX_PIN);
+  console6.setRx(SERIAL_CONSOLE_RX_PIN);
   console6.begin(57600);
   while (!console6) {
     yield();

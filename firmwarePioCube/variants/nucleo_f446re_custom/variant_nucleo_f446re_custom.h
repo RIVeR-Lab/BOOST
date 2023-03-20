@@ -187,7 +187,11 @@
 #define LED_2_PIN PC7
 #define LED_3_PIN PC8
 #define LED_4_PIN PC6
-#define LED_4_PIN PB12
+#define LED_5_PIN PB12
+
+// Serial Console Pins
+#define SERIAL_CONSOLE_TX_PIN PC6
+#define SERIAL_CONSOLE_RX_PIN PC7
 
 // Default pin used for 'Serial' instance (ex: ST-Link)
 // Mandatory for Firmata
