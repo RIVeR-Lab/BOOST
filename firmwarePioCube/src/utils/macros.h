@@ -8,7 +8,7 @@
   } \
   return success;
 
-#define INIT_HEADER\
+#define INIT_HEADER \
   bool success = true; \
   LOGEVENT("Initializing..."); \
   ROSLOGEVENT("Initializing...");
