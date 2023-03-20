@@ -1,8 +1,7 @@
 #include "L293N.h"
 
 bool L293N::init() {
-  bool success = true;
-  LOGEVENT("Initializing...");
+  INIT_HEADER
   pinMode(in1Pin, OUTPUT);
   pinMode(in2Pin, OUTPUT);
   pinMode(in3Pin, OUTPUT);
@@ -15,14 +14,7 @@ bool L293N::init() {
     pinMode(enableBPin, OUTPUT);
     success = success && enable(enableBPin, true);
   }
-
-  if (!success) {
-    LOGERROR("FAILED to initialize.");
-  } else {
-    LOGINFO("SUCCESSFULLY initialized.");
-  }
-
-  return success;
+  INIT_FOOTER
 }
 
 bool L293N::enable(uint32_t pin, bool enable) {

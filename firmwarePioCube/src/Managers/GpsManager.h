@@ -12,6 +12,7 @@
 #include "utils.h"
 #include "utils/log.h"
 #include <ros/time.h>
+#include "utils/macros.h"
 
 #define GPS_BUF_SIZE 512
 

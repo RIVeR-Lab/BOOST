@@ -5,6 +5,7 @@
 #include "HardwareSerial.h"
 #include "data/GpsDatagram.h"
 #include "utils/log.h"
+#include "utils/macros.h"
 
 class SL871 {
 public:
@@ -23,6 +24,7 @@ public:
 
   bool init() {
     LOGEVENT("Intializing SL871 rxPin=%d, txPin=%d.", sl871RxPin, sl871TxPin);
+    ROSLOGEVENT("Intializing SL871 rxPin=%d, txPin=%d.", sl871RxPin, sl871TxPin);
     uart.end();
     uart.setRx(sl871TxPin);
     uart.setTx(sl871RxPin);
@@ -30,6 +32,7 @@ public:
     pinMode(resetPin, INPUT_FLOATING);
     reset();
     LOGEVENT("SL871 initialized.");
+    ROSLOGEVENT("SL871 initialized.");
     return true;
   }
 

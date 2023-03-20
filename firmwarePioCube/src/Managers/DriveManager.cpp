@@ -10,19 +10,11 @@ constexpr float DriveManager::MOTOR_MIN_RAD_PER_SEC;
 constexpr float DriveManager::MOTOR_MAX_RAD_PER_SEC;
 
 bool DriveManager::init() {
-  bool success = true;
-  LOGEVENT("Initializing...");
+  INIT_HEADER
   success = success && mtrCtrl.init();
   success = success && lvlShifter.init();
   success = success && lvlShifter.enable();
-  if(success) {
-    LOGINFO("SUCCESSFULLY initialized.");
-  } else {
-    LOGERROR("FAILED to initialize.");
-    // TODO: Change this do a macro
-    realMain.rosManager.nodeHandle.logerror("DriveManager FAILED to initialize.");
-  }
-  return success;
+  INIT_FOOTER
 }
 
 bool DriveManager::loopHook() {

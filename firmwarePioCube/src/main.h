@@ -9,7 +9,6 @@
 //
 #include "utils/log.h"
 //
-#include "pins.h"
 
 // #include "ros.h"
 // #include "std_msgs"

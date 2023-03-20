@@ -16,7 +16,7 @@ void _Error_Handler(const char *msg, int val) {
   }
 }
 
-bool RealMain::initialize() {
+bool RealMain::init() {
   bool success = true;
   delay(2000);
 #if NUCLEO_F446RE_CUSTOM
@@ -61,10 +61,12 @@ bool RealMain::initialize() {
   if (!success) {
     LOGERROR("Failed to initialize");
     Console.println("RealMain::Failed to initialize"); // Bypass LOGGING
+    ROSLOGERROR("Failed to initialize");
     initialized = false;
   } else {
     LOGEVENT("Initialized");
     Console.println("RealMain::Initialized"); // Bypass LOGGING
+    ROSLOGINFO("Initialized");
     initialized = true;
   }
 

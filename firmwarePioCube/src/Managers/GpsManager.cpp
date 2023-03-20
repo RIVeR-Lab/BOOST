@@ -2,15 +2,9 @@
 #include "RealMain.h"
 
 bool GpsManager::init() {
-  bool success = true;
-  LOGEVENT("Initializing...");
+  INIT_HEADER
   success = success && gps.init();
-  if (!success) {
-    LOGERROR("FAILED to initialize.");
-  } else {
-    LOGINFO("SUCCESSFULLY initialized.");
-  }
-  return success;
+  INIT_FOOTER
 }
 
 bool GpsManager::loopHook() {

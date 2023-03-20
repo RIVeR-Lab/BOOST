@@ -11,7 +11,6 @@
 #include "RosManager.h"
 #include "TXB0104PWR.h"
 #include "config.h"
-#include "pins.h"
 #include "utils.h"
 #include "utils/log.h"
 #include <Arduino.h>
@@ -42,6 +41,10 @@ public:
   friend class BNO055Manager;
   friend class DriveManager;
   friend class GpsManager;
+  friend bool log_printf_level(bool ros, const char *file, uint32_t line, uint32_t level,
+                      bool addNL, const char *Format, ...);
+  friend bool log_printf_error(bool ros, const char *file, uint32_t line, const char *Format,
+                      ...);
 
 private:
   // ------------------------------ DEVICES ------------------------------
@@ -67,7 +70,7 @@ private:
   // ------------------------------
 
 public:
-  bool initialize();
+  bool init();
   // Main Big Loop
   void loop();
 

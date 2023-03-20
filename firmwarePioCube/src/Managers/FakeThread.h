@@ -3,6 +3,7 @@
 
 #include "utils/log.h"
 #include <stdint.h>
+#include "utils/macros.h"
 
 class FakeThread {
 public:

@@ -4,8 +4,7 @@
 // TODO: Report firmware version
 
 bool RosManager::init() {
-  bool success = true;
-  LOGEVENT("Initializing...");
+  INIT_HEADER
 
   // SETUP HARDWARE AND ROS NODE
   nodeHandle.getHardware()->setBaud(rosSerialBaud);
@@ -32,13 +31,7 @@ bool RosManager::init() {
   // SETUP SUBSCRIBERS
   nodeHandle.subscribe(subDiffDrive);
 
-  if(!success){
-    LOGERROR("FAILED to initialize.");
-  } else {
-    LOGEVENT("Initialized SUCCESSFULLY.");
-  }
-
-  return success;
+  INIT_FOOTER
 }
 
 bool RosManager::loopHook() {

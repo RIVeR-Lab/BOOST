@@ -4,6 +4,7 @@
 #include "Arduino.h"
 #include "variant_nucleo_f446re_custom.h"
 #include "utils/log.h"
+#include "utils/macros.h"
 
 class L293N {
 public:

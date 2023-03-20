@@ -12,6 +12,7 @@
 #include <std_msgs/String.h>
 #include <std_msgs/Int32.h>
 #include <sensor_msgs/NavSatFix.h> 
+#include "utils/macros.h"
 
 class RosManager : public FakeThread {
 public:

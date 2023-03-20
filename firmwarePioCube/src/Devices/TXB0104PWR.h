@@ -2,6 +2,8 @@
 #define _TXB0104PWR_H_
 
 #include "Arduino.h"
+#include "utils/log.h"
+#include "utils/macros.h"
 
 // A 5V to 3v3 level shifter
 class TXB0104PWR {
@@ -23,10 +25,10 @@ public:
   }
 
   bool init() {
-    bool success = true;
+    INIT_HEADER
     pinMode(enablePin, OUTPUT);
     success = success && enable();
-    return success;
+    INIT_FOOTER
   }
 
 private:

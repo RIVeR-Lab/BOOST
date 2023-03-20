@@ -5,6 +5,7 @@
 #include "FakeThread.h"
 #include "TXB0104PWR.h"
 #include "utils/log.h"
+#include "utils/macros.h"
 
 class OdometryManager : public FakeThread {
 public:
@@ -13,13 +14,11 @@ public:
         lvlShifter(_lvlShifter) {}
 
   bool init() {
-    bool success = true;
-    LOGEVENT("Initializing...");
+    INIT_HEADER
     // Enable encoder level shifter.
     lvlShifter.init();
     lvlShifter.enable();
-    LOGEVENT("Initialized SUCCESSFULLY");
-    return success;
+    INIT_FOOTER
   }
 
   bool loopHook() override;

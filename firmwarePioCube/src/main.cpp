@@ -36,7 +36,7 @@ void testGPS() {
 }
 
 void setup() {
-  realMain.initialize();
+  realMain.init();
   realMain.loop();
 
   // HardwareTimer *MyTim = new HardwareTimer(TIM5);
