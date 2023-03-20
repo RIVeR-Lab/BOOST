@@ -1,4 +1,4 @@
-#include "utils.h"
+#include "utils/utils.h"
 
 void utils::pinModeAF(PinName ulPin, uint32_t alternate_function) {
   int pn = ulPin;
