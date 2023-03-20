@@ -46,7 +46,7 @@ bool RealMain::init() {
 #endif
 
   // Has to be after rosManager.init() or it won't publish.
-  ROSLOGINFO("FIRMWARE_VERSION:%s:SHA%s", Version::getBuildTimestamp().c_str(),
+  ROSLOGINFO("FIRMWARE_VERSION:%s:SHA:%s", Version::getBuildTimestamp().c_str(),
              Version::getGitCommitSha1().c_str());
 
 #if ENABLE_IMU
