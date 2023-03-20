@@ -117,7 +117,7 @@ class ConnectToChargingDockNavigator(Node):
       
       # If we have enough battery, don't navigate to the charging dock.
       if low_battery == False:
-        self.get_logger().info('Awaiting Docking Command.')
+        # self.get_logger().info('Awaiting Docking Command.')
 
         return None 
       

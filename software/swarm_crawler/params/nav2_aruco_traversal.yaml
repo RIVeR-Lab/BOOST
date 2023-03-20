@@ -12,7 +12,7 @@ amcl:
     beam_skip_threshold: 0.3
     do_beamskip: false
     global_frame_id: "map"
-    initial_pose: [0.0, 0.0, 0.0, 0.0]
+    initial_pose: [0.0, 1.0, 0.0, 0.0]
     lambda_short: 0.1
     laser_likelihood_max_dist: 2.0
     laser_max_range: 100.0
@@ -54,8 +54,10 @@ bt_navigator:
     use_sim_time: False
     global_frame: map
     robot_base_frame: base_link
-    # odom_topic: /odometry/filtered #/wheel/odometry
-    odom_topic: /minibot_a_t265/pose/sample #/wheel/odometry
+    odom_topic: /odometry/filtered #/wheel/odometry
+    # odom_topic: /minibot_a_t265/pose/sample #/wheel/odometry
+    # odom_topic: /minibot_a_t265/pose/sample #/wheel/odometry
+
     bt_loop_duration: 10
     default_server_timeout: 20
     enable_groot_monitoring: True
@@ -140,7 +142,7 @@ controller_server:
       min_lookahead_dist: 0.3
       max_lookahead_dist: 0.9
       lookahead_time: 1.5
-      rotate_to_heading_angular_vel: 1.8
+      rotate_to_heading_angular_vel: 2.0
       transform_tolerance: 0.1
       use_velocity_scaled_lookahead_dist: false
       min_approach_linear_velocity: 0.05
@@ -178,7 +180,7 @@ local_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
-        inflation_radius: 0.2 #0.55
+        inflation_radius: 0.15 #0.55
       voxel_layer:
         plugin: "nav2_costmap_2d::VoxelLayer"
         enabled: True
@@ -241,7 +243,7 @@ global_costmap:
       inflation_layer:
         plugin: "nav2_costmap_2d::InflationLayer"
         cost_scaling_factor: 3.0
-        inflation_radius: 0.2 #0.55
+        inflation_radius: 0.15 #0.55
       always_send_full_costmap: True
   global_costmap_client:
     ros__parameters:
@@ -296,7 +298,7 @@ recoveries_server:
     use_sim_time: False
     simulate_ahead_time: 2.0
     max_rotational_vel: 1.0
-    min_rotational_vel: 0.4
+    min_rotational_vel: 0.7
     rotational_acc_lim: 3.2
 
 robot_state_publisher:
@@ -335,7 +337,7 @@ slam_toolbox:
     # or at the dock, but they are mutually exclusive, if pose is given
     # will use pose
     #map_file_name: test_steve
-    map_start_pose: [0.0, 0.0, 0.0]
+    map_start_pose: [0.0, 1.0, 0.0]
     #map_start_at_dock: true
 
     debug_logging: false

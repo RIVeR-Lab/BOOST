@@ -30,7 +30,10 @@ sudo killall -e recoveries_server
 sudo killall -e rviz2
 sudo pkill python3
 # sudo pkill _ros2_daemon
-sudo pkill ros dynamic_bdirge
+sudo pkill ros 
+sudo pkill dynamic_bdirge
+sudo pkill roscore
+
 
  
 

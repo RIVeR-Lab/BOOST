@@ -63,7 +63,7 @@
   <link name="base_link">
     <visual>
       <!-- <origin xyz="0 0 -0.05" rpy="1.5707963267949 0 3.141592654"/> -->
-      <origin xyz="0.0 0 ${(wheel_radius+wheel_zoff)}" rpy="0 0 0"/>
+      <origin xyz="0.0 0 ${(wheel_radius+wheel_zoff)}" rpy="0 0 ${pi/2}"/>
       <!-- <origin xyz="0.0 0 0.05" rpy="0 0 0"/> -->
 
 
