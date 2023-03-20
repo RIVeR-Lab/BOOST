@@ -4,17 +4,18 @@
 #include "Arduino.h"
 #include "FakeThread.h"
 #include "L293N.h"
+#include "TXB0104PWR.h"
 #include "utils.h"
 #include "utils/log.h"
 #include <geometry_msgs/Twist.h>
-#include "TXB0104PWR.h"
 
 class RealMain;
 
 class DriveManager : public FakeThread {
 public:
   DriveManager(L293N &_mtrCtrl, TXB0104PWR &_lvlShifter)
-      : FakeThread(LOOP_DELAY_MS, LOG_LOOP_DELAY_MS), mtrCtrl(_mtrCtrl), lvlShifter(_lvlShifter) {}
+      : FakeThread(LOOP_DELAY_MS, LOG_LOOP_DELAY_MS), mtrCtrl(_mtrCtrl),
+        lvlShifter(_lvlShifter) {}
   ~DriveManager() {}
 
   bool init() override;
@@ -29,8 +30,11 @@ private:
   static constexpr uint32_t LOOP_DELAY_MS = 1000;
   static constexpr uint32_t LOG_LOOP_DELAY_MS = LOOP_DELAY_MS;
 
-  static constexpr float WHEEL_BASE = 0.2;    // (meters per radian)
-  static constexpr float WHEEL_RADIUS = 0.02; // (meters per radian)
+  static constexpr float WHEEL_BASE =
+      (155.0 / 1000.0); // (meters per radian) (aka just meters between 2 wheels on the same
+           // axle)
+  static constexpr float WHEEL_RADIUS =
+      (30.0 / 1000.0); // (meters per radian) (aka just the radius of the wheel)
   static constexpr float PWM_MIN = 0;
   static constexpr float PWM_MAX = 255;
   static constexpr float MOTOR_RPM = 60;
