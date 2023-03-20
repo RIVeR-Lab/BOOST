@@ -104,5 +104,9 @@ void RealMain::loop() {
 #if ENABLE_GPS
     gpsManager.loop();
 #endif
+
+#if ENABLE_DRVMANAGER
+    drvManager.loop();
+#endif
   }
 }
