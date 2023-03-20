@@ -13,7 +13,7 @@ bool BNO055Manager::loopHook() {
 }
 
 bool BNO055Manager::logLoopHook() {
-#if PRINT_IMU_DATA
+#if ENABLE_IMU_LOGLOOP
   LOGEVENT("%s", __func__);
   logAll();
 #endif

@@ -7,7 +7,7 @@ bool OdometryManager::loopHook() {
 }
 
 bool OdometryManager::logLoopHook() {
-#if PRINT_ODOMETRY_DATA
+#if ENABLE_ODOMETRY_LOGLOOP
   LOGEVENT("%s", __func__);
   printOdomData();
 #endif

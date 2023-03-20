@@ -2,6 +2,7 @@
 
 bool L293N::init() {
   bool success = true;
+  LOGEVENT("Initializing...");
   pinMode(in1Pin, OUTPUT);
   pinMode(in2Pin, OUTPUT);
   pinMode(in3Pin, OUTPUT);

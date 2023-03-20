@@ -131,7 +131,7 @@
   #define USER_BTN              PC13
 #endif
 
-static const uint32_t NOPIN = 0xFFFFFFFF;
+#define NOPIN 0xFFFFFFFF
 
 #define SERIAL_TX_BUFFER_SIZE 256
 #define SERIAL_RX_BUFFER_SIZE 256
@@ -152,17 +152,19 @@ static const uint32_t NOPIN = 0xFFFFFFFF;
 
 // Motor Pins
 #ifndef L_WHEEL_FORW_PIN
-  #define L_WHEEL_FORW_PIN  PB6
+  #define L_WHEEL_FORW_PIN  PB6 // 10
 #endif
 #ifndef L_WHEEL_BACK_PIN
-  #define L_WHEEL_BACK_PIN  PB7
+  #define L_WHEEL_BACK_PIN  PB7 // 22
 #endif
 #ifndef R_WHEEL_FORW_PIN
-  #define R_WHEEL_FORW_PIN  PA7
+  #define R_WHEEL_FORW_PIN  PA7 // 198
 #endif
 #ifndef R_WHEEL_BACK_PIN
-  #define R_WHEEL_BACK_PIN  PA9 // PA6
+  #define R_WHEEL_BACK_PIN  PA6 // 199 //PA9 // PA6, 8
 #endif
+
+#define MOTOR_LVL_SHIFTER_EN_PIN PB4
 
 // Encoder pins
 // J4

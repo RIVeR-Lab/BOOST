@@ -1,6 +1,7 @@
 #include "RealMain.h"
 
 RealMain realMain;
+HardwareSerial console6(USART6);
 
 /**
  * @brief  This function is executed in case of error occurrence.
@@ -27,23 +28,34 @@ bool RealMain::initialize() {
     yield();
   }
 #endif
+  console6.end();
+  console6.setTx(PC_6);
+  console6.setRx(PC_7);
+  console6.begin(57600);
+  while (!console6) {
+    yield();
+  }
   LOGEVENT("Initializeing...");
   Console.println("RealMain::Initializeing..."); // Bypass LOGGING
 
-#if ENABLE_ROSHANDLER
-  success = success && rosManager.init();
+#if ENABLE_ROSMANAGER
+  success = rosManager.init() && success;
 #endif
 
 #if ENABLE_IMU
-  success = success && imuManager.init();
+  success = imuManager.init() && success;
 #endif
 
 #if ENABLE_ODOMETRY
-  success = success && odomManager.init();
+  success = odomManager.init() && success;
 #endif
 
 #if ENABLE_GPS
-  success = success && gpsManager.init();
+  success = gpsManager.init() && success;
+#endif
+
+#if ENABLE_DRVMANAGER
+  success = drvManager.init() && success;
 #endif
 
   if (!success) {
@@ -66,12 +78,12 @@ void RealMain::loop() {
     if ((millis() - counter) > 1000) {
       counter = millis();
       LOGEVENT("Looping...");
+      Console.println("Looping...");
       // TODO: Make LEDs on PCB blink
-      // Serial2.println("Looping...");
       // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
     }
 
-#if ENABLE_ROSHANDLER
+#if ENABLE_ROSMANAGER
     rosManager.loop();
 #endif
 

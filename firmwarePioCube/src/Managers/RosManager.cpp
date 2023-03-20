@@ -5,6 +5,7 @@
 
 bool RosManager::init() {
   bool success = true;
+  LOGEVENT("Initializing...");
 
   // SETUP HARDWARE AND ROS NODE
   nodeHandle.getHardware()->setBaud(rosSerialBaud);
@@ -19,7 +20,7 @@ bool RosManager::init() {
   nodeHandle.advertise(bno055_imu_pub);
 #endif
 
-#if ENABLE_ENCODERS
+#if ENABLE_ODOMETRY
   nodeHandle.advertise(encoder_left_pub);
   nodeHandle.advertise(encoder_right_pub);
 #endif
@@ -31,10 +32,10 @@ bool RosManager::init() {
   // SETUP SUBSCRIBERS
   nodeHandle.subscribe(subDiffDrive);
 
-  if (!success) {
-    LOGERROR("Failed to initialize ROS node.");
+  if(!success){
+    LOGERROR("FAILED to initialize.");
   } else {
-    LOGINFO("Successfully initialized ROS node.");
+    LOGEVENT("Initialized SUCCESSFULLY.");
   }
 
   return success;
@@ -77,7 +78,7 @@ bool RosManager::loopHook() {
 #endif
 
 // Publish Encoder data
-#if ENABLE_ENCODERS
+#if ENABLE_ODOMETRY
   static uint32_t encoderLastPub = 0;
   if ((millis() - encoderLastPub) > 100) {
     encoderLastPub = millis();

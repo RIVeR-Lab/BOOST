@@ -10,12 +10,14 @@ public:
 
   bool enable() {
     bool success = true;
+    pinMode(enablePin, OUTPUT);
     digitalWrite(enablePin, HIGH);
     return success;
   }
 
   bool disable() {
     bool success = true;
+    pinMode(enablePin, OUTPUT);
     digitalWrite(enablePin, LOW);
     return success;
   }

@@ -14,6 +14,7 @@ public:
 
   bool init() {
     bool success = true;
+    LOGEVENT("Initializing...");
     // Enable encoder level shifter.
     lvlShifter.init();
     lvlShifter.enable();

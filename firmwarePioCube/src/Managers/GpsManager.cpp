@@ -3,7 +3,13 @@
 
 bool GpsManager::init() {
   bool success = true;
+  LOGEVENT("Initializing...");
   success = success && gps.init();
+  if (!success) {
+    LOGERROR("FAILED to initialize.");
+  } else {
+    LOGINFO("SUCCESSFULLY initialized.");
+  }
   return success;
 }
 

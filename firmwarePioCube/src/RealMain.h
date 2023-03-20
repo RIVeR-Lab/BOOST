@@ -30,15 +30,17 @@ public:
         encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
         encoderLvlShifter(ENCODER_LVL_SHIFTER_EN),
         mtrCtrl(L_WHEEL_FORW_PIN, L_WHEEL_BACK_PIN, R_WHEEL_FORW_PIN,
-                R_WHEEL_BACK_PIN),
+                R_WHEEL_BACK_PIN), mtrCtrlLvlShifter(MOTOR_LVL_SHIFTER_EN_PIN),
         gps(uart3Gps, GPS_RX_PIN, GPS_TX_PIN, GPS_RESET_N_PIN, GPS_1PPS_PIN,
             GPS_FORCE_ON_N_PIN),
         rosManager(Serial2), odomManager(encLeft, encRight, encoderLvlShifter),
-        imuManager(imu), drvManager(mtrCtrl), gpsManager(gps) {}
+        imuManager(imu), drvManager(mtrCtrl, mtrCtrlLvlShifter), gpsManager(gps) {}
   ~RealMain() {}
 
   friend class RosManager;
+  friend class OdometryManager;
   friend class BNO055Manager;
+  friend class DriveManager;
   friend class GpsManager;
 
 private:
@@ -51,6 +53,7 @@ private:
   Encoder encRight;
   TXB0104PWR encoderLvlShifter;
   L293N mtrCtrl;
+  TXB0104PWR mtrCtrlLvlShifter;
   SL871 gps;
   // ------------------------------ END DEVICES ------------------------------
 
@@ -65,7 +68,6 @@ private:
 
 public:
   bool initialize();
-  bool deinitialize();
   // Main Big Loop
   void loop();
 
@@ -75,7 +77,8 @@ private:
 
 // The one and only main thread allocated statically.
 extern RealMain realMain;
+extern HardwareSerial console6;
 // The UART used for logging.
-#define Console Serial2
+#define Console console6
 
 #endif // _SRC_REALMAIN_H

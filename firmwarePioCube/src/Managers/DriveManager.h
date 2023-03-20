@@ -7,11 +7,14 @@
 #include "utils.h"
 #include "utils/log.h"
 #include <geometry_msgs/Twist.h>
+#include "TXB0104PWR.h"
+
+class RealMain;
 
 class DriveManager : public FakeThread {
 public:
-  DriveManager(L293N &_mtrCtrl)
-      : FakeThread(LOOP_DELAY_MS, LOG_LOOP_DELAY_MS), mtrCtrl(_mtrCtrl) {}
+  DriveManager(L293N &_mtrCtrl, TXB0104PWR &_lvlShifter)
+      : FakeThread(LOOP_DELAY_MS, LOG_LOOP_DELAY_MS), mtrCtrl(_mtrCtrl), lvlShifter(_lvlShifter) {}
   ~DriveManager() {}
 
   bool init() override;
@@ -20,6 +23,7 @@ public:
 
 private:
   L293N &mtrCtrl;
+  TXB0104PWR &lvlShifter;
   // We don't need to loop fast because we set motor speed when a new twist
   // message comes in.
   static constexpr uint32_t LOOP_DELAY_MS = 1000;

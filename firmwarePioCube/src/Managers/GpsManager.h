@@ -31,7 +31,7 @@ public:
   }
 
 private:
-  static constexpr uint32_t LOOP_DELAY_MS = 100;
+  static constexpr uint32_t LOOP_DELAY_MS = 500;
   static constexpr uint32_t LOG_LOOP_DELAY_MS = 1000;
 
   static constexpr uint32_t MIN_NUM_SATS_FOR_FIX = 4;

@@ -43,19 +43,19 @@ private:
   /* -------------------------- PUBLISHERS -------------------------- */
   // Chatter
   ros::Publisher chatter;
-  std_msgs::String str_msg;
+  std_msgs::String str_msg{};
   std::string str_msg_data = "Chatter Topic: MCU blink!";
   // IMUS
   ros::Publisher bno055_imu_pub;
-  sensor_msgs::Imu bno055_imu_msg;
+  sensor_msgs::Imu bno055_imu_msg{};
   // Encoder
   ros::Publisher encoder_left_pub;
   ros::Publisher encoder_right_pub;
-  std_msgs::Int32 encoder_left_msg;
-  std_msgs::Int32 encoder_right_msg;
+  std_msgs::Int32 encoder_left_msg{};
+  std_msgs::Int32 encoder_right_msg{};
   // GPS
   ros::Publisher gps_pub;
-  sensor_msgs::NavSatFix gps_msg;
+  sensor_msgs::NavSatFix gps_msg{};
   /* -------------------------- END PUBLISHERS -------------------------- */
 
   /* -------------------------- SUBSCRIBERS -------------------------- */

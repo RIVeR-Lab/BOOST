@@ -1,4 +1,5 @@
 #include "DriveManager.h"
+#include "RealMain.h"
 
 constexpr float DriveManager::WHEEL_BASE;
 constexpr float DriveManager::WHEEL_RADIUS;
@@ -10,7 +11,17 @@ constexpr float DriveManager::MOTOR_MAX_RAD_PER_SEC;
 
 bool DriveManager::init() {
   bool success = true;
+  LOGEVENT("Initializing...");
   success = success && mtrCtrl.init();
+  success = success && lvlShifter.init();
+  success = success && lvlShifter.enable();
+  if(success) {
+    LOGINFO("SUCCESSFULLY initialized.");
+  } else {
+    LOGERROR("FAILED to initialize.");
+    // TODO: Change this do a macro
+    realMain.rosManager.nodeHandle.logerror("DriveManager FAILED to initialize.");
+  }
   return success;
 }
 
@@ -52,6 +63,7 @@ bool DriveManager::handlerNewTwistMsgRcv(const geometry_msgs::Twist msg) {
   }
 
   // Set direction pins and PWM
+  lvlShifter.enable();  // make sure this is enabled.
   if (success) {
     if (pwm_l < 1) {
       mtrCtrl.cmdMotor(L293N::MOTOR_LEFT, L293N::DIR_STOP, 0);

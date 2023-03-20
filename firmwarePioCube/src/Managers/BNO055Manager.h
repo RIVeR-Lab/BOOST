@@ -41,7 +41,7 @@ public:
 private:
   Adafruit_BNO055 &bno;
   static constexpr uint32_t LOOP_DELAY_MS = 10;
-  static constexpr uint32_t LOG_LOOP_DELAY_MS = 500;
+  static constexpr uint32_t LOG_LOOP_DELAY_MS = 1000;
   bool initted = false;
 
   // Last readings
