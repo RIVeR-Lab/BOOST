@@ -1,0 +1,1 @@
+usbipd wsl attach -i 1a86:7523
