@@ -160,13 +160,16 @@ def set_home():
 def home_all_axes():
     home_z_lift_arms()
     blocking_wait_until_axes_stop_moving()
-    home_x_pusher()
-    blocking_wait_until_axes_stop_moving()
     home_y_batt_indexer()
+    blocking_wait_until_axes_stop_moving()
+    set_home()
+    sleep(1)
+    move_indexer_to_first_empty_slot()
+    home_x_pusher()
     blocking_wait_until_axes_stop_moving()
     assert (are_all_axes_homed() == True)
     set_home()
-    move_indexer_to_first_empty_slot()
+    
 
 
 def move_x_pusher(loc: str):
