@@ -37,7 +37,7 @@ bool RealMain::init() {
   }
   LOGEVENT("Initializing...");
   Console.println("RealMain::Initializeing..."); // Bypass LOGGING
-  LOGINFO("%s: %s", Version::getBuildTimestamp().c_str(),
+  LOGINFO("FIRMWARE_VERSION:%s:SHA:%s", Version::getBuildTimestamp().c_str(),
           Version::getGitCommitSha1().c_str());
 
 // TODO: Replace with XMacro
