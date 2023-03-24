@@ -17,15 +17,27 @@ SERIAL_CONNECTION = serial.Serial(USB_PORT, GRBL_BPS, timeout=1)
 
 # State, these are indexed when looking from back of hubbot
 is_batt_slot_populated = {"0": True, "1": False, "2": True}
-batt_slot_abs_loc_cm = [0, 4.75, 9.75]
-is_homed = {"x": False, "y": False, "z": False}
+is_homed_dict = {"x": False, "y": False, "z": False}
+
+# Absolute location of things all relative to the homed position
+indexer_abs_loc_cm = {"slot0": 0, "slot1": 4.75, "slot2": 9.75}
+pusher_abs_loc_cm = {"above_minibot": -0.5, "in_indexer": -11}
+'''
+liftdown: Where the minibot can dock
+liftup: Where the minibot is lifted to and where battery can be swapped at
+'''
+lift_abs_loc_cm = {"liftdown": 0, "liftup": -150}
+
+# Feed rates
+indexer_feed_rate = "F200"
+pusher_feed_rate = "F200"
+lift_feed_rate = "F1000"
 
 # GCode commands
 cm_mode = "G21"
 inch_mode = "G20"
 absolute_mode = "G90"
 relative_mode = "G91"
-indexer_feed_rate = "F100"
 G01_linear_interpolation = "G01"
 indexer_axis = "Y"
 pusher_axis = "X"
@@ -67,9 +79,9 @@ def send_grbl_gcode_cmd(cmd: str, wait_for_response: bool = True):
     # Send g-code block
     SERIAL_CONNECTION.write(cmd.encode() + str.encode('\n'))
     if wait_for_response:
-      # Wait for response with carriage return
-      grbl_out = SERIAL_CONNECTION.readline()
-      print("grbl response: " + grbl_out.strip().decode("utf-8"))
+        # Wait for response with carriage return
+        grbl_out = SERIAL_CONNECTION.readline()
+        print("grbl response: " + grbl_out.strip().decode("utf-8"))
     print("Sent command: " + str(cmd))
 
 
@@ -78,9 +90,9 @@ def send_grbl_gcode_cmd_bytes(cmd: bytes, wait_for_response: bool = True):
     # Send g-code block
     SERIAL_CONNECTION.write(cmd + str.encode('\n'))
     if wait_for_response:
-      # Wait for response with carriage return
-      grbl_out = SERIAL_CONNECTION.readline()
-      print("grbl response: " + grbl_out.strip().decode("utf-8"))
+        # Wait for response with carriage return
+        grbl_out = SERIAL_CONNECTION.readline()
+        print("grbl response: " + grbl_out.strip().decode("utf-8"))
     print("Sent command: " + str(cmd))
 
 
@@ -102,9 +114,7 @@ def home_x_pusher():
     print("Homing X axis")
     send_grbl_gcode_cmd("G91 G21 G1 X-5 F2000")
     send_grbl_gcode_cmd("G91 G21 G1 X22 F2000")
-    is_homed["x"] = True
-
-# Battery indexer
+    is_homed_dict["x"] = True
 
 
 def home_y_batt_indexer():
@@ -114,7 +124,7 @@ def home_y_batt_indexer():
     send_grbl_gcode_cmd("G91 G21 G1 Y-17 F500")
     # Slower derease speed so that we increase torque in case we have tension in belts near end.
     send_grbl_gcode_cmd("G91 G21 G1 Y-1 F10")
-    is_homed["y"] = True
+    is_homed_dict["y"] = True
 
 
 def home_z_lift_arms():
@@ -129,14 +139,17 @@ def home_z_lift_arms():
     unESTOP()
     unESTOP()
     unESTOP()
-    is_homed["z"] = True
+    is_homed_dict["z"] = True
 
 
 def blocking_wait_until_axes_stop_moving():
     """Wait until all axes stop moving"""
+    SERIAL_CONNECTION.flushInput()
+    sleep(0.5)  # Wait for previous command to send
     while (are_motors_moving()):
         sleep(0.5)
         continue
+    SERIAL_CONNECTION.flushInput()
 
 
 def set_home():
@@ -156,6 +169,27 @@ def home_all_axes():
     move_indexer_to_first_empty_slot()
 
 
+def move_x_pusher(loc: str):
+    """Move the x axis to the specified location"""
+    assert (loc in pusher_abs_loc_cm.keys())
+    send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
+                        " " + pusher_axis + str(pusher_abs_loc_cm[loc]) + " " + pusher_feed_rate)
+
+
+def move_y_indexer(loc: str):
+    """Move the y axis to the specified location"""
+    assert (loc in indexer_abs_loc_cm.keys())
+    send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
+                        " " + indexer_axis + str(indexer_abs_loc_cm[loc]) + " " + batt_indexer_feed_rate)
+
+
+def move_z_lift_arms(loc: str):
+    """Move the z axis to the specified location"""
+    assert (loc in lift_abs_loc_cm.keys())
+    send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
+                        " " + lift_axis + str(lift_abs_loc_cm[loc]) + " " + lift_feed_rate)
+
+
 def get_first_empty_batt_slot() -> str:
     """Get the first empty battery slot"""
     for i in range(0, len(is_batt_slot_populated)):
@@ -173,20 +207,29 @@ def move_indexer_to_first_empty_slot():
         print("No empty slots!!")
 
 
+def move_indexer_to_new_battery():
+    """Move the indexer to a battery slot with with a battery with the highest charge"""
+    # For now get first non empty slot
+    for i in range(0, len(is_batt_slot_populated)):
+        if is_batt_slot_populated[str(i)] == True:
+            move_indexer_to_slot(i)
+            return
+    print("No batteries available!!")
+
+
 def move_indexer_to_slot(slot: int):
     """Move the indexer to the specified slot"""
     assert (slot >= 0 and slot < len(is_batt_slot_populated))
-    assert (is_batt_slot_populated[str(slot)] == False)
     # Move to the slot
     send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
-                        " " + indexer_axis + str(batt_slot_abs_loc_cm[slot]) + " " + indexer_feed_rate)
+                        " " + indexer_axis + str(indexer_abs_loc_cm["slot" + str(slot)]) + " " + indexer_feed_rate)
     # Mark the slot as populated
     is_batt_slot_populated[slot] = True
 
 
 def are_all_axes_homed() -> bool:
     """Check if all axes are homed"""
-    return is_homed["x"] and is_homed["y"] and is_homed["z"]
+    return is_homed_dict["x"] and is_homed_dict["y"] and is_homed_dict["z"]
 
 
 def ESTOP():
@@ -212,33 +255,19 @@ def lift_minibot_check_alignment():
 
 
 def swap_battery():
-    """Swap battery"""
+    """Swap a single battery from minibot to hub and then hub to minibot"""
     print("Swapping battery...")
-    if not is_homed():
+    if not are_all_axes_homed():
         print("Homing all axes")
         home_all_axes()
-    # First move batt pusher to above minibot
-    # It should already be there from homing
 
-    # Find first empty batt slow and move indexer to empty slot
-    # empty_slot = -1
-    # for i in range(0, len(is_batt_slot_populated)):
-    #   if not is_batt_slot_populated:
-    #     empty_slot = i
-    #     break
-    # if empty_slot == -1:
-    #   print("No empty battery slots!")
-    #   exit(1)
-
-    # Move indexer to empty slot
-    send_grbl_gcode_cmd("G90 G21 G1 Y4.75 F100")
-
-    # Lift minibot up
-    send_grbl_gcode_cmd("G91 G21 G1 Z304.8 F2000")
-    time.sleep(5)
-    # send_grbl_gcode_cmd("G90 G21 G1 Y10 F100")
-    # send_grbl_gcode_cmd("G90 G21 G1 Y22 F10")
-    # send_grbl_gcode_cmd("G90 G21 G1 Y10 F10")
+    move_x_pusher(loc="above_minibot")
+    move_indexer_to_first_empty_slot()
+    move_z_lift_arms(loc="liftup")
+    move_x_pusher(loc="in_indexer")
+    move_indexer_to_new_battery()
+    move_x_pusher(loc="above_minibot")
+    move_z_lift_arms(loc="liftdown")
 
 
 def are_motors_moving() -> bool:
@@ -264,9 +293,9 @@ def get_status() -> str:
     send_grbl_gcode_cmd(grbl_status_report_cmd, False)
     # Read all lines until it's done
     while ("ok" not in status):
-      line = SERIAL_CONNECTION.readline().decode("utf-8")
-      status += line
-      print(line)
+        line = SERIAL_CONNECTION.readline().decode("utf-8")
+        status += line
+        print(line)
     return status
 
 
@@ -274,6 +303,7 @@ if __name__ == "__main__":
     connect()
     # Disable soft limits
     send_grbl_gcode_cmd(grbl_disable_soft_limits_setting_cmd)
+    # exit(0)
     while (1):
         cmd = input(">")
         cmds = cmd.split()
@@ -300,7 +330,8 @@ if __name__ == "__main__":
         elif cmd == "liftdown":
             send_grbl_gcode_cmd("G90 G21 G1 Z0 F2000")
         elif cmd == "liftup":
-            send_grbl_gcode_cmd("G90 G21 G1 Z-140 F400")
+            move_z_lift_arms(loc="liftup")
+            # send_grbl_gcode_cmd("G90 G21 G1 Z-140 F400")
         elif cmd == "s":  # Stop
             ESTOP()
         elif cmd == "r":  # Resume
@@ -312,9 +343,9 @@ if __name__ == "__main__":
         elif cmd == "slot3":
             send_grbl_gcode_cmd("G90 G21 G1 Y9.75 F100")
         elif cmd == "pushin":
-            send_grbl_gcode_cmd("G90 G21 G1 X-11 F200")
+            move_x_pusher(loc="in_indexer")
         elif cmd == "pushout":
-            send_grbl_gcode_cmd("G90 G21 G1 X-0.5 F200")
+            move_x_pusher(loc="above_minibot")
         elif cmd == "softreset":
             send_grbl_gcode_cmd(grbl_soft_reset_cmd)
         elif cmd == "repl":
