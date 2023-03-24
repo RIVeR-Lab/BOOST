@@ -58,7 +58,7 @@ bool RosManager::loopHook() {
 // Publish IMU data
 #if ENABLE_IMU
   static uint32_t imuLastPub = 0;
-  if ((millis() - imuLastPub) > 25) {
+  if ((millis() - imuLastPub) > 50) {
     imuLastPub = millis();
     success = success && realMain.imuManager.readInAllImuData();
     success = success && realMain.imuManager.toRosImuMsg(bno055_imu_msg);
