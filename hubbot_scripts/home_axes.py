@@ -16,7 +16,7 @@ GRBL_BPS = 115200
 SERIAL_CONNECTION = serial.Serial(USB_PORT, GRBL_BPS, timeout=1)
 
 # State, these are indexed when looking from back of hubbot
-is_batt_slot_populated = {"0": False, "1": True, "2": True}
+is_batt_slot_populated = {"0": True, "1": False, "2": True}
 batt_slot_abs_loc_cm = [0, 4.75, 9.75]
 is_homed = {"x": False, "y": False, "z": False}
 
@@ -62,24 +62,26 @@ def connect():
     print("Connected to GRBL")
 
 
-def send_grbl_gcode_cmd(cmd: str):
+def send_grbl_gcode_cmd(cmd: str, wait_for_response: bool = True):
     """Send a gcode command to the grbl controller"""
     # Send g-code block
     SERIAL_CONNECTION.write(cmd.encode() + str.encode('\n'))
-    # Wait for response with carriage return
-    grbl_out = SERIAL_CONNECTION.readline()
-    print("Sent command: " + cmd)
-    print("grbl response: " + grbl_out.strip().decode("utf-8"))
+    if wait_for_response:
+      # Wait for response with carriage return
+      grbl_out = SERIAL_CONNECTION.readline()
+      print("grbl response: " + grbl_out.strip().decode("utf-8"))
+    print("Sent command: " + str(cmd))
 
 
-def send_grbl_gcode_cmd_bytes(cmd: bytes):
+def send_grbl_gcode_cmd_bytes(cmd: bytes, wait_for_response: bool = True):
     """Send a gcode command to the grbl controller"""
     # Send g-code block
     SERIAL_CONNECTION.write(cmd + str.encode('\n'))
-    # Wait for response with carriage return
-    grbl_out = SERIAL_CONNECTION.readline()
+    if wait_for_response:
+      # Wait for response with carriage return
+      grbl_out = SERIAL_CONNECTION.readline()
+      print("grbl response: " + grbl_out.strip().decode("utf-8"))
     print("Sent command: " + str(cmd))
-    print("grbl response: " + grbl_out.strip().decode("utf-8"))
 
 
 def repl():
@@ -108,7 +110,7 @@ def home_x_pusher():
 def home_y_batt_indexer():
     """Home the y axis"""
     print("Homing Y axis")
-    send_grbl_gcode_cmd("G91 G21 G1 Y17 F500")
+    send_grbl_gcode_cmd("G91 G21 G1 Y10 F500")
     send_grbl_gcode_cmd("G91 G21 G1 Y-17 F500")
     # Slower derease speed so that we increase torque in case we have tension in belts near end.
     send_grbl_gcode_cmd("G91 G21 G1 Y-1 F10")
@@ -125,6 +127,8 @@ def home_z_lift_arms():
     send_grbl_gcode_cmd(grbl_run_homing_cycle_cmd)
     send_grbl_gcode_cmd(grbl_disable_soft_limits_setting_cmd)
     unESTOP()
+    unESTOP()
+    unESTOP()
     is_homed["z"] = True
 
 
@@ -135,6 +139,11 @@ def blocking_wait_until_axes_stop_moving():
         continue
 
 
+def set_home():
+    """Set the home position"""
+    send_grbl_gcode_cmd("G92 X0 Y0")
+
+
 def home_all_axes():
     home_z_lift_arms()
     blocking_wait_until_axes_stop_moving()
@@ -143,6 +152,7 @@ def home_all_axes():
     home_y_batt_indexer()
     blocking_wait_until_axes_stop_moving()
     assert (are_all_axes_homed() == True)
+    set_home()
     move_indexer_to_first_empty_slot()
 
 
@@ -168,10 +178,8 @@ def move_indexer_to_slot(slot: int):
     assert (slot >= 0 and slot < len(is_batt_slot_populated))
     assert (is_batt_slot_populated[str(slot)] == False)
     # Move to the slot
-    send_grbl_gcode_cmd("G91 G21 G1 Y" + str(slot * 25.4) + " F500")
-    send_grbl_gcode_cmd("G90 G21 G1 Y0 F100")
     send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
-                        " " + indexer_axis + batt_slot_abs_loc_cm[slot] + " " + indexer_feed_rate)
+                        " " + indexer_axis + str(batt_slot_abs_loc_cm[slot]) + " " + indexer_feed_rate)
     # Mark the slot as populated
     is_batt_slot_populated[slot] = True
 
@@ -194,8 +202,6 @@ def unESTOP():
     send_grbl_gcode_cmd("$X")
     send_grbl_gcode_cmd("$X")
 
-# Lift minibot to ensure alignment
-
 
 def lift_minibot_check_alignment():
     """Lift minibot to ensure alignment"""
@@ -208,6 +214,9 @@ def lift_minibot_check_alignment():
 def swap_battery():
     """Swap battery"""
     print("Swapping battery...")
+    if not is_homed():
+        print("Homing all axes")
+        home_all_axes()
     # First move batt pusher to above minibot
     # It should already be there from homing
 
@@ -250,15 +259,14 @@ def move_lift_arms_to_minibot():
 def get_status() -> str:
     """Get status from GRBL"""
     status = ""
+    line = ""
     send_grbl_gcode_cmd(grbl_status_report_buffer_data_cmd)
-    send_grbl_gcode_cmd(grbl_status_report_cmd)
+    send_grbl_gcode_cmd(grbl_status_report_cmd, False)
     # Read all lines until it's done
-    while (1):
-        line = SERIAL_CONNECTION.readline().decode("utf-8")
-        status += line
-        print(line)
-        if "ok" not in line:
-            break
+    while ("ok" not in status):
+      line = SERIAL_CONNECTION.readline().decode("utf-8")
+      status += line
+      print(line)
     return status
 
 
@@ -281,7 +289,7 @@ if __name__ == "__main__":
         elif cmd == "homeall":
             home_all_axes()
         elif cmd == "sethome":
-            send_grbl_gcode_cmd("G92 X0 Y0")
+            set_home()
         elif cmd == "swap":
             swap_battery()
         elif cmd == "liftdownraw":
