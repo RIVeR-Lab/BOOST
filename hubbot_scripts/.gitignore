@@ -1,3 +1,4 @@
 venv-windows/
 venv-wsl/
 venv/
+__pycache__/
