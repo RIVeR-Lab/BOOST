@@ -108,7 +108,7 @@ controller_server:
   ros__parameters:
     use_sim_time: False
     controller_frequency: 2.0
-    min_x_velocity_threshold: 0.001
+    min_x_velocity_threshold: 0.12
     min_y_velocity_threshold: 0.5
     min_theta_velocity_threshold: 0.001
     failure_tolerance: 0.3
@@ -297,8 +297,8 @@ recoveries_server:
     transform_timeout: 0.1
     use_sim_time: False
     simulate_ahead_time: 2.0
-    max_rotational_vel: 1.0
-    min_rotational_vel: 0.7
+    max_rotational_vel: 2.0
+    min_rotational_vel: 1.0
     rotational_acc_lim: 3.2
 
 robot_state_publisher:
@@ -337,7 +337,7 @@ slam_toolbox:
     # or at the dock, but they are mutually exclusive, if pose is given
     # will use pose
     #map_file_name: test_steve
-    map_start_pose: [0.0, 1.0, 0.0]
+    map_start_pose: [0.0, 0.0, 0.0]
     #map_start_at_dock: true
 
     debug_logging: false
@@ -345,7 +345,7 @@ slam_toolbox:
     transform_publish_period: 0.02 #if 0 never publishes odometry
     map_update_interval: 3.0
     resolution: 0.05
-    max_laser_range: 20.0 #for rastering images
+    max_laser_range: 10.0 #for rastering images
     minimum_time_interval: 0.5
     transform_timeout: 0.2
     tf_buffer_duration: 3.0

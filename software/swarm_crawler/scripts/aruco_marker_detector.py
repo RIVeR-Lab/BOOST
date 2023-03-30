@@ -62,12 +62,19 @@ class ArucoNode(Node):
 
     # Declare parameters
     self.declare_parameter("aruco_dictionary_name", "DICT_4X4_50")
-    self.declare_parameter("aruco_marker_side_length", 0.085)  # in meters? 
-    # self.declare_parameter("aruco_marker_side_length", 0.05)  # in meters? 
-    self.declare_parameter("camera_calibration_parameters_filename", "swarm_crawler/scripts/calibration_chessboard.yaml")
+    # self.declare_parameter("aruco_marker_side_length", 0.085)  # in meters? 
+    self.declare_parameter("aruco_marker_side_length", 0.05)  # in meters? 
+    # self.declare_parameter("camera_calibration_parameters_filename", "swarm_crawler/scripts/calibration_chessboard.yaml")
+    self.declare_parameter("camera_calibration_parameters_filename", "realsense_calibration.yaml")
     self.declare_parameter("image_topic", "/minibot_a_d435/color/image_raw")
+
+    # realsense_calibration
+    # self.declare_parameter("camera_calibration_parameters_filename", ".t265_calibration.yaml")
+    
     self.declare_parameter("aruco_marker_name", "aruco_marker")
     
+    # image_topic_string =  '/minibot_a_t265/fisheye2/image_raw'
+   
     # Read parameters
     aruco_dictionary_name = self.get_parameter("aruco_dictionary_name").get_parameter_value().string_value
     self.aruco_marker_side_length = self.get_parameter("aruco_marker_side_length").get_parameter_value().double_value
@@ -201,7 +208,7 @@ class ArucoNode(Node):
                 t.transform.rotation.w = quat[3]
                 # self.get_logger().info('broadcasting transform')
                 self.tfbroadcaster.sendTransform(t)
-                self.get_logger().info('X,Y,Z,W Rotations: ;' + str(t.transform.rotation.x) + ';' + str(t.transform.rotation.y) + ';' + str(t.transform.rotation.z) + ';' + str(t.transform.rotation.w))
+                # self.get_logger().info('X,Y,Z,W Rotations: ;' + str(t.transform.rotation.x) + ';' + str(t.transform.rotation.y) + ';' + str(t.transform.rotation.z) + ';' + str(t.transform.rotation.w))
 
                 # Send the transform
                 # pose_array.header.frame_id = t.header.frame_id

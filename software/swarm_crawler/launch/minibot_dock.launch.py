@@ -306,17 +306,29 @@ def generate_launch_description():
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(start_joint_state_publisher_gui_node)
 
+
+    test_transform = Node(
+    package="tf2_ros",
+    executable='static_transform_publisher',
+    namespace=namespace,
+    arguments=["0", "0.0", "0.0", "0", "0", "0", "/minibot_a_t265_pose_frame", "odom"],
+    # arguments=["-1.0", "0.50", "0.53", "0", "3.141592654", "-1.57079633", "camera_link", "aruco_marker"],
+    parameters=[{'use_sim_time': use_sim_time}],
+    output="screen")
+
+    ld.add_action(test_transform) # this is bad for SLAM. it will not expand the map.
+
     # TRANSFORMS
     # ld.add_action(start_odom_to_baselink_transform_cmd)
     # ld.add_action(start_aruco_marker_pose_static_transform_cmd)
-    # ld.add_action(start_odom_static_transform_cmd) # this is bad for SLAM. it will not expand the map.
+    ld.add_action(start_odom_static_transform_cmd) # this is bad for SLAM. it will not expand the map.
     # ld.add_action(start_map_static_transform_cmd)
     # necessary "camera_depth_frame" redundant transform-- couldnt figure out the cause. 
     ld.add_action(depth_frame)
 
-    start_depth_center_script = Node(
-        package=package_name,
-        executable='show_center_depth2.py')
+    # start_depth_center_script = Node(
+    #     package=package_name,
+    #     executable='show_center_depth2.py')
     
     # ld.add_action(start_depth_center_script)
 
@@ -349,12 +361,12 @@ def generate_launch_description():
 
     # navigation stuff
 
-    ld.add_action(robot_localization_node)
+    # ld.add_action(robot_localization_node)
     ld.add_action(declare_params_file_cmd)
     ld.add_action(declare_slam_cmd)
     ld.add_action(declare_autostart_cmd)
     ld.add_action(declare_map_yaml_cmd)
-    ld.add_action(start_nav2_cmd)
+    # ld.add_action(start_nav2_cmd)
     ld.add_action(start_rviz_cmd)
     # camera stuff 
     # ld.add_action(realsense)

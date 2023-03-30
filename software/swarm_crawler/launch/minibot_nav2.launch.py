@@ -111,7 +111,7 @@ def generate_launch_description():
     # autostart nav_2 stack
     declare_autostart_cmd = DeclareLaunchArgument(
         name='autostart', 
-        default_value='True',
+        default_value='False',
         description='Automatically startup the nav2 stack')
 
     declare_params_file_cmd = DeclareLaunchArgument(
@@ -266,6 +266,16 @@ def generate_launch_description():
     parameters=[{'use_sim_time': use_sim_time}],
     output="screen")
 
+    accel_frame = Node(
+    package="tf2_ros",
+    executable='static_transform_publisher',
+    namespace=namespace,
+    arguments=["0.0", "0.0", "0.0", "0", "0", "0", "minibot_a_t265_pose_frame", "base_link"],
+    #                                   camera_link    minibot_a_d435_depth_frame
+    # arguments=["-1.0", "0.50", "0.53", "0", "3.141592654", "-1.57079633", "camera_link", "aruco_marker"],
+    parameters=[{'use_sim_time': use_sim_time}],
+    output="screen")
+
     start_aruco_marker_pose_static_transform_cmd = Node(
     package="tf2_ros",
     executable='static_transform_publisher',
@@ -279,7 +289,7 @@ def generate_launch_description():
     package="tf2_ros",
     executable='static_transform_publisher',
     namespace=namespace,
-    arguments=["0", "0.0", "0.0", "0", "0", "0", "odom", "base_link"],
+    arguments=["0", "0.0", "0.0", "0", "0", "0", "odom", "odom_camera_link"],
     # arguments=["-1.0", "0.50", "0.53", "0", "3.141592654", "-1.57079633", "camera_link", "aruco_marker"],
     parameters=[{'use_sim_time':False }],
     output="screen")
@@ -337,10 +347,13 @@ def generate_launch_description():
     # TRANSFORMS
     ld.add_action(start_odom_to_baselink_transform_cmd)
     ld.add_action(start_aruco_marker_pose_static_transform_cmd)
-    # ld.add_action(start_odom_static_transform_cmd) # this is bad for SLAM. it will not expand the map.
+    ld.add_action(start_odom_static_transform_cmd) # this is bad for SLAM. it will not expand the map.
     # ld.add_action(start_map_static_transform_cmd)
     # necessary "camera_depth_frame" redundant transform-- couldnt figure out the cause. 
     ld.add_action(depth_frame)
+    ld.add_action(accel_frame)
+    
+
 
 
     # ld.add_action(start_base_link_to_aruco_marker_transform_cmd)
@@ -359,7 +372,28 @@ def generate_launch_description():
     # ld.add_action(start_nav2)
 
     # navigation stuff
-    ld.add_action(robot_localization_node)
+    #ld.add_action(robot_localization_node)
+    # test_transform2 = Node(
+    # package="tf2_ros",
+    # executable='static_transform_publisher',
+    # namespace=namespace,
+    # arguments=["0", "0.0", "0.0", "0", "0", "0", "map", "odom"],
+    # # arguments=["-1.0", "0.50", "0.53", "0", "3.141592654", "-1.57079633", "camera_link", "aruco_marker"],
+    # parameters=[{'use_sim_time': use_sim_time}],
+    # output="screen")
+
+    # test_transform = Node(
+    # package="tf2_ros",
+    # executable='static_transform_publisher',
+    # namespace=namespace,
+    # arguments=["0", "0.0", "0.0", "0", "0", "0", "/minibot_a_t265_pose_frame", "odom"],
+    # # arguments=["-1.0", "0.50", "0.53", "0", "3.141592654", "-1.57079633", "camera_link", "aruco_marker"],
+    # parameters=[{'use_sim_time': use_sim_time}],
+    # output="screen")
+
+    # ld.add_action(test_transform) # this is bad for SLAM. it will not expand the map.
+    # ld.add_action(test_transform2) # this is bad for SLAM. it will not expand the map.
+
     ld.add_action(declare_params_file_cmd)
     ld.add_action(declare_slam_cmd)
     ld.add_action(declare_autostart_cmd)

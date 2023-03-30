@@ -25,9 +25,7 @@ Publishing Topics:
   Velocity command to navigate to the charging dock.
   /cmd_vel - geometry_msgs/Twist
 -------
-Author: Addison Sears-Collins
-Website: AutomaticAddison.com
-Date: January 14, 2022
+
 """
 
 import math # Math library
@@ -70,6 +68,7 @@ aruco_center_offset = 0
 obstacle_distance_front = 999999.9
 
 scan_topic = '/minibot_a/scan'
+prev_readings = []
 
 
 class ConnectToChargingDockNavigator(Node):
@@ -92,7 +91,9 @@ class ConnectToChargingDockNavigator(Node):
 
       # Declare linear and angular velocities
       self.linear_velocity = 0.4  # meters per second
-      self.angular_velocity = 0.63 # radians per second
+      # self.angular_velocity = 0.63 # radians per second
+      self.angular_velocity = 1.5 # radians per second
+
       
       # Keep track of which goal we're headed towards
       self.goal_idx = 0
@@ -106,7 +107,7 @@ class ConnectToChargingDockNavigator(Node):
 
       
       # Undocking distance
-      self.undocking_distance = 0.50
+      self.undocking_distance = 0.9
         
     def navigate_to_dock_staging_area(self):
       """
@@ -239,13 +240,22 @@ class ConnectToChargingDockNavigator(Node):
       while this_battery_state.percentage != 1.0:      
         self.get_logger().info('CHARGING...')
         
-      # Undock from the docking station
-      cmd_vel_msg = Twist()
-      cmd_vel_msg.linear.x = -self.linear_velocity
-      self.publisher_cmd_vel.publish(cmd_vel_msg)
-      while obstacle_distance_front < self.undocking_distance:
-        self.get_logger().info('Undocking from the charging dock...')
+ 
 
+      while obstacle_distance_front <= self.undocking_distance or '{:.2f}'.format(obstacle_distance_front) == "nan":
+             # Undock from the docking station
+        cmd_vel_msg = Twist()
+        cmd_vel_msg.linear.x = -self.linear_velocity
+        self.publisher_cmd_vel.publish(cmd_vel_msg)
+
+      #   # cmd_vel_msg = Twist()
+      #   # cmd_vel_msg.linear.x = -0.5
+      #   # self.publisher_cmd_vel.publish(cmd_vel_msg)
+      #   self.get_logger().info('Undocking from the charging dock...')
+      #   self.get_logger().info('Distance: ' + '{:.2f}'.format(obstacle_distance_front) + ' meters.')
+        
+        
+      
       # Stop the robot
       cmd_vel_msg = Twist()
       cmd_vel_msg.linear.x = 0.0     
@@ -266,12 +276,28 @@ class ConnectToChargingDockNavigator(Node):
         self.publisher_cmd_vel.publish(cmd_vel_msg) 
       else: 
         self.goal_idx = 1
-        
+   
     def navigate_to_aruco_marker(self):
       """
       Go straight to the ArUco marker
       """
-
+      self.get_logger().info('Distance: ' + '{:.2f}'.format(obstacle_distance_front) + ' meters.')
+      formatted_distance=  '{:.2f}'.format(obstacle_distance_front)
+      # prev_readings.append(obstacle_distance_front)
+      # # limit the buffer to 15 items
+      if(len(prev_readings) > 30) :
+        prev_reading = []
+      if(formatted_distance == "nan" or obstacle_distance_front < 0.4 or "nan" in prev_readings):
+      #   for i in range(300): 
+      #       cmd_vel_msg = Twist()
+      #       cmd_vel_msg.linear.x = 0.4 
+      #       self.publisher_cmd_vel.publish(cmd_vel_msg)  
+      #   # for r in prev_readings:
+      #     # if r <= 0.6 or '{:.2f}'.format(r) == 'nan':
+      #   # check previous 5 readings. If any of them contain a integer value, that means that it has been getting closer. 
+      #       # self.get_logger().info('we are at the dock and less than 5 cm away.')
+        self.goal_idx = 2 
+            # break
       # If we have detected the ArUco marker and there are no obstacles in the way
       if aruco_marker_detected and (obstacle_distance_front > self.obstacle_tolerance):
         self.adjust_heading()
@@ -282,7 +308,9 @@ class ConnectToChargingDockNavigator(Node):
       # we have reached the charging dock
       elif not aruco_marker_detected and (obstacle_distance_front <= self.obstacle_tolerance):
         self.goal_idx = 2   
-      # Search for charging dock  
+      # # Search for charging dock  
+      
+           
       else:
         self.goal_idx = 0
       
@@ -341,7 +369,6 @@ class BatteryStateSubscriber(Node):
       # Check for low battery
       if prev_battery_state.percentage <= low_battery_min_threshold and this_battery_state.percentage < low_battery_min_threshold:
         # self.get_logger().info('in here')
-        
         low_battery = True
         
 class ArucoMarkerSubscriber(Node):
@@ -399,6 +426,7 @@ class ArucoMarkerSubscriber(Node):
       Update obstacle distance.
       """
       global obstacle_distance_front
+      
       # obstacle_distance_front = msg.ranges[179]
       obstacle_distance_front = msg.ranges[100]
 
@@ -434,6 +462,10 @@ def main(args=None):
       connect_to_charging_dock_navigator.destroy_node()
       battery_state_subscriber.destroy_node()
       aruco_marker_subscriber.destroy_node()
+      cmd_vel_msg = Twist()
+      cmd_vel_msg.linear.x = 0
+      cmd_vel_msg.angular.z = 0.0
+      self.publisher_cmd_vel.publish(cmd_vel_msg)
 
   finally:
     # Shutdown
