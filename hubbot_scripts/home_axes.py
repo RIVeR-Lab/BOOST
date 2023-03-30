@@ -11,7 +11,7 @@ GRBL Wiki: https://github.com/grbl/grbl/wiki
 GCODE Commands: https://howtomechatronics.com/tutorials/g-code-explained-list-of-most-important-g-code-commands/#G01_Linear_Interpolation
 '''
 
-USB_PORT = "COM9"
+USB_PORT = "usb-1a86_USB_Serial-if00-port0"
 GRBL_BPS = 115200
 SERIAL_CONNECTION = serial.Serial(USB_PORT, GRBL_BPS, timeout=1)
 
