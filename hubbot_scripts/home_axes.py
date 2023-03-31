@@ -36,6 +36,12 @@ indexer_feed_rate = "F200"
 pusher_feed_rate = "F200"
 lift_feed_rate = "F1000"
 
+# Axis Invert Direction
+x_axis_invert = 0
+y_axis_invert = 1
+z_axis_invert = 0
+grbl_direction_port_invert_mask = 
+
 # GCode commands
 cm_mode = "G21"
 inch_mode = "G20"
@@ -93,7 +99,6 @@ def connect():
     SERIAL_CONNECTION.flushInput()
     print("Connected to GRBL")
 
-
 def send_grbl_gcode_cmd(cmd: str, wait_for_response: bool = True):
     """Send a gcode command to the grbl controller"""
     # Send g-code block
@@ -127,6 +132,8 @@ def repl():
         while (line != ""):
             line = ser.readline().decode('utf-8')   # read a '\n' terminated line
             print(line)
+
+def set_grbl_positive_directions():
 
 
 def home_x_pusher():
