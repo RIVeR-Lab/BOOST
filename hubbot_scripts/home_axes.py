@@ -40,7 +40,6 @@ lift_feed_rate = "F1000"
 x_axis_invert = 0
 y_axis_invert = 1
 z_axis_invert = 0
-grbl_direction_port_invert_mask = 
 
 # GCode commands
 cm_mode = "G21"
@@ -65,6 +64,7 @@ grbl_grbl_disable_homing_setting_cmd = "$22=0"
 grbl_enable_soft_limits_setting_cmd = "$20=1"
 grbl_disable_soft_limits_setting_cmd = "$20=0"
 grbl_status_report_buffer_data_cmd = "$10=2"
+grbl_dir_port_invert_mask = "$3="
 
 
 # GRBL RealTime commands
@@ -134,7 +134,8 @@ def repl():
             print(line)
 
 def set_grbl_positive_directions():
-
+    grbl_direction_port_invert_mask = x_axis_invert << 2 | y_axis_invert << 1 | z_axis_invert
+    send_grbl_gcode_cmd(grbl_dir_port_invert_mask + str(grbl_direction_port_invert_mask))
 
 def home_x_pusher():
     """Home the x axis"""
@@ -332,6 +333,7 @@ def get_status() -> str:
 if __name__ == "__main__":
     get_com_port()
     connect()
+    set_grbl_positive_directions()
     # Disable soft limits
     send_grbl_gcode_cmd(grbl_disable_soft_limits_setting_cmd)
     # exit(0)
