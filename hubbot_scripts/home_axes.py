@@ -10,10 +10,13 @@ GRBL Settings: https://github.com/gnea/grbl/blob/master/doc/markdown/settings.md
 GRBL Wiki: https://github.com/grbl/grbl/wiki
 GCODE Commands: https://howtomechatronics.com/tutorials/g-code-explained-list-of-most-important-g-code-commands/#G01_Linear_Interpolation
 '''
+from serial.tools import list_ports
 
-USB_PORT = "usb-1a86_USB_Serial-if00-port0"
+grbl_port_VID = 6790
+grbl_port_PID = 29987
+USB_PORT = ""
 GRBL_BPS = 115200
-SERIAL_CONNECTION = serial.Serial(USB_PORT, GRBL_BPS, timeout=1)
+SERIAL_CONNECTION = None
 
 # State, these are indexed when looking from back of hubbot
 is_batt_slot_populated = {"0": True, "1": False, "2": True}
@@ -62,10 +65,27 @@ grbl_status_report_buffer_data_cmd = "$10=2"
 grbl_soft_reset_cmd = b"\x18"
 grbl_feed_hold_cmd = "!"
 
-
+def get_com_port():
+    global USB_PORT
+    device_list = list_ports.comports()
+    for device in device_list:
+        print(device)
+        print(device.vid)
+        print(device.pid)
+        if (device.vid != None or device.pid != None):
+            if (device.vid == grbl_port_VID and
+                device.pid == grbl_port_PID):
+                port = device.device
+                print("GRBL found on port:" + port)
+                break
+            port = None
+    USB_PORT = port
+            
 def connect():
+    global SERIAL_CONNECTION
     """Connect to the grbl controller"""
     print("Connecting to GRBL...")
+    SERIAL_CONNECTION = serial.Serial(USB_PORT, GRBL_BPS, timeout=1)
     # Wake up grbl
     SERIAL_CONNECTION.write(str.encode("\r\n\r\n"))
     # Wait for grbl to initialize and flush startup text in serial input
@@ -303,6 +323,7 @@ def get_status() -> str:
 
 
 if __name__ == "__main__":
+    get_com_port()
     connect()
     # Disable soft limits
     send_grbl_gcode_cmd(grbl_disable_soft_limits_setting_cmd)
