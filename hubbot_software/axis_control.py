@@ -30,7 +30,7 @@ pusher_abs_loc_cm = {"above_minibot": 0, "in_indexer": -11}
 liftdown: Where the minibot can dock
 liftup: Where the minibot is lifted to and where battery can be swapped at
 '''
-lift_abs_loc_cm = {"liftdown": 0, "liftup": -105}
+lift_abs_loc_cm = {"liftdown": 0, "liftup": -90}
 
 # Feed rates
 indexer_feed_rate = "F200"
