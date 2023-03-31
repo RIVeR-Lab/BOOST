@@ -24,7 +24,7 @@ def generate_launch_description():
             package='joy', executable='joy_node', name='joy_node',
             parameters=[{
                 'dev': joy_dev,
-                'deadzone': 0.2,
+                'deadzone': 0.4,
                 'autorepeat_rate': 20.0,
             }]),
         launch_ros.actions.Node(
@@ -33,3 +33,4 @@ def generate_launch_description():
             name='teleop_twist_joy_node', parameters=[config_filepath]),
 
     ])
+# from testing, twist will be good at 5.6

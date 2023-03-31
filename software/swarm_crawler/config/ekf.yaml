@@ -4,7 +4,7 @@ ekf_filter_node:
 # The frequency, in Hz, at which the filter will output a position estimate. Note that the filter will not begin
 # computation until it receives at least one message from one of theinputs. It will then run continuously at the
 # frequency specified here, regardless of whether it receives more measurements. Defaults to 30 if unspecified.
-        frequency: 30.0
+        frequency: 20.0
 
 # ekf_localization_node and ukf_localization_node both use a 3D omnidirectional motion model. If this parameter is
 # set to true, no 3D information will be used in your state estimate. Use this if you are operating in a planar
@@ -32,7 +32,8 @@ ekf_filter_node:
         base_link_frame: base_link  # Defaults to "base_link" if unspecified
         world_frame:  odom            # Defaults to the value of odom_frame if unspecified
 
-        odom0_queue_size: 50
+        # odom0_queue_size: 50
+        # odom0_queue_size: 
         # transform_time_offset: 0.5
         # transform_timeout: 0.5
         
@@ -55,7 +56,7 @@ ekf_filter_node:
         
 
 
-        # # odom0_queue_size: 2
+        # odom0_queue_size: 2
 
         # # odom0_linear_velocity_rejection_threshold: 0.8  #
 
@@ -68,7 +69,25 @@ ekf_filter_node:
         # # odom0_pose_rejection_threshold: 5.0
         # # odom0_twist_rejection_threshold: 1.0
 
-        imu0: /minibot_a_t265/gyro/sample # put the topic here 
+        imu1: /minibot_a_t265/gyro/sample # put the topic here 
+        imu1_config: [false, false, false,
+                #       true,  true,  true,
+                false, false, true,
+
+                # false, false, false,
+                true, true, true,
+                #       true, true, true,
+                false, false, true,
+                
+
+                      true, true, true]
+        # imu1_queue_size: 4
+                      
+        imu1_linear_acceleration_rejection_threshold: 0.2 
+# bno055_imu
+#        /bno055_imu
+
+        imu0: /bno055_imu # put the topic here 
         imu0_config: [false, false, false,
                 #       true,  true,  true,
                 false, false, true,
@@ -80,8 +99,11 @@ ekf_filter_node:
                 
 
                       true, true, true]
+        # imu0_twist_rejection_threshold: 0.01      
 
-       
+        imu0_linear_acceleration_rejection_threshold: 0.2  #    
+        # imu0_queue_size: 4
+
 #   # You can specify which values from a sensor are to be used by the filter using the _config parameter. 
   # The order of the values of this parameter is
   # x, y, z,
@@ -95,7 +117,7 @@ ekf_filter_node:
         # imu0_nodelay: false
         # imu0_differential: false
         # imu0_relative: true
-        imu0_queue_size: 2
+        # imu0_queue_size: 2
                 # imu0_pose_rejection_threshold: 0.8                 # Note the difference in parameter names
                 # imu0_twist_rejection_threshold: 0.8                #
                 # imu0_linear_acceleration_rejection_threshold: 0.8  #
@@ -514,3 +536,54 @@ ekf_filter_node:
 #   - 0.0
 #   - 0.0
 #   - 0.001
+
+
+# header:
+#   stamp:
+#     sec: 1679507818
+#     nanosec: 709286460
+#   frame_id: imu_link
+# orientation:
+#   x: -0.31072998046875
+#   y: 0.6214599609375
+#   z: 0.62261962890625
+#   w: 0.0
+# orientation_covariance:
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# angular_velocity:
+#   x: 0.0
+#   y: 0.0010908307740464807
+#   z: 0.0010908307740464807
+# angular_velocity_covariance:
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# linear_acceleration:
+#   x: 0.05000000074505806
+#   y: 0.0
+#   z: 0.03999999910593033
+# linear_acceleration_covariance:
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# - 0.0
+# ---
