@@ -21,6 +21,7 @@ SERIAL_CONNECTION = None
 # State, these are indexed when looking from back of hubbot
 is_batt_slot_populated = {"0": False, "1": True, "2": True}
 is_homed_dict = {"x": False, "y": False, "z": False}
+last_swapped_slot = "0"
 
 # Absolute location of things all relative to the homed position
 indexer_abs_loc_cm = {"slot0": 0, "slot1": 4.75, "slot2": 9.75}
@@ -254,8 +255,10 @@ def move_indexer_to_first_empty_slot() -> str:
         
 def get_first_non_empty_batt_slot() -> str:
     """Get the first non-empty battery slot"""
+    global last_swapped_slot
     for i in range(0, len(is_batt_slot_populated)):
-        if is_batt_slot_populated[str(i)] == True:
+        print("last_swapped_slot=========================================================================="+last_swapped_slot)
+        if is_batt_slot_populated[str(i)] == True and str(i) != last_swapped_slot:
             return str(i)
     return None
 
@@ -311,6 +314,7 @@ def lift_minibot_check_alignment():
 
 def swap_battery():
     """Swap a single battery from minibot to hub and then hub to minibot"""
+    global last_swapped_slot
     print("Swapping battery...")
     if not are_all_axes_homed():
         print("Homing all axes")
@@ -338,6 +342,8 @@ def swap_battery():
 
     is_batt_slot_populated[old_batt_slot] = True
     is_batt_slot_populated[new_batt_slot] = False
+    last_swapped_slot = old_batt_slot
+    print("last_swapped_slot" + last_swapped_slot)
 
 
 def are_motors_moving() -> bool:
