@@ -19,7 +19,7 @@ GRBL_BPS = 115200
 SERIAL_CONNECTION = None
 
 # State, these are indexed when looking from back of hubbot
-is_batt_slot_populated = {"0": True, "1": False, "2": True}
+is_batt_slot_populated = {"0": False, "1": True, "2": True}
 is_homed_dict = {"x": False, "y": False, "z": False}
 
 # Absolute location of things all relative to the homed position
@@ -29,7 +29,7 @@ pusher_abs_loc_cm = {"above_minibot": -0.5, "in_indexer": -11}
 liftdown: Where the minibot can dock
 liftup: Where the minibot is lifted to and where battery can be swapped at
 '''
-lift_abs_loc_cm = {"liftdown": 0, "liftup": -150}
+lift_abs_loc_cm = {"liftdown": 0, "liftup": -105}
 
 # Feed rates
 indexer_feed_rate = "F200"
@@ -37,8 +37,8 @@ pusher_feed_rate = "F200"
 lift_feed_rate = "F1000"
 
 # Axis Invert Direction
-x_axis_invert = 0
-y_axis_invert = 1
+x_axis_invert = 0   # pusher
+y_axis_invert = 1   # indexer
 z_axis_invert = 0
 
 # GCode commands
@@ -134,7 +134,7 @@ def repl():
             print(line)
 
 def set_grbl_positive_directions():
-    grbl_direction_port_invert_mask = x_axis_invert << 2 | y_axis_invert << 1 | z_axis_invert
+    grbl_direction_port_invert_mask = z_axis_invert << 2 | y_axis_invert << 1 | x_axis_invert
     send_grbl_gcode_cmd(grbl_dir_port_invert_mask + str(grbl_direction_port_invert_mask))
 
 def home_x_pusher():
@@ -229,23 +229,35 @@ def get_first_empty_batt_slot() -> str:
     return None
 
 
-def move_indexer_to_first_empty_slot():
-    """Move the indexer to the first empty slot"""
+def move_indexer_to_first_empty_slot() -> str:
+    """Move the indexer to the first empty slot
+    Return the first empty slot.
+    """
     empty_slot = get_first_empty_batt_slot()
     if empty_slot != None:
         move_indexer_to_slot(int(empty_slot))
     else:
         print("No empty slots!!")
-
-
-def move_indexer_to_new_battery():
-    """Move the indexer to a battery slot with with a battery with the highest charge"""
-    # For now get first non empty slot
+    return empty_slot
+        
+def get_first_non_empty_batt_slot() -> str:
+    """Get the first non-empty battery slot"""
     for i in range(0, len(is_batt_slot_populated)):
         if is_batt_slot_populated[str(i)] == True:
-            move_indexer_to_slot(i)
-            return
-    print("No batteries available!!")
+            return str(i)
+    return None
+
+def move_indexer_to_new_battery() -> str:
+    """Move the indexer to a battery slot with with a battery with the highest charge
+    Return the new battery slot.
+    """
+    # For now get first non empty slot
+    non_empty_slot = get_first_non_empty_batt_slot()
+    if non_empty_slot != None:    
+        move_indexer_to_slot(int(non_empty_slot))
+    else:
+        print("No batteries available!!")
+    return non_empty_slot
 
 
 def move_indexer_to_slot(slot: int):
@@ -293,12 +305,18 @@ def swap_battery():
         home_all_axes()
 
     move_x_pusher(loc="above_minibot")
-    move_indexer_to_first_empty_slot()
+
+    # Take out old battery from minibot into hub
+    old_batt_slot = move_indexer_to_first_empty_slot()
     move_z_lift_arms(loc="liftup")
     move_x_pusher(loc="in_indexer")
-    move_indexer_to_new_battery()
+
+    # Put new batteyr from hub into minibot
+    new_batt_slot = move_indexer_to_new_battery()
     move_x_pusher(loc="above_minibot")
     move_z_lift_arms(loc="liftdown")
+    is_batt_slot_populated[old_batt_slot] = True
+    is_batt_slot_populated[new_batt_slot] = False
 
 
 def are_motors_moving() -> bool:
@@ -338,17 +356,20 @@ if __name__ == "__main__":
     send_grbl_gcode_cmd(grbl_disable_soft_limits_setting_cmd)
     # exit(0)
     while (1):
-        cmd = input(">")
-        cmds = cmd.split()
+        cmd_line = input(">")
+        cmds = cmd_line.split()
         cmd = cmds.pop(0)
         if cmd == "exit":
             exit(0)
         elif cmd == "homez":
             home_z_lift_arms()
+            set_home()
         elif cmd == "homex":
             home_x_pusher()
+            set_home()
         elif cmd == "homey":
             home_y_batt_indexer()
+            set_home()
         elif cmd == "homeall":
             home_all_axes()
         elif cmd == "sethome":
@@ -361,7 +382,7 @@ if __name__ == "__main__":
         elif cmd == "liftupraw":
             send_grbl_gcode_cmd("G91 G21 G1 Z-200 F400")
         elif cmd == "liftdown":
-            send_grbl_gcode_cmd("G90 G21 G1 Z0 F2000")
+            move_z_lift_arms(loc="liftdown")
         elif cmd == "liftup":
             move_z_lift_arms(loc="liftup")
             # send_grbl_gcode_cmd("G90 G21 G1 Z-140 F400")
@@ -369,12 +390,12 @@ if __name__ == "__main__":
             ESTOP()
         elif cmd == "r":  # Resume
             unESTOP()
+        elif cmd == "slot0":
+            move_indexer_to_slot(0)
         elif cmd == "slot1":
-            send_grbl_gcode_cmd("G90 G21 G1 Y0 F100")
+            move_indexer_to_slot(1)
         elif cmd == "slot2":
-            send_grbl_gcode_cmd("G90 G21 G1 Y4.75 F100")
-        elif cmd == "slot3":
-            send_grbl_gcode_cmd("G90 G21 G1 Y9.75 F100")
+            move_indexer_to_slot(2)
         elif cmd == "pushin":
             move_x_pusher(loc="in_indexer")
         elif cmd == "pushout":
@@ -386,7 +407,7 @@ if __name__ == "__main__":
         elif cmd == "stat":
             get_status()
         else:
-            send_grbl_gcode_cmd(cmd)
+            send_grbl_gcode_cmd(cmd_line)
 
     # send_grbl_gcode_cmd("$J=G91 G20 X0.5 F10")
     # home_z_lift_arms()
