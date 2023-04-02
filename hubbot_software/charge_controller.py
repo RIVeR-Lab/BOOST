@@ -22,9 +22,9 @@ wing_power_en_pin = 15
 
 # Continuity pins
 # Active low (i.e. if=low, then battery is connected.)
-cont0_pin = 16
-cont1_pin = 18
-cont2_pin = 19
+cont0_pin = 23
+cont1_pin = 29
+cont2_pin = 31
 continuity_pins = [cont0_pin, cont1_pin, cont2_pin]
 wing_continuity = 21
 
@@ -59,23 +59,32 @@ def setup():
     GPIO.setup(cont2_pin, GPIO.IN)
     GPIO.setup(wing_continuity, GPIO.IN)
 
-def is_batt_contintuity(slot: int):
+def is_batt_detected(slot: int) -> bool:
     '''
     Checks if the given slot has a battery in it by checking continuity.
     '''
+    # Active low. Continuity when LOW.
+    if GPIO.input(continuity_pins[slot]) == GPIO.HIGH:
+        return False
+    else:
+        return True
 
 def enable_charging(slot: int, force: bool = False):
     print("Starting charging on slot " + str(slot) + "...")
-    # Enable the Boost converter
-    GPIO.output(boost_en_pins[slot], GPIO.LOW)
-    print("Boost enabled.")
-    sleep(1)
-    GPIO.output(charge_start_pin, GPIO.LOW)
-    print("Start button low.")
-    sleep(1)
-    GPIO.output(charge_start_pin, GPIO.HIGH)
-    print("Start button high.")
-    print("Enabled charging on slot " + str(slot))
+    # Check that the battery is there
+    if not is_batt_detected(slot):
+        print("BATTERY NOT DETECTED in slot " + str(slot) + ". CANNOT start charging!!")
+    else:
+        # Enable the Boost converter
+        GPIO.output(boost_en_pins[slot], GPIO.LOW)
+        print("Boost enabled.")
+        sleep(1)
+        GPIO.output(charge_start_pin, GPIO.LOW)
+        print("Start button low.")
+        sleep(1)
+        GPIO.output(charge_start_pin, GPIO.HIGH)
+        print("Start button high.")
+        print("Enabled charging on slot " + str(slot))
 
 def disable_charging(slot: int):
     print("Disabling charging on slot " + str(slot) + "...")
@@ -86,14 +95,19 @@ def ESTOP():
     exit(0)
 
 def repl():
-    print("Starting REPL...")
+    # GPIO.setup(31, GPIO.IN)
+    # print("Starting REPL...")
+    # while(1):
+    #     print("BattCont: " + str(GPIO.input(31)))
+    #     sleep(0.1)
+
     while (1):
         cmd_line = input(">")
         cmds = cmd_line.split()
         cmd = cmds.pop(0)
         if cmd == "e":
             ESTOP()
-        elif cmd == "c0":   
+        elif cmd == "c0":
             enable_charging(0)
         elif cmd == "c1":
             enable_charging(1)
@@ -105,6 +119,12 @@ def repl():
             disable_charging(1)
         elif cmd == "s2":
             disable_charging(2)
+        elif cmd == "d0":
+            print("BattCont: " + str(is_batt_detected(0)))
+        elif cmd == "d1":
+            print("BattCont: " + str(is_batt_detected(1)))
+        elif cmd == "d2":
+            print("BattCont: " + str(is_batt_detected(2)))
         else:
             print("Command not found: " + cmd) 
 
