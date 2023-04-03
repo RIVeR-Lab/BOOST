@@ -30,12 +30,12 @@ pusher_abs_loc_cm = {"above_minibot": 0, "in_indexer": -11}
 liftdown: Where the minibot can dock
 liftup: Where the minibot is lifted to and where battery can be swapped at
 '''
-lift_abs_loc_cm = {"liftdown": 0, "liftup": -90}
+lift_abs_loc_cm = {"liftdown": 0, "liftup": -95}
 
 # Feed rates
 indexer_feed_rate = "F200"
-pusher_feed_rate = "F200"
-lift_feed_rate = "F1000"
+pusher_feed_rate = "F100"
+lift_feed_rate = "F400"
 
 # Axis Invert Direction
 x_axis_invert = 0   # pusher
@@ -160,8 +160,8 @@ def home_x_pusher():
 def home_y_batt_indexer():
     """Home the y axis"""
     print("Homing Y axis")
-    send_grbl_gcode_cmd("G91 G21 G1 Y10 F500")
-    send_grbl_gcode_cmd("G91 G21 G1 Y-17 F500")
+    send_grbl_gcode_cmd("G91 G21 G1 Y10 F200")
+    send_grbl_gcode_cmd("G91 G21 G1 Y-17 F200")
     # Slower derease speed so that we increase torque in case we have tension in belts near end.
     send_grbl_gcode_cmd("G91 G21 G1 Y-1 F10")
     blocking_wait_until_axes_stop_moving()
@@ -402,7 +402,7 @@ if __name__ == "__main__":
         elif cmd == "sethome":
             set_home()
         elif cmd == "swap":
-            for i in range(0,10) :
+            for i in range(0,100) :
                 swap_battery()
         elif cmd == "liftdownraw":
             # move_lift_arms_to_minibot()
