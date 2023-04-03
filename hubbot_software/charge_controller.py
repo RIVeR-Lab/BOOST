@@ -22,11 +22,11 @@ wing_power_en_pin = 15
 
 # Continuity pins
 # Active low (i.e. if=low, then battery is connected.)
-cont0_pin = 23
-cont1_pin = 29
+cont0_pin = 21
+cont1_pin = 33
 cont2_pin = 31
 continuity_pins = [cont0_pin, cont1_pin, cont2_pin]
-wing_continuity = 21
+wing_continuity = 33
 
 
 # ############################### END PIN DEFS ###############################
@@ -63,7 +63,8 @@ def is_batt_detected(slot: int) -> bool:
     '''
     Checks if the given slot has a battery in it by checking continuity.
     '''
-    # Active low. Continuity when LOW.
+    # Active lwow. Continuity hen LOW.
+    # print(GPIO.input(continuity_pins[slot]))
     if GPIO.input(continuity_pins[slot]) == GPIO.HIGH:
         return False
     else:
@@ -95,11 +96,13 @@ def ESTOP():
     exit(0)
 
 def repl():
-    # GPIO.setup(31, GPIO.IN)
-    # print("Starting REPL...")
-    # while(1):
-    #     print("BattCont: " + str(GPIO.input(31)))
-    #     sleep(0.1)
+    test_pin = 21 # 26 #24 #21 #22
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(test_pin, GPIO.IN)
+    print("Starting REPL...")
+    while(1):
+        print("BattCont: " + str(GPIO.input(test_pin)))
+        sleep(0.1)
 
     while (1):
         cmd_line = input(">")
@@ -120,7 +123,9 @@ def repl():
         elif cmd == "s2":
             disable_charging(2)
         elif cmd == "d0":
-            print("BattCont: " + str(is_batt_detected(0)))
+            while(1):
+                print("BattCont: " + str(is_batt_detected(0)))
+                sleep(0.1)
         elif cmd == "d1":
             print("BattCont: " + str(is_batt_detected(1)))
         elif cmd == "d2":
@@ -129,10 +134,13 @@ def repl():
             print("Command not found: " + cmd) 
 
 if __name__ == "__main__":
-    GPIO.cleanup()
-    setup()
-    repl()
-    GPIO.cleanup()
+    try:  
+        setup()
+        repl()
+    except KeyboardInterrupt:  
+        print("Keyboard Interrupts")
+    finally:  
+        GPIO.cleanup() # this ensures a clean exit  
 
 def crap():
     try:
