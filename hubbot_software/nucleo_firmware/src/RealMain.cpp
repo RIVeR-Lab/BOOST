@@ -65,6 +65,11 @@ bool RealMain::init() {
   success = drvManager.init() && success;
 #endif
 
+  pinMode(BATT0_CONTINUITY_PIN, INPUT_PULLUP);
+  pinMode(BATT1_CONTINUITY_PIN, INPUT_PULLUP);
+  pinMode(BATT2_CONTINUITY_PIN, INPUT_PULLUP);
+  pinMode(WING_CONTINUITY_PIN, INPUT_PULLUP);
+
   if (!success) {
     LOGERROR("Failed to initialize");
     Console.println("RealMain::Failed to initialize"); // Bypass LOGGING
@@ -91,6 +96,22 @@ void RealMain::loop() {
       // TODO: Make LEDs on PCB blink
       // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
     }
+
+    static uint32_t contDataCounter = 0;
+    if ((millis() - contDataCounter) > 500) {
+      contDataCounter = millis();
+      // Get and send all battery coninuity data
+      int batt0 = digitalRead(BATT0_CONTINUITY_PIN);
+      int batt1 = digitalRead(BATT1_CONTINUITY_PIN);
+      int batt2 = digitalRead(BATT2_CONTINUITY_PIN);
+      int wing = digitalRead(WING_CONTINUITY_PIN);
+      Serial2.printf(">batt0Cont=%d\r\n", batt0);
+      Serial2.printf(">batt1Cont=%d\r\n", batt1);
+      Serial2.printf(">batt2Cont=%d\r\n", batt2);
+      Serial2.printf(">wingCont=%d\r\n", wing);
+    }
+
+    
 
 #if ENABLE_ROSMANAGER
     rosManager.loop();
