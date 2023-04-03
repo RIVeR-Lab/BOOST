@@ -32,8 +32,8 @@ continuity_pins = [cont0_pin, cont1_pin, cont2_pin]
 wing_continuity = 33
 
 
-nucleo_port_VID = 1155
-nucleo_port_PID = 14155
+nucleo_port_VID = 6790
+nucleo_port_PID = 29987
 USB_PORT = ""
 NUCLEO_BPS = 57600
 SERIAL_CONNECTION = None
@@ -69,6 +69,7 @@ print(GPIO.VERSION)
 
 def get_com_port():
     global USB_PORT
+    print("Getting COM PORT")
     device_list = list_ports.comports()
     port = None
     for device in device_list:
@@ -82,6 +83,9 @@ def get_com_port():
                 print("NUCLEO found on port:" + port)
                 break
             port = None
+    if port == None:
+        print("MCU not found!")
+        exit()
     USB_PORT = port
 
 
@@ -89,9 +93,12 @@ def connect():
     global SERIAL_CONNECTION
     """Connect to the NUCLEO controller"""
     print("Connecting to NUCLEO...")
+    print(SERIAL_CONNECTION)
     SERIAL_CONNECTION = serial.Serial(USB_PORT, NUCLEO_BPS, timeout=1)
+    print(SERIAL_CONNECTION)
     # Wake up NUCLEO
-    SERIAL_CONNECTION.write(str.encode("\r\n\r\n"))
+    time.sleep(1)
+    # SERIAL_CONNECTION.write(str.encode("\r\n\r\n"))
     # Wait for NUCLEO to initialize and flush startup text in serial input
     time.sleep(2)
     SERIAL_CONNECTION.flushInput()
