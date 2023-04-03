@@ -49,12 +49,14 @@ class NucRXSerDataPkt:
     # 0=continous=batt detected
     BATT_NOT_DETECTED = 0
     BATT_DETECTED = 1
+    battConts = []
 
     def __init__(self, batt0Cont: int, batt1Cont: int, batt2Cont: int, wingCont: int):
-        self.batt0Cont = batt0Cont
-        self.batt1Cont = batt1Cont
-        self.batt2Cont = batt2Cont
+        self.battConts = [batt0Cont, batt1Cont, batt2Cont]
         self.wingCont = wingCont
+    
+    def getBattCont(self, slot: int) -> int:
+        return self.battConts[slot]
 
 
 last_nucleo_data_reading = NucRXSerDataPkt(
@@ -124,12 +126,6 @@ def setup():
     GPIO.output(charge_start_pin, GPIO.HIGH)
     GPIO.output(wing_power_en_pin, GPIO.HIGH)
 
-    # Inputs
-    # GPIO.setup(cont0_pin, GPIO.IN)
-    # GPIO.setup(cont1_pin, GPIO.IN)
-    # GPIO.setup(cont2_pin, GPIO.IN)
-    # GPIO.setup(wing_continuity, GPIO.IN)
-
     # Setup NUCLEO connection
     get_com_port()
     connect()
@@ -139,9 +135,19 @@ def is_batt_detected(slot: int) -> bool:
     '''
     Checks if the given slot has a battery in it by checking continuity.
     '''
-    # Active lwow. Continuity hen LOW.
-    # print(GPIO.input(continuity_pins[slot]))
-    if GPIO.input(continuity_pins[slot]) == GPIO.HIGH:
+    # Active low. Continuity when LOW.
+    # First get a new status packet from Nucleo
+    data: NucRXSerDataPkt = get_nucleo_serial_data_blocking()
+    if data.getBattCont(slot) == NucRXSerDataPkt.BATT_DETECTED:
+        return False
+    else:
+        return True
+
+def is_wing_cont_detected() -> bool:
+    # Active low. Continuity when LOW.
+    # First get a new status packet from Nucleo
+    data: NucRXSerDataPkt = get_nucleo_serial_data_blocking()
+    if data.wingCont == NucRXSerDataPkt.BATT_DETECTED:
         return False
     else:
         return True
@@ -176,14 +182,23 @@ def ESTOP():
     exit(0)
 
 
-def get_nucleo_serial_data_blocking() -> str:
+def get_nucleo_serial_data_blocking() -> NucRXSerDataPkt:
     '''
     Will block here until we get the next packet of serial data from the NUCLEO.
     Data from the NUCLEO should all be sent in a single comma-separated line.
     '''
-    line = SERIAL_CONNECTION.readline().decode("utf-8")
-    print(line)
-    return line
+    global last_nucleo_data_reading
+    start = -1
+    # Flush the input buffer since the NUCLEO will have sent a bunch of data and
+    # filled the Jetson's serial input buffer with a bunch of now old data.
+    SERIAL_CONNECTION.flushInput() 
+    while(start == -1):
+        line = SERIAL_CONNECTION.readline().decode("utf-8")
+        start = line.find(">")
+        print(line)
+    last_nucleo_data_reading = parse_nucleo_raw_serial_data(line)
+    print(last_nucleo_data_reading)
+    return last_nucleo_data_reading
 
 def get_value(keyVal: str) -> int:
   valStart = keyVal.find("=")
@@ -193,15 +208,12 @@ def get_value(keyVal: str) -> int:
     return None
 
 def parse_nucleo_raw_serial_data(raw_data: str) -> NucRXSerDataPkt:
-    # Check if it is the start of a nucleo_rx_serial_data_packet
-    start = raw_data.find(">")
-    if start != -1:
-        # Remove whitespace 
-        raw_data = re.sub(r"\s+", "", raw_data)
-        # Split data up
-        data = raw_data[1:].split(",")
-        # Extract the values
-        return NucRXSerDataPkt(get_value(data[0]), get_value(data[1]), get_value(data[2]), get_value(data[3]))
+    # Remove whitespace 
+    raw_data = re.sub(r"\s+", "", raw_data)
+    # Split data up
+    data = raw_data[1:].split(",")
+    # Extract the values
+    return NucRXSerDataPkt(get_value(data[0]), get_value(data[1]), get_value(data[2]), get_value(data[3]))
 
 
 def test_input():
@@ -216,13 +228,10 @@ def test_input():
 
 def repl():
     global last_nucleo_data_reading
-    while (1):
-        raw_data = get_nucleo_serial_data_blocking()
-        last_nucleo_data_reading = parse_nucleo_raw_serial_data(raw_data)
-        print(last_nucleo_data_reading.batt0Cont)
-        print(last_nucleo_data_reading.batt1Cont)
-        print(last_nucleo_data_reading.batt2Cont)
-        print(last_nucleo_data_reading.wingCont)
+    # while (1):
+    #     data = get_nucleo_serial_data_blocking()
+    #     print(data.battConts)
+    #     print(data.wingCont)
 
     while (1):
         cmd_line = input(">")
@@ -243,13 +252,13 @@ def repl():
         elif cmd == "s2":
             disable_charging(2)
         elif cmd == "d0":
-            while (1):
-                print("BattCont: " + str(is_batt_detected(0)))
-                sleep(0.1)
+            print("BattCont: " + str(is_batt_detected(0)))
         elif cmd == "d1":
             print("BattCont: " + str(is_batt_detected(1)))
         elif cmd == "d2":
             print("BattCont: " + str(is_batt_detected(2)))
+        elif cmd == "d3":
+            print("WingCont: " + str(is_wing_cont_detected()))
         else:
             print("Command not found: " + cmd)
 
