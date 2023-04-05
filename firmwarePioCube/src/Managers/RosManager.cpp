@@ -28,6 +28,10 @@ bool RosManager::init() {
   nodeHandle.advertise(gps_pub);
 #endif
 
+#if ENABLE_BATTMANAGER
+  nodeHandle.advertise(batt_pub);
+#endif
+
   // SETUP SUBSCRIBERS
   nodeHandle.subscribe(subDiffDrive);
 
@@ -89,6 +93,16 @@ bool RosManager::loopHook() {
     gpsLastPub = millis();
     gps_msg = realMain.gpsManager.toRosMsg();
     gps_pub.publish(&gps_msg);
+  }
+#endif
+
+// Publish Battery data
+#if ENABLE_BATTMANAGER
+  static uint32_t battLastPub = 0;
+  if ((millis() - battLastPub) > 1000) {
+    battLastPub = millis();
+    batt_msg = realMain.battManager.getRosBattStateMsg();
+    batt_pub.publish(&batt_msg);
   }
 #endif
 

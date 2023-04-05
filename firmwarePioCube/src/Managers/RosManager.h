@@ -12,6 +12,7 @@
 #include <std_msgs/String.h>
 #include <std_msgs/Int32.h>
 #include <sensor_msgs/NavSatFix.h> 
+#include <sensor_msgs/BatteryState.h> 
 #include "utils/macros.h"
 
 class RosManager : public FakeThread {
@@ -23,6 +24,7 @@ public:
         encoder_left_pub("encoder_left", &encoder_left_msg),
         encoder_right_pub("encoder_right", &encoder_right_msg),
         gps_pub("gps", &gps_msg),
+        batt_pub("battery", &batt_msg),
         subDiffDrive("/cmd_vel", &subDiffDrive_cb)
         {}
   ~RosManager() {}
@@ -57,6 +59,9 @@ private:
   // GPS
   ros::Publisher gps_pub;
   sensor_msgs::NavSatFix gps_msg{};
+  // BATTERY
+  ros::Publisher batt_pub;
+  sensor_msgs::BatteryState batt_msg{};
   /* -------------------------- END PUBLISHERS -------------------------- */
 
   /* -------------------------- SUBSCRIBERS -------------------------- */

@@ -24,9 +24,9 @@ public:
   bool loopHook() override;
   bool logLoopHook() override;
 
-  float getBattVolt() { return static_cast<float>(getBattVolt_mv() * 1000.0); }
+  float getBattVolt() { return static_cast<float>(getBattVolt_mv() / 1000.0); }
   int32_t getBattVolt_mv() { return readInBattVolt_mv(); }
-  bool getRosBattStateMsg(sensor_msgs::BatteryState &batt_msg);
+  sensor_msgs::BatteryState getRosBattStateMsg();
   bool isBattDetected();
 
   // In degress C
@@ -34,7 +34,7 @@ public:
 
 private:
   static constexpr uint32_t LOOP_DELAY_MS = 100;
-  static constexpr uint32_t LOG_LOOP_DELAY_MS = 500;
+  static constexpr uint32_t LOG_LOOP_DELAY_MS = 1000;
   uint32_t batt_volt_monitor_pin;
 
   float last_batt_volt = 0;
