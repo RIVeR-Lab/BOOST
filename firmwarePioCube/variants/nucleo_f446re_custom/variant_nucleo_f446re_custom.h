@@ -193,6 +193,9 @@
 #define SERIAL_CONSOLE_TX_PIN PC6
 #define SERIAL_CONSOLE_RX_PIN PC7
 
+// Battery voltage monitor pin
+#define BATT_VOLTAGE_MONITOR_PIN PC5
+
 // Default pin used for 'Serial' instance (ex: ST-Link)
 // Mandatory for Firmata
 #ifndef PIN_SERIAL_RX

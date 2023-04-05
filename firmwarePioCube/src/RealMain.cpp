@@ -65,6 +65,10 @@ bool RealMain::init() {
   success = drvManager.init() && success;
 #endif
 
+#if ENABLE_BATTMANAGER
+  success = battManager.init() && success;
+#endif
+
   if (!success) {
     LOGERROR("Failed to initialize");
     Console.println("RealMain::Failed to initialize"); // Bypass LOGGING
@@ -110,6 +114,10 @@ void RealMain::loop() {
 
 #if ENABLE_DRVMANAGER
     drvManager.loop();
+#endif
+
+#if ENABLE_BATTMANAGER
+    battManager.loop();
 #endif
   }
 }

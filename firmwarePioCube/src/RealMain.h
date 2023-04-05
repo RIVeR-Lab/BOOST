@@ -2,6 +2,7 @@
 #define _SRC_REALMAIN_H
 
 #include "BNO055Manager.h"
+#include "BatteryManager.h"
 #include "DriveManager.h"
 #include "Encoder.h"
 #include "GpsManager.h"
@@ -11,13 +12,13 @@
 #include "RosManager.h"
 #include "TXB0104PWR.h"
 #include "config.h"
-#include "utils/utils.h"
 #include "utils/log.h"
+#include "utils/utils.h"
+#include "version.h"
 #include <Arduino.h>
 #include <HardwareSerial.h>
 #include <SPI.h>
 #include <Wire.h>
-#include "version.h"
 
 extern void _Error_Handler(const char *msg, int val);
 
@@ -30,11 +31,13 @@ public:
         encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
         encoderLvlShifter(ENCODER_LVL_SHIFTER_EN),
         mtrCtrl(L_WHEEL_FORW_PIN, L_WHEEL_BACK_PIN, R_WHEEL_FORW_PIN,
-                R_WHEEL_BACK_PIN), mtrCtrlLvlShifter(MOTOR_LVL_SHIFTER_EN_PIN),
+                R_WHEEL_BACK_PIN),
+        mtrCtrlLvlShifter(MOTOR_LVL_SHIFTER_EN_PIN),
         gps(uart3Gps, GPS_RX_PIN, GPS_TX_PIN, GPS_RESET_N_PIN, GPS_1PPS_PIN,
             GPS_FORCE_ON_N_PIN),
         rosManager(Serial2), odomManager(encLeft, encRight, encoderLvlShifter),
-        imuManager(imu), drvManager(mtrCtrl, mtrCtrlLvlShifter), gpsManager(gps) {}
+        imuManager(imu), drvManager(mtrCtrl, mtrCtrlLvlShifter),
+        gpsManager(gps), battManager(BATT_VOLTAGE_MONITOR_PIN) {}
   ~RealMain() {}
 
   friend class RosManager;
@@ -42,10 +45,11 @@ public:
   friend class BNO055Manager;
   friend class DriveManager;
   friend class GpsManager;
-  friend bool log_printf_level(bool ros, const char *file, uint32_t line, uint32_t level,
-                      bool addNL, const char *Format, ...);
-  friend bool log_printf_error(bool ros, const char *file, uint32_t line, const char *Format,
-                      ...);
+  friend bool log_printf_level(bool ros, const char *file, uint32_t line,
+                               uint32_t level, bool addNL, const char *Format,
+                               ...);
+  friend bool log_printf_error(bool ros, const char *file, uint32_t line,
+                               const char *Format, ...);
 
 private:
   // ------------------------------ DEVICES ------------------------------
@@ -67,6 +71,7 @@ private:
   BNO055Manager imuManager;
   DriveManager drvManager;
   GpsManager gpsManager;
+  BatteryManager battManager;
   // ------------------------------ END FAKE THREADS
   // ------------------------------
 
