@@ -28,14 +28,15 @@ class MCURXSerDataPkt:
     BATT_DETECTED = 1
     battConts = []
     wingCont = 0
+
+    battVoltsMvIndices = {'batt0':0, 'batt1':1, 'batt1':2, 'hubbatt':3}
     battVoltsMv = []
-    hubBattVoltMv = 0
 
     def __init__(self, batt0Cont=0, batt1Cont=0, batt2Cont=0, wingCont=0, batt0VoltMv=0,
                  batt1VoltMv=0, batt2VoltMv=0, hubBattVoltMv=0):
         self.battConts = [batt0Cont, batt1Cont, batt2Cont]
         self.wingCont = wingCont
-        self.battVoltsMv = [batt0VoltMv, batt1VoltMv, batt2VoltMv]
+        self.battVoltsMv = [batt0VoltMv, batt1VoltMv, batt2VoltMv, hubBattVoltMv]
 
     def getBattCont(self, slot: int) -> int:
         return self.battConts[slot]
@@ -43,17 +44,13 @@ class MCURXSerDataPkt:
     def getWingCont(self, slot: int) -> int:
         return self.wingCont
 
-    def getBattVoltMv(self, slot: int) -> int:
-        return self.battVolts[slot]
+    def getBattVoltMv(self, slot: int) -> float:
+        print(self.battVoltsMv[slot])
+        return float(self.battVoltsMv[slot])
 
-    def getBattVoltV(self, slot: int) -> int:
-        return (self.battVolts[slot] * 1000.0)
-
-    def getHubBattVoltMv(self, slot: int) -> int:
-        return self.hubBattVoltMv
-
-    def getHubBattVoltV(self, slot: int) -> int:
-        return (self.hubBattVoltMv * 1000.0)
+    def getBattVoltV(self, slot: int) -> float:
+        print(self.battVoltsMv[slot])
+        return float((self.battVoltsMv[slot] * 1000.0))
 
 
 class MCUController:
@@ -132,23 +129,28 @@ class MCUController:
         return tempSerConnection
 
     def __get_value_from_input_data(self, keyVal: str) -> int:
-        valStart = keyVal.find("=")
-        if valStart != -1:
-            return int(keyVal[valStart+1])
-        else:
+        data = keyVal.split("=")
+        if len(data) != 2:
+            print("ERROR getting key and value from MCU serial input data: " + keyVal)
             return None
+        return int(data[1])
 
     def __parse_mcu_raw_serial_data(self, raw_data: str) -> MCURXSerDataPkt:
         # Remove whitespace
         raw_data = re.sub(r"\s+", "", raw_data)
         # Split data up
         data = raw_data[1:].split(",")
+        print(data)
         # Extract the values
-        return MCURXSerDataPkt(self.__get_value_from_input_data(data[0]),
-                               self.__get_value_from_input_data(data[1]),
-                               self.__get_value_from_input_data(data[2]),
-                               self.__get_value_from_input_data(data[3]))
-
+        return MCURXSerDataPkt(batt0Cont=self.__get_value_from_input_data(data[0]),
+                               batt1Cont=self.__get_value_from_input_data(data[1]),
+                               batt2Cont=self.__get_value_from_input_data(data[2]),
+                               wingCont=self.__get_value_from_input_data(data[3]),
+                               batt0VoltMv=self.__get_value_from_input_data(data[4]),
+                               batt1VoltMv=self.__get_value_from_input_data(data[5]),
+                               batt2VoltMv=self.__get_value_from_input_data(data[6]),
+                               hubBattVoltMv=self.__get_value_from_input_data(data[7]),
+                               )
 
 class ChargeController:
     mcu = MCUController()
@@ -226,6 +228,14 @@ class ChargeController:
         else:
             return True
 
+    def get_batt_voltage_mv(self, slot: int) -> float:
+        data: MCURXSerDataPkt = self.mcu.get_mcu_serial_data_blocking()
+        # If the battery is not detected based on continuity then return 0.0V
+        if (slot <= 2):
+            if not self.is_batt_detected(slot):
+                return 0.0
+        return float(data.getBattVoltMv(slot))
+
     def ESTOP(self):
         exit(0)
 
@@ -259,6 +269,14 @@ def repl():
             print("BattCont: " + str(cont.is_batt_detected(2)))
         elif cmd == "d3":
             print("WingCont: " + str(cont.is_wing_cont_detected()))
+        elif cmd == "v0":
+            print("Batt0Voltage: " + str(cont.get_batt_voltage_mv(0)))
+        elif cmd == "v1":
+            print("Batt0Voltage: " + str(cont.get_batt_voltage_mv(1)))
+        elif cmd == "v2":
+            print("Batt0Voltage: " + str(cont.get_batt_voltage_mv(2)))
+        elif cmd == "v3":
+            print("Batt0Voltage: " + str(cont.get_batt_voltage_mv(3)))
         else:
             print("Command not found: " + cmd)
 
