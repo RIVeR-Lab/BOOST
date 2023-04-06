@@ -32,10 +32,10 @@ continuity_pins = [cont0_pin, cont1_pin, cont2_pin]
 wing_continuity = 33
 
 
-nucleo_port_VID = 6790
-nucleo_port_PID = 29987
+nucleo_port_VID = 1027
+nucleo_port_PID = 24577
 USB_PORT = ""
-NUCLEO_BPS = 57600
+NUCLEO_BPS = 9600
 SERIAL_CONNECTION = None
 
 # ############################### END PIN DEFS ###############################
@@ -78,6 +78,10 @@ def get_com_port():
         print(device)
         print(device.vid)
         print(device.pid)
+    for device in device_list:
+        print(device)
+        print(device.vid)
+        print(device.pid)
         if (device.vid != None or device.pid != None):
             if (device.vid == nucleo_port_VID and
                     device.pid == nucleo_port_PID):
@@ -96,15 +100,21 @@ def connect():
     """Connect to the NUCLEO controller"""
     print("Connecting to NUCLEO...")
     print(SERIAL_CONNECTION)
-    SERIAL_CONNECTION = serial.Serial(USB_PORT, NUCLEO_BPS, timeout=1)
+    SERIAL_CONNECTION = serial.Serial(USB_PORT,
+        baudrate=NUCLEO_BPS,
+        parity=serial.PARITY_NONE,
+        stopbits=serial.STOPBITS_ONE,
+        timeout=1)
     print(SERIAL_CONNECTION)
     # Wake up NUCLEO
-    time.sleep(1)
-    # SERIAL_CONNECTION.write(str.encode("\r\n\r\n"))
+    SERIAL_CONNECTION.write(str.encode("\r\n\r\n"))
     # Wait for NUCLEO to initialize and flush startup text in serial input
     time.sleep(2)
     SERIAL_CONNECTION.flushInput()
     print("Connected to NUCLEO")
+    # while(1):
+    #     # SERIAL_CONNECTION.flushInput()
+    #     print(SERIAL_CONNECTION.readline().decode())
 
 
 def setup():
