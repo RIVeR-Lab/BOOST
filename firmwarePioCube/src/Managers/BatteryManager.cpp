@@ -61,7 +61,8 @@ bool BatteryManager::isBattDetected() {
   return false;
 }
 
-bool BatteryManager::getRosBattStateMsg(sensor_msgs::BatteryState &batt_msg) {
+sensor_msgs::BatteryState BatteryManager::getRosBattStateMsg() {
+  sensor_msgs::BatteryState batt_msg{};
   batt_msg.voltage = getBattVolt();
   batt_msg.current = 0;
   batt_msg.charge = 0;
@@ -75,5 +76,5 @@ bool BatteryManager::getRosBattStateMsg(sensor_msgs::BatteryState &batt_msg) {
   batt_msg.power_supply_technology =
       sensor_msgs::BatteryState::POWER_SUPPLY_TECHNOLOGY_LIPO;
   batt_msg.present = isBattDetected();
-  return true;
+  return batt_msg;
 }
