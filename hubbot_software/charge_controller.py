@@ -12,13 +12,12 @@ import re
 # Board pins (i.e. the numbers that are on the Jetson itself)
 # All active low relays
 boost_0_en_pin = 7
-boost_1_en_pin = 11
+boost_1_en_pin = 24
 boost_2_en_pin = 12
 boost_en_pins = [boost_0_en_pin, boost_1_en_pin, boost_2_en_pin]
 
 # Toggle low then high.
 charge_start_pin = 13
-
 wing_power_en_pin = 15
 
 
@@ -29,14 +28,15 @@ class MCURXSerDataPkt:
     battConts = []
     wingCont = 0
 
-    battVoltsMvIndices = {'batt0':0, 'batt1':1, 'batt1':2, 'hubbatt':3}
+    battVoltsMvIndices = {'batt0': 0, 'batt1': 1, 'batt1': 2, 'hubbatt': 3}
     battVoltsMv = []
 
     def __init__(self, batt0Cont=0, batt1Cont=0, batt2Cont=0, wingCont=0, batt0VoltMv=0,
                  batt1VoltMv=0, batt2VoltMv=0, hubBattVoltMv=0):
         self.battConts = [batt0Cont, batt1Cont, batt2Cont]
         self.wingCont = wingCont
-        self.battVoltsMv = [batt0VoltMv, batt1VoltMv, batt2VoltMv, hubBattVoltMv]
+        self.battVoltsMv = [batt0VoltMv,
+                            batt1VoltMv, batt2VoltMv, hubBattVoltMv]
 
     def getBattCont(self, slot: int) -> int:
         return self.battConts[slot]
@@ -143,52 +143,40 @@ class MCUController:
         print(data)
         # Extract the values
         return MCURXSerDataPkt(batt0Cont=self.__get_value_from_input_data(data[0]),
-                               batt1Cont=self.__get_value_from_input_data(data[1]),
-                               batt2Cont=self.__get_value_from_input_data(data[2]),
-                               wingCont=self.__get_value_from_input_data(data[3]),
-                               batt0VoltMv=self.__get_value_from_input_data(data[4]),
-                               batt1VoltMv=self.__get_value_from_input_data(data[5]),
-                               batt2VoltMv=self.__get_value_from_input_data(data[6]),
-                               hubBattVoltMv=self.__get_value_from_input_data(data[7]),
+                               batt1Cont=self.__get_value_from_input_data(
+                                   data[1]),
+                               batt2Cont=self.__get_value_from_input_data(
+                                   data[2]),
+                               wingCont=self.__get_value_from_input_data(
+                                   data[3]),
+                               batt0VoltMv=self.__get_value_from_input_data(
+                                   data[4]),
+                               batt1VoltMv=self.__get_value_from_input_data(
+                                   data[5]),
+                               batt2VoltMv=self.__get_value_from_input_data(
+                                   data[6]),
+                               hubBattVoltMv=self.__get_value_from_input_data(
+                                   data[7]),
                                )
+
 
 class ChargeController:
     mcu = MCUController()
+    FULL_6S_BATT_VOLTAGE_MV = 25.2 * 1000.0
+    NUM_BATT_SLOTS = 3
+    # Battery is charging state
+    is_charging = []
 
     def __init__(self):
+        print("Initializing ChargeController...")
         print(GPIO.JETSON_INFO)
         print(GPIO.VERSION)
-        self.init()
+        self.is_charging = [False, False, False]
+        self.__init_pins()
+        self.disable_all_charging()
+        print("Initialized ChargeController SUCCESSFULLY")
 
-    def loopHook():
-        # If a battery is detected in a slot, then start charging it unless it is full.
-        c = 1
-
-    def enable_charging(self, slot: int, force: bool = False):
-        print("Starting charging on slot " + str(slot) + "...")
-        # Check that the battery is there
-        if not is_batt_detected(slot):
-            print("BATTERY NOT DETECTED in slot " +
-                  str(slot) + ". CANNOT start charging!!")
-        else:
-            # Enable the Boost converter
-            GPIO.output(boost_en_pins[slot], GPIO.LOW)
-            print("Boost enabled.")
-            sleep(1)
-            GPIO.output(charge_start_pin, GPIO.LOW)
-            print("Start button low.")
-            sleep(1)
-            GPIO.output(charge_start_pin, GPIO.HIGH)
-            print("Start button high.")
-            print("Enabled charging on slot " + str(slot))
-
-    def disable_charging(self, slot: int):
-        print("Disabling charging on slot " + str(slot) + "...")
-        GPIO.output(boost_en_pins[slot], GPIO.HIGH)
-        print("Disabled charging on slot " + str(slot))
-
-    def init(self):
-        print("Initializing ChargeController...")
+    def __init_pins(self):
         # Pin Setup:
         GPIO.setmode(GPIO.BOARD)
 
@@ -205,31 +193,85 @@ class ChargeController:
         GPIO.output(boost_2_en_pin, GPIO.HIGH)
         GPIO.output(charge_start_pin, GPIO.HIGH)
         GPIO.output(wing_power_en_pin, GPIO.HIGH)
-        print("Initialized ChargeController SUCCESSFULLY")
 
-    def is_batt_detected(self, slot: int) -> bool:
+        # pin = 24
+        # GPIO.setup(pin, GPIO.OUT)
+        # while(1):
+        #     print("loop...")
+        #     GPIO.output(pin, GPIO.HIGH)
+        #     sleep(1)
+        #     # print(GPIO.input(pin))
+        #     # sleep(1)
+        #     GPIO.output(pin, GPIO.LOW)
+        #     # sleep(1)
+        #     # print(GPIO.input(pin))
+        #     sleep(1)
+
+    def loopHook(self):
+        data: MCURXSerDataPkt = self.mcu.get_mcu_serial_data_blocking()
+
+        # Enable charging if battery detected in slot.
+        for i in range(0, self.NUM_BATT_SLOTS):
+            if self.is_batt_detected(i, data):
+                if self.get_batt_voltage_mv(i, data) < (self.FULL_6S_BATT_VOLTAGE_MV - (0.1 * 1000.0)) \
+                        and not self.is_charging[i]:
+                    self.enable_charging(i, True)
+            else:
+                self.disable_charging(i)
+
+    def enable_charging(self, slot: int, force: bool = False):
+        print("Starting charging on slot " + str(slot) + "...")
+        # Check that the battery is there
+        if not force and not is_batt_detected(slot):
+            print("BATTERY NOT DETECTED in slot " +
+                  str(slot) + ". CANNOT start charging!!")
+        else:
+            # Enable the Boost converter
+            GPIO.output(boost_en_pins[slot], GPIO.LOW)
+            print("Boost enabled.")
+            sleep(1)
+            GPIO.output(charge_start_pin, GPIO.LOW)
+            print("Start button low.")
+            sleep(1)
+            GPIO.output(charge_start_pin, GPIO.HIGH)
+            self.is_charging[slot] = True
+            print("Start button high.")
+            print("Enabled charging on slot " + str(slot))
+
+    def disable_all_charging(self):
+        for i in range(0, self.NUM_BATT_SLOTS):
+            self.disable_charging(i)
+
+    def disable_charging(self, slot: int):
+        print("Disabling charging on slot " + str(slot) + "...")
+        GPIO.output(boost_en_pins[slot], GPIO.HIGH)
+        self.is_charging[slot] = False
+        print("Disabled charging on slot " + str(slot))
+
+    def is_batt_detected(self, slot: int, data: MCURXSerDataPkt = None) -> bool:
         '''
         Checks if the given slot has a battery in it by checking continuity.
         '''
         # Active low. Continuity when LOW.
-        # First get a new status packet from mcu
-        data: MCURXSerDataPkt = self.mcu.get_mcu_serial_data_blocking()
+        if data == None:
+            data = self.mcu.get_mcu_serial_data_blocking()
         if data.getBattCont(slot) == MCURXSerDataPkt.BATT_DETECTED:
             return False
         else:
             return True
 
-    def is_wing_cont_detected(self) -> bool:
+    def is_wing_cont_detected(self, data: MCURXSerDataPkt = None) -> bool:
         # Active low. Continuity when LOW.
-        # First get a new status packet from mcu
-        data: MCURXSerDataPkt = self.mcu.get_mcu_serial_data_blocking()
+        if data == None:
+            data = self.mcu.get_mcu_serial_data_blocking()
         if data.wingCont == MCURXSerDataPkt.BATT_DETECTED:
             return False
         else:
             return True
 
-    def get_batt_voltage_mv(self, slot: int) -> float:
-        data: MCURXSerDataPkt = self.mcu.get_mcu_serial_data_blocking()
+    def get_batt_voltage_mv(self, slot: int, data: MCURXSerDataPkt = None) -> float:
+        if data == None:
+            data = self.mcu.get_mcu_serial_data_blocking()
         # If the battery is not detected based on continuity then return 0.0V
         if (slot <= 2):
             if not self.is_batt_detected(slot):
@@ -283,8 +325,14 @@ def repl():
 
 def loop_mode():
     controller = ChargeController()
+
+    controller_last_loop_time_ms = time.time() * 1000.0
     while (1):
-        controller.loopHook()
+        time_now_ms = time.time() * 1000.0
+
+        if (time_now_ms - controller_last_loop_time_ms) > 1000:
+            controller_last_loop_time_ms = time_now_ms
+            controller.loopHook()
 
 
 def repl_mode():
@@ -293,8 +341,8 @@ def repl_mode():
 
 if __name__ == "__main__":
     try:
-        repl_mode()
-        # loop_mode()
+        # repl_mode()
+        loop_mode()
     except KeyboardInterrupt:
         print("Keyboard Interrupts")
     finally:
