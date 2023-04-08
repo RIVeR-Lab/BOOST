@@ -86,10 +86,16 @@
 #define DIRECT_PIN_READ(base, pin)      digitalRead(pin)
 
 #elif defined(NUCLEO_F446RE_CUSTOM)
-#define IO_REG_TYPE                     uint32_t
-#define PIN_TO_BASEREG(pin)             (0)
-#define PIN_TO_BITMASK(pin)             pin
-#define DIRECT_PIN_READ(base, pin)      digitalRead(pin)
+// #define IO_REG_TYPE                     uint32_t
+// #define PIN_TO_BASEREG(pin)             (0)
+// #define PIN_TO_BITMASK(pin)             pin
+// #define DIRECT_PIN_READ(base, pin)      digitalRead(pin)
+
+#define IO_REG_TYPE			            uint32_t
+#define PIN_TO_BASEREG(pin)             (portInputRegister(digitalPinToPort(pin)))
+#define PIN_TO_BITMASK(pin)             (digitalPinToBitMask(pin))
+#define DIRECT_PIN_READ(base, mask)     (((*(base)) & (mask)) ? 1 : 0)
+
 
 #elif defined(__arc__) /* Arduino101/Genuino101 specifics */
 

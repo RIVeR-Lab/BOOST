@@ -25,12 +25,13 @@ last_swapped_slot = "0"
 
 # Absolute location of things all relative to the homed position
 indexer_abs_loc_cm = {"slot0": 0, "slot1": 4.75, "slot2": 9.75}
-pusher_abs_loc_cm = {"above_minibot": 0, "in_indexer": -11}
+pusher_abs_loc_cm = {"above_minibot": 0, "in_indexer": -11.3}
 '''
 liftdown: Where the minibot can dock
-liftup: Where the minibot is lifted to and where battery can be swapped at
+liftupbattout: Where the minibot is lifted to and where battery can be swapped OUT
+liftupbattin: Where the minibot is lifted to and where battery can be swapped IN
 '''
-lift_abs_loc_cm = {"liftdown": 0, "liftup": -95}
+lift_abs_loc_cm = {"liftdown": 0, "liftupbattout": -105, "liftupbattin": -95}
 
 # Feed rates
 indexer_feed_rate = "F200"
@@ -224,7 +225,12 @@ def move_y_indexer(loc: str):
 def move_z_lift_arms(loc: str):
     """Move the z axis to the specified location"""
     assert (loc in lift_abs_loc_cm.keys())
-    if(loc == "liftup"):
+    if(loc == "liftupbattout"):
+        send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
+                            " " + lift_axis + str(lift_abs_loc_cm[loc] + 10) + " " + lift_feed_rate)
+        send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
+                        " " + lift_axis + str(lift_abs_loc_cm[loc]) + " " + "F250")
+    elif(loc == "liftupbattin"):
         send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
                             " " + lift_axis + str(lift_abs_loc_cm[loc] + 10) + " " + lift_feed_rate)
         send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
@@ -327,9 +333,13 @@ def swap_battery():
     # Take out old battery from minibot into hub
     old_batt_slot = move_indexer_to_first_empty_slot()
     blocking_wait_until_axes_stop_moving()
-    move_z_lift_arms(loc="liftup")
+    move_z_lift_arms(loc="liftupbattout")
     blocking_wait_until_axes_stop_moving()
     move_x_pusher(loc="in_indexer")
+    blocking_wait_until_axes_stop_moving()
+
+    # Move lift down a bit
+    move_z_lift_arms(loc="liftupbattin")
     blocking_wait_until_axes_stop_moving()
 
     # Put new batteyr from hub into minibot
@@ -405,15 +415,15 @@ if __name__ == "__main__":
             for i in range(0,100) :
                 swap_battery()
         elif cmd == "liftdownraw":
-            # move_lift_arms_to_minibot()
             send_grbl_gcode_cmd("G91 G21 G1 Z200 F2000")
         elif cmd == "liftupraw":
             send_grbl_gcode_cmd("G91 G21 G1 Z-200 F400")
         elif cmd == "liftdown":
             move_z_lift_arms(loc="liftdown")
-        elif cmd == "liftup":
-            move_z_lift_arms(loc="liftup")
-            # send_grbl_gcode_cmd("G90 G21 G1 Z-140 F400")
+        elif cmd == "liftupbattin":
+            move_z_lift_arms(loc="liftupbattin")
+        elif cmd == "liftupbattout":
+            move_z_lift_arms(loc="liftupbattout")
         elif cmd == "s":  # Stop
             ESTOP()
         elif cmd == "r":  # Resume
