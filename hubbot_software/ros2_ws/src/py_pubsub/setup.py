@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'py_pubsub'
+package_name = 'py_hubbot_status_pubsub'
 
 setup(
     name=package_name,
@@ -20,8 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-                'talker = py_pubsub.publisher_member_function:main',
-                'listener = py_pubsub.subscriber_member_function:main',
+                'talker = py_hubbot_status_pubsub.publisher_member_function:main',
+                'listener = py_hubbot_status_pubsub.subscriber_member_function:main',
         ],
     },
 )
