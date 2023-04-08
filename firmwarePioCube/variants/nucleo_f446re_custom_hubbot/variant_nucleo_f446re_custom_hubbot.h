@@ -184,9 +184,9 @@
 
 // LED Pins
 #define LED_1_PIN PC9
-#define LED_2_PIN PC7
+#define LED_2_PIN PC7 // Used by console.
 #define LED_3_PIN PC8
-#define LED_4_PIN PC6
+#define LED_4_PIN PC6 // Used by console.
 #define LED_5_PIN PB12
 
 // Serial Console Pins
