@@ -25,8 +25,9 @@ class HubbotStats:
 class MinibotStats:
   class STAT(IntEnum):
     MiniUnknown = -1
-    MiniBattLow = 1
-    MiniDocked = 2
+    MiniNormalOperating = 1
+    MiniSearchingForHub = 2
+    MiniDocked = 3
 
   @classmethod
   def ros_msg_to_stat(self, msg: Int32) -> STAT:
