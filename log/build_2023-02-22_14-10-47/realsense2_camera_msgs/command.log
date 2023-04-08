@@ -1,2 +1,0 @@
-Invoking command in '/home/ben/Desktop/swarm_crawler/build/realsense2_camera_msgs': /usr/bin/cmake /home/ben/Desktop/swarm_crawler/software/realsense-ros/realsense2_camera_msgs -DCMAKE_INSTALL_PREFIX=/home/ben/Desktop/swarm_crawler/install/realsense2_camera_msgs
-Invoked command in '/home/ben/Desktop/swarm_crawler/build/realsense2_camera_msgs' returned '1': /usr/bin/cmake /home/ben/Desktop/swarm_crawler/software/realsense-ros/realsense2_camera_msgs -DCMAKE_INSTALL_PREFIX=/home/ben/Desktop/swarm_crawler/install/realsense2_camera_msgs
