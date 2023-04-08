@@ -20,8 +20,8 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-                'talker = py_hubbot_status_pubsub.publisher_member_function:main',
-                'listener = py_hubbot_status_pubsub.subscriber_member_function:main',
+                'hubbot_stat_pub = py_hubbot_status_pubsub.hubbot_status_publisher:main',
+                'minibot_stat_sub = py_hubbot_status_pubsub.minibot_status_subscriber:main',
         ],
     },
 )
