@@ -1,0 +1,3 @@
+- This is the main shared data between hubbot and minibot.
+- Copy this directoy to your ROS workspace where you need to use the data.
+  - e.g. copy here: /ros2_ws/src/

@@ -34,21 +34,40 @@ class HubbotStatusPublisher(Node):
         msg = HubbotStats().stat_to_ros_msg(HubbotStats.STAT.HubNotReady)
         msg.data = self.current_stat.value
         self.publisher_.publish(msg)
-        self.get_logger().info('Publishing: "%s:%s"' % (self.current_stat.name, msg.data))
+        self.get_logger().info('Publishing: "%s:%s"' %
+                               (self.current_stat.name, msg.data))
         self.i += 1
+
+
+class HubbotStatusSubscriber(Node):
+
+    def __init__(self):
+        super().__init__('minimal_subscriber')
+        self.subscription = self.create_subscription(
+            String,
+            'topic',
+            self.listener_callback,
+            10)
+        self.subscription  # prevent unused variable warning
+
+    def listener_callback(self, msg):
+        self.get_logger().info('I heard: "%s"' % msg.data)
 
 
 def main(args=None):
     rclpy.init(args=args)
 
     hubbot_stat_pub = HubbotStatusPublisher()
+    minibot_status_subscriber = HubbotStatusSubscriber()
 
     rclpy.spin(hubbot_stat_pub)
+    rclpy.spin(minibot_status_subscriber)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
     hubbot_stat_pub.destroy_node()
+    minibot_status_subscriber.destroy_node()
     rclpy.shutdown()
 
 

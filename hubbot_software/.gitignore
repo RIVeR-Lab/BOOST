@@ -5,3 +5,4 @@ __pycache__/
 install/
 build/
 log/
+bot_stats.py
