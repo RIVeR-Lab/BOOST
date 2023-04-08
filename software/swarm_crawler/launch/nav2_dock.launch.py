@@ -344,7 +344,7 @@ def generate_launch_description():
 
     #aruco marker traversal
       # Launch navigation to the charging dock
-    nav_to_charging_dock_script = 'navigate_to_charging_dock_v1.py'
+    nav_to_charging_dock_script = 'navigate_to_charging_dock_v2.py'
 
     start_navigate_to_charging_dock_cmd = Node(
     package='swarm_crawler',
@@ -378,8 +378,6 @@ def generate_launch_description():
     ld.add_action(start_aruco_marker_pose_transform_cmd)
 
     # STARTING STATE PUBLISHER NODES
-    ld.add_action(start_navigate_to_charging_dock_cmd)
-
     ld.add_action(start_joint_state_publisher_cmd)
     ld.add_action(start_robot_state_publisher_cmd)
     # ld.add_action(start_joint_state_publisher_gui_node)

@@ -92,7 +92,9 @@ class ConnectToChargingDockNavigator(Node):
       # Declare linear and angular velocities
       self.linear_velocity = 0.4  # meters per second
       # self.angular_velocity = 0.63 # radians per second
-      self.angular_velocity = 1.5 # radians per second
+      # self.angular_velocity = 1.5 # radians per second
+      self.angular_velocity = 1.2 # radians per second
+
 
       
       # Keep track of which goal we're headed towards
