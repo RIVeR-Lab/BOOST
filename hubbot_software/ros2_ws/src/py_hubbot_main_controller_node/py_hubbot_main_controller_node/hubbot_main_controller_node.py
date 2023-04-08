@@ -17,11 +17,17 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from std_msgs.msg import Int32
 from .bot_stats import HubbotStats, MinibotStats
-from .axis_control import *
+from .axis_control import swap_battery, init_axis_control
+from .charge_controller import ChargeController
+import sys
+import os
 
 
 class HubbotMainControllerNode(Node):
     PUBLISH_PERIOD_S = 1.0
+    CHARGE_CONTROLLER_LOOP_TIME_S = 0.5
+    VERBOSE_CHARGER_CONTROLLER = False
+
     hubbot_current_stat: HubbotStats.STAT
     minibot_a_current_stat: MinibotStats.STAT
 
@@ -29,11 +35,14 @@ class HubbotMainControllerNode(Node):
         super().__init__('hubbot_main_controller_node')
         self.__init_hubbot_stat_pub()
         self.__init_minibot_a_sub()
+        self.__init_charge_controller()
+        self.__init_axis_controller()
+        self.hubbot_current_stat = HubbotStats.STAT.HubReadyForMinibotDocking
 
     def __init_hubbot_stat_pub(self):
-        self.publisher_ = self.create_publisher(Int32, 'hubstatus', 10)
+        self.publisher_ = self.create_publisher(Int32, 'hub_stat', 10)
         timer_period = self.PUBLISH_PERIOD_S
-        self.timer = self.create_timer(
+        self.hubbot_stat_pub_timer = self.create_timer(
             timer_period, self.hubbot_stat_pub_callback)
         self.i = 0
         self.hubbot_current_stat = HubbotStats.STAT.HubNotReady
@@ -47,6 +56,28 @@ class HubbotMainControllerNode(Node):
         self.subscription  # prevent unused variable warning
         self.minibot_a_current_stat = MinibotStats.STAT.MiniUnknown
 
+    def __init_charge_controller(self):
+        self.charge_controller = ChargeController()
+        timer_period = self.CHARGE_CONTROLLER_LOOP_TIME_S
+        self.charge_controller_timer = self.create_timer(
+            timer_period, self.charge_controller_callback)
+
+    def __init_axis_controller(self):
+        init_axis_control()
+    
+    def blockPrint(self):
+        sys.stdout = open(os.devnull, 'w')
+
+    def enablePrint(self):
+        sys.stdout = sys.__stdout__
+
+    def charge_controller_callback(self):
+        if not self.VERBOSE_CHARGER_CONTROLLER:
+            self.blockPrint()
+        self.charge_controller.loopHook()
+        if not self.VERBOSE_CHARGER_CONTROLLER:
+            self.enablePrint()
+
     def hubbot_stat_pub_callback(self):
         msg = HubbotStats().stat_to_ros_msg(HubbotStats.STAT.HubNotReady)
         msg.data = self.hubbot_current_stat.value
@@ -58,12 +89,15 @@ class HubbotMainControllerNode(Node):
               ":" + str(self.minibot_a_current_stat.value))
 
     def new_minibot_status_handler(self, newStat: MinibotStats.STAT):
+        '''
+        Main state machine for
+        '''
         print("New Minibot Status: " + str(newStat.name) +
               ":" + str(newStat.value))
         if newStat == MinibotStats.STAT.MiniUnknown:
             print("Minibot status unknown.")
         elif newStat == MinibotStats.STAT.MiniDocked:
-            axis_control.swap_battery()
+            swap_battery()
 
     def minibot_a_listener_callback(self, msg: Int32):
         self.get_logger().info('I heard: "%s"' % msg.data)
@@ -72,7 +106,7 @@ class HubbotMainControllerNode(Node):
             print("New Minibot Status Recieved: " +
                   str(tempStat.name) + ":" + str(tempStat.value))
             self.minibot_a_current_stat = tempStat
-            new_minibot_status_handler(self.minibot_a_current_stat)
+            self.new_minibot_status_handler(self.minibot_a_current_stat)
         else:
             print("Non-New Minibot Status Recieved: " +
                   str(tempStat.name) + ":" + str(tempStat.value))
