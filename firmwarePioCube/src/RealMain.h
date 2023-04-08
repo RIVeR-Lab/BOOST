@@ -11,7 +11,7 @@
 #include "RealMain.h"
 #include "RosManager.h"
 #include "TXB0104PWR.h"
-#include "config.h"
+#include "configs/config.h"
 #include "utils/log.h"
 #include "utils/utils.h"
 #include "version.h"
