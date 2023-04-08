@@ -36,11 +36,10 @@ void testGPS() {
   }
 }
 
-void interrupt_func() {
-  Serial.println("Interrupt!");
-}
-
 void setup() {
+  // realMain.init();
+  // realMain.loop();
+
   // console6.setTx(SERIAL_CONSOLE_TX_PIN);
   // console6.setRx(SERIAL_CONSOLE_RX_PIN);
   Serial.begin(57600);
@@ -51,16 +50,12 @@ void setup() {
   pinMode(PB5, OUTPUT);
   digitalWrite(PB5, HIGH);
 
-  // attachInterrupt(PA0, interrupt_func, CHANGE);
-  // realMain.init();
-  // realMain.loop();
-
   // HardwareTimer *MyTim = new HardwareTimer(TIM5);
   // MyTim->setOverflow(1, HERTZ_FORMAT); // 10 Hz
   // MyTim->attachInterrupt(Update_IT_callback);
   // MyTim->resume();
 }
-long oldPosition  = -999;
+// long oldPosition  = -999;
 Encoder leftQuadEnc(PA0, PA1);
 Encoder rightQuadEnc(PA5, PB3);
 

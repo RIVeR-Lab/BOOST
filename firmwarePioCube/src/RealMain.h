@@ -27,15 +27,17 @@ class RealMain {
 public:
   RealMain()
       : mySerial4(UART4), uart3Gps(USART3), i2c1(PB9, PB8),
-        imu(55, 0x28, &i2c1), encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
-        encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
+        imu(55, 0x28, &i2c1),
+        // encLeft(L_ENCODER_PIN1, L_ENCODER_PIN2),
+        // encRight(R_ENCODER_PIN1, R_ENCODER_PIN2),
         encoderLvlShifter(ENCODER_LVL_SHIFTER_EN),
         mtrCtrl(L_WHEEL_FORW_PIN, L_WHEEL_BACK_PIN, R_WHEEL_FORW_PIN,
                 R_WHEEL_BACK_PIN),
         mtrCtrlLvlShifter(MOTOR_LVL_SHIFTER_EN_PIN),
         gps(uart3Gps, GPS_RX_PIN, GPS_TX_PIN, GPS_RESET_N_PIN, GPS_1PPS_PIN,
             GPS_FORCE_ON_N_PIN),
-        rosManager(Serial2), odomManager(encLeft, encRight, encoderLvlShifter),
+        rosManager(Serial2),
+        // odomManager(encLeft, encRight, encoderLvlShifter),
         imuManager(imu), drvManager(mtrCtrl, mtrCtrlLvlShifter),
         gpsManager(gps), battManager(BATT_VOLTAGE_MONITOR_PIN) {}
   ~RealMain() {}
@@ -57,8 +59,8 @@ private:
   HardwareSerial uart3Gps;
   TwoWire i2c1;
   Adafruit_BNO055 imu;
-  Encoder encLeft;
-  Encoder encRight;
+  // Encoder encLeft;
+  // Encoder encRight;
   TXB0104PWR encoderLvlShifter;
   L293N mtrCtrl;
   TXB0104PWR mtrCtrlLvlShifter;
@@ -67,7 +69,7 @@ private:
 
   // ------------------------------ FAKE THREADS ------------------------------
   RosManager rosManager;
-  OdometryManager odomManager;
+  // OdometryManager odomManager;
   BNO055Manager imuManager;
   DriveManager drvManager;
   GpsManager gpsManager;

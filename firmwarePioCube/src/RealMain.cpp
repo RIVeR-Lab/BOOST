@@ -49,6 +49,9 @@ bool RealMain::init() {
   ROSLOGINFO("FIRMWARE_VERSION:%s:SHA:%s", Version::getBuildTimestamp().c_str(),
              Version::getGitCommitSha1().c_str());
 
+encoderLvlShifter.init();
+encoderLvlShifter.enable();
+
 #if ENABLE_IMU
   success = imuManager.init() && success;
 #endif
@@ -83,7 +86,8 @@ bool RealMain::init() {
 
   return success;
 }
-
+Encoder leftQuadEnc2(PA0, PA1);
+Encoder rightQuadEnc2(PA5, PB3);
 void RealMain::loop() {
   while (1) {
     // Blink LED every 1 second
@@ -95,6 +99,23 @@ void RealMain::loop() {
       // TODO: Make LEDs on PCB blink
       // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
     }
+    
+  while(1) {
+    // only print if values changed
+    static int32_t lastLeftPos = 0;
+    static int32_t lastRightPos = 0;
+    int32_t leftPos = leftQuadEnc2.read();
+    int32_t rightPos = rightQuadEnc2.read();
+    if (leftPos == lastLeftPos && rightPos == lastRightPos) {
+      continue;
+    } else {
+      lastLeftPos = leftPos;
+      lastRightPos = rightPos;
+      Console.printf("LeftEnc: %d\n\r", leftPos);
+      Console.printf("RightEnc: %d\n\r", rightPos);
+    }
+    // delay(1000);  
+  }
 
 #if ENABLE_ROSMANAGER
     rosManager.loop();
