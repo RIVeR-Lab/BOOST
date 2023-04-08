@@ -1,6 +1,6 @@
 from setuptools import setup
 
-package_name = 'py_hubbot_status_pubsub'
+package_name = 'py_hubbot_main_controller_node'
 
 setup(
     name=package_name,
@@ -20,8 +20,9 @@ setup(
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
-                'hubbot_stat_pub = py_hubbot_status_pubsub.hubbot_status_publisher:main',
-                'minibot_stat_sub = py_hubbot_status_pubsub.minibot_status_subscriber:main',
+                'hubbot_stat_pub = py_hubbot_main_controller_node.hubbot_status_publisher:main',
+                'minibot_stat_sub = py_hubbot_main_controller_node.minibot_status_subscriber:main',
+                'hubbot_main_controller_node = py_hubbot_main_controller_node.hubbot_main_controller_node:main',
         ],
     },
 )

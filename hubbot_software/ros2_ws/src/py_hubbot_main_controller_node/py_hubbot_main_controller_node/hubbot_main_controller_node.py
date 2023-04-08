@@ -39,13 +39,13 @@ class HubbotStatusPublisher(Node):
         self.i += 1
 
 
-class HubbotStatusSubscriber(Node):
+class MinibotStatusSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
         self.subscription = self.create_subscription(
-            String,
-            'topic',
+            Int32,
+            'minibotstat',
             self.listener_callback,
             10)
         self.subscription  # prevent unused variable warning
@@ -58,7 +58,7 @@ def main(args=None):
     rclpy.init(args=args)
 
     hubbot_stat_pub = HubbotStatusPublisher()
-    minibot_status_subscriber = HubbotStatusSubscriber()
+    minibot_status_subscriber = MinibotStatusSubscriber()
 
     rclpy.spin(hubbot_stat_pub)
     rclpy.spin(minibot_status_subscriber)
