@@ -15,11 +15,13 @@ setup(
     zip_safe=True,
     maintainer='jetson',
     maintainer_email='antakidavid@gmail.com',
-    description='TODO: Package description',
-    license='TODO: License declaration',
+    description='For communicating with minibots',
+    license='Apache License 2.0',
     tests_require=['pytest'],
     entry_points={
         'console_scripts': [
+                'talker = py_pubsub.publisher_member_function:main',
+                'listener = py_pubsub.subscriber_member_function:main',
         ],
     },
 )
