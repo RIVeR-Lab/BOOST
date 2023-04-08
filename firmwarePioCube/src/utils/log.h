@@ -4,7 +4,7 @@
 #include "stdint.h"
 #include "Arduino.h"
 #include "main.h"
-#include "config.h"
+#include "configs/config.h"
 
 enum {
   LOGLEVEL_NONE,          // no logging

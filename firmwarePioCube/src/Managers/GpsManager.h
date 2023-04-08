@@ -5,7 +5,7 @@
 #include "Arduino.h"
 #include "FakeThread.h"
 #include "SL871.h"
-#include "config.h"
+#include "configs/config.h"
 #include "data/GpsDatagram.h"
 #include "data/RingBuffer.h"
 #include "sensor_msgs/NavSatFix.h"
