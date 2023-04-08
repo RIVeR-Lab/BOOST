@@ -14,18 +14,19 @@
 #include <sensor_msgs/NavSatFix.h> 
 #include <sensor_msgs/BatteryState.h> 
 #include "utils/macros.h"
+#include "configs/config.h"
 
 class RosManager : public FakeThread {
 public:
   RosManager(HardwareSerial &serialPort)
       : FakeThread(LOOP_DELAY_MS, LOG_LOOP_DELAY_MS), nodeHardware(serialPort),
-        chatter("chatter", &str_msg),
-        bno055_imu_pub("bno055_imu", &bno055_imu_msg),
-        encoder_left_pub("encoder_left", &encoder_left_msg),
-        encoder_right_pub("encoder_right", &encoder_right_msg),
-        gps_pub("gps", &gps_msg),
-        batt_pub("battery", &batt_msg),
-        subDiffDrive("/cmd_vel", &subDiffDrive_cb)
+        chatter(CONCAT_STR_LITERAL("hubbot", "/chatter"), &str_msg),
+        bno055_imu_pub(CONCAT_STR_LITERAL("hubbot", "/bno055_imu"), &bno055_imu_msg),
+        encoder_left_pub(CONCAT_STR_LITERAL("hubbot", "/encoder_left"), &encoder_left_msg),
+        encoder_right_pub(CONCAT_STR_LITERAL("hubbot", "/encoder_right"), &encoder_right_msg),
+        gps_pub(CONCAT_STR_LITERAL("hubbot", "/gps"), &gps_msg),
+        batt_pub(CONCAT_STR_LITERAL("hubbot", "/battery"), &batt_msg),
+        subDiffDrive(CONCAT_STR_LITERAL("hubbot", "/cmd_vel"), &subDiffDrive_cb)
         {}
   ~RosManager() {}
 

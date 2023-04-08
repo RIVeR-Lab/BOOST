@@ -69,6 +69,8 @@ bool RealMain::init() {
   success = battManager.init() && success;
 #endif
 
+  pinMode(LED_1_PIN, OUTPUT);
+
   if (!success) {
     LOGERROR("Failed to initialize");
     Console.println("RealMain::Failed to initialize"); // Bypass LOGGING
@@ -92,8 +94,7 @@ void RealMain::loop() {
       counter = millis();
       LOGEVENT("Looping...");
       Console.println("Looping...");
-      // TODO: Make LEDs on PCB blink
-      // digitalWrite(LED_BUILTIN, !digitalRead(LED_BUILTIN));
+      digitalWrite(LED_1_PIN, !digitalRead(LED_1_PIN));
     }
 
 #if ENABLE_ROSMANAGER
