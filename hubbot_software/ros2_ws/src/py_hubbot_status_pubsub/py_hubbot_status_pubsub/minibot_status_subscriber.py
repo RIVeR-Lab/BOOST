@@ -16,9 +16,10 @@ import rclpy
 from rclpy.node import Node
 
 from std_msgs.msg import String
+from std_msgs.msg import Int32
 
 
-class HubbotStatusSubscriber(Node):
+class MinibotStatusSubscriber(Node):
 
     def __init__(self):
         super().__init__('minimal_subscriber')
@@ -36,7 +37,7 @@ class HubbotStatusSubscriber(Node):
 def main(args=None):
     rclpy.init(args=args)
 
-    minibot_status_subscriber = HubbotStatusSubscriber()
+    minibot_status_subscriber = MinibotStatusSubscriber()
 
     rclpy.spin(minibot_status_subscriber)
 
