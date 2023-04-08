@@ -1,0 +1,42 @@
+/*
+ * Copyright (c) 2019 Roland Ma
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ */
+
+//  /dts-v1/;
+//  #include <st/f7/stm32f767Xi.dtsi>
+//  #include <st/f7/stm32f767zitx-pinctrl.dtsi>
+ 
+ /*
+  * WARNING: The pin PA7 will conflict on selection of SPI_1 and ETH_STM32_HAL.
+  *          If you require both peripherals, and you do not need Arduino Uno v3
+  *          comaptability, the pin PB5 (also on ST Zio connector) can be used
+  *          for the SPI_1 MOSI signal.
+  */
+ 
+//  / {
+//      model = "STMicroelectronics STM32F767ZI-NUCLEO board";
+//      compatible = "st,stm32f767zi-nucleo";
+ 
+&usart2 {
+	pinctrl-0 = <&usart2_tx_pd5
+		     &usart2_rx_pd6
+		     &usart2_rts_pd4
+		     &usart2_cts_pd3>;
+	current-speed = <9600>;
+  status = "okay";
+};
+
+&i2c2 {
+  compatible = "st,stm32-i2c-v2";
+  clock-frequency = < 0x186a0 >;
+  #address-cells = < 0x1 >;
+  #size-cells = < 0x0 >;
+  reg = < 0x40005800 0x400 >;
+  clocks = < &rcc 0x2 0x400000 >;
+  interrupts = < 0x21 0x0 >, < 0x22 0x0 >;
+  interrupt-names = "event", "error";
+  status = "okay";
+  label = "I2C_2";
+};

@@ -1,0 +1,7 @@
+venv-windows/
+venv-wsl/
+venv/
+__pycache__/
+install/
+build/
+log/
