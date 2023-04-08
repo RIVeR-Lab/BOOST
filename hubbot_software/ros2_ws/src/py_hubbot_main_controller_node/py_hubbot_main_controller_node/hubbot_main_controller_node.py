@@ -19,55 +19,52 @@ from std_msgs.msg import Int32
 from .bot_stats import HubbotStats, MinibotStats
 
 
-class HubbotStatusPublisher(Node):
+class HubbotMainControllerNode(Node):
     PUBLISH_PERIOD_S = 0.5
-    current_stat: HubbotStats.STAT = HubbotStats.STAT.HubNotReady
+    hubbot_current_stat: HubbotStats.STAT
+    minibot_a_current_stat: MinibotStats.STAT
 
     def __init__(self):
-        super().__init__('HubbotStatPub')
+        super().__init__('hubbot_main_controller_node')
+        self.__init_hubbot_stat_pub()
+        self.__init_minibot_a_sub()
+
+    def __init_hubbot_stat_pub(self):
         self.publisher_ = self.create_publisher(Int32, 'hubstatus', 10)
         timer_period = self.PUBLISH_PERIOD_S
-        self.timer = self.create_timer(timer_period, self.timer_callback)
+        self.timer = self.create_timer(timer_period, self.hubbot_stat_pub_callback)
         self.i = 0
+        self.hubbot_current_stat = HubbotStats.STAT.HubNotReady
+    
+    def __init_minibot_a_sub(self):
+        self.subscription = self.create_subscription(
+        Int32,
+        'minibot_a_stat',
+        self.minibot_a_listener_callback,
+        10)
+        self.subscription  # prevent unused variable warning
+        self.minibot_a_current_stat = -1
 
-    def timer_callback(self):
+    def hubbot_stat_pub_callback(self):
         msg = HubbotStats().stat_to_ros_msg(HubbotStats.STAT.HubNotReady)
-        msg.data = self.current_stat.value
+        msg.data = self.hubbot_current_stat.value
         self.publisher_.publish(msg)
         self.get_logger().info('Publishing: "%s:%s"' %
-                               (self.current_stat.name, msg.data))
+                               (self.hubbot_current_stat.name, msg.data))
         self.i += 1
 
-
-class MinibotStatusSubscriber(Node):
-
-    def __init__(self):
-        super().__init__('minimal_subscriber')
-        self.subscription = self.create_subscription(
-            Int32,
-            'minibotstat',
-            self.listener_callback,
-            10)
-        self.subscription  # prevent unused variable warning
-
-    def listener_callback(self, msg):
+    def minibot_a_listener_callback(self, msg):
         self.get_logger().info('I heard: "%s"' % msg.data)
-
 
 def main(args=None):
     rclpy.init(args=args)
-
-    hubbot_stat_pub = HubbotStatusPublisher()
-    minibot_status_subscriber = MinibotStatusSubscriber()
-
-    rclpy.spin(hubbot_stat_pub)
-    rclpy.spin(minibot_status_subscriber)
+    hubbot_main_controller_node = HubbotMainControllerNode()
+    rclpy.spin(hubbot_main_controller_node)
 
     # Destroy the node explicitly
     # (optional - otherwise it will be done automatically
     # when the garbage collector destroys the node object)
-    hubbot_stat_pub.destroy_node()
-    minibot_status_subscriber.destroy_node()
+    hubbot_main_controller_node.destroy_node()
     rclpy.shutdown()
 
 
