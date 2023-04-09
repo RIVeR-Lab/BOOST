@@ -10,6 +10,8 @@ fi
 
 echo $VERBOSE
 
+source /opt/ros/galactic/setup.sh
+
 echo "Starting ChargeController..."
 if [[ "$VERBOSE" -eq 1 ]]; then
   # python3 $BASEPATH/charge_controller.py &

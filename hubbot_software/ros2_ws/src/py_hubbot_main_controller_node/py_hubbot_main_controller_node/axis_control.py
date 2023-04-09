@@ -11,6 +11,10 @@ GRBL Wiki: https://github.com/grbl/grbl/wiki
 GCODE Commands: https://howtomechatronics.com/tutorials/g-code-explained-list-of-most-important-g-code-commands/#G01_Linear_Interpolation
 '''
 from serial.tools import list_ports
+if __name__ == "__main__":
+    from charge_controller import ChargeController
+else:
+    from .charge_controller import ChargeController
 
 grbl_port_VID = 6790
 grbl_port_PID = 29987
@@ -31,12 +35,12 @@ liftdown: Where the minibot can dock
 liftupbattout: Where the minibot is lifted to and where battery can be swapped OUT
 liftupbattin: Where the minibot is lifted to and where battery can be swapped IN
 '''
-lift_abs_loc_cm = {"liftdown": 0, "liftupbattout": -105, "liftupbattin": -95}
+lift_abs_loc_cm = {"liftdown": 0, "continuitycheck": -30, "liftupbattout": -105, "liftupbattin": -95}
 
 # Feed rates
 indexer_feed_rate = "F200"
 pusher_feed_rate = "F100"
-lift_feed_rate = "F400"
+lift_feed_rate = "F200"
 
 # Axis Invert Direction
 x_axis_invert = 0   # pusher
@@ -191,6 +195,9 @@ def home_z_lift_arms():
 def set_home():
     """Set the home position"""
     send_grbl_gcode_cmd("G92 X0 Y0")
+    is_homed_dict["x"] = True
+    is_homed_dict["y"] = True
+    is_homed_dict["z"] = True
 
 
 def home_all_axes():
@@ -235,7 +242,7 @@ def move_z_lift_arms(loc: str):
                             " " + lift_axis + str(lift_abs_loc_cm[loc] + 10) + " " + lift_feed_rate)
         send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
                         " " + lift_axis + str(lift_abs_loc_cm[loc]) + " " + "F250")
-    elif (loc == "liftdown"):
+    else:
         send_grbl_gcode_cmd(absolute_mode + " " + cm_mode + " " + G01_linear_interpolation +
                     " " + lift_axis + str(lift_abs_loc_cm[loc]) + " " + lift_feed_rate)
 
@@ -318,7 +325,7 @@ def lift_minibot_check_alignment():
 # Once minibot is aligned, swap battery
 
 
-def swap_battery() -> bool:
+def swap_battery(charge_controller: ChargeController) -> bool:
     """Swap a single battery from minibot to hub and then hub to minibot"""
     global last_swapped_slot
     print("Swapping battery...")
@@ -329,6 +336,28 @@ def swap_battery() -> bool:
     blocking_wait_until_axes_stop_moving()
     move_x_pusher(loc="above_minibot")
     blocking_wait_until_axes_stop_moving()
+
+    # Try to enable wing power
+    num_retries = 3
+    success: bool = True
+    for i in range(0, num_retries):
+        move_z_lift_arms(loc="continuitycheck")
+        blocking_wait_until_axes_stop_moving()
+
+        sleep(2)
+
+        success = charge_controller.enable_wing_power(True)
+        if success:
+            break
+        else:
+            charge_controller.enable_wing_power(False)
+            move_z_lift_arms(loc="liftdown")
+            blocking_wait_until_axes_stop_moving()
+
+        sleep(2)
+
+    if not success:
+        return False
 
     # Take out old battery from minibot into hub
     old_batt_slot = move_indexer_to_first_empty_slot()
@@ -347,6 +376,12 @@ def swap_battery() -> bool:
     blocking_wait_until_axes_stop_moving()
     move_x_pusher(loc="above_minibot")
     blocking_wait_until_axes_stop_moving()
+
+    # Disable wing power
+    success: bool = charge_controller.enable_wing_power(False)
+    if not success:
+        return False
+
     move_z_lift_arms(loc="liftdown")
     blocking_wait_until_axes_stop_moving()
 
@@ -384,6 +419,12 @@ def get_status() -> str:
         print(line)
     return status
 
+def test_wing_cont():
+    move_z_lift_arms(loc="continuitycheck")
+    blocking_wait_until_axes_stop_moving()
+    move_z_lift_arms(loc="liftdown")
+    blocking_wait_until_axes_stop_moving()
+
 def init_axis_control():
     get_com_port()
     connect()
@@ -392,7 +433,15 @@ def init_axis_control():
     send_grbl_gcode_cmd(grbl_disable_soft_limits_setting_cmd)
 
 if __name__ == "__main__":
+    device_list = list_ports.comports()
+    for device in device_list:
+        print("\n")
+        print(device)
+        print(device.vid)
+        print(device.pid)
+        print("\n")
     init_axis_control()
+    charge_controller = ChargeController()
     while (1):
         cmd_line = input(">")
         cmds = cmd_line.split()
@@ -413,18 +462,21 @@ if __name__ == "__main__":
         elif cmd == "sethome":
             set_home()
         elif cmd == "swap":
-            for i in range(0,100) :
-                swap_battery()
+            for i in range(0,100):
+                swap_battery(charge_controller)
         elif cmd == "liftdownraw":
             send_grbl_gcode_cmd("G91 G21 G1 Z200 F2000")
         elif cmd == "liftupraw":
-            send_grbl_gcode_cmd("G91 G21 G1 Z-200 F400")
+            send_grbl_gcode_cmd("G91 G21 G1 Z-200 F250")
         elif cmd == "liftdown":
             move_z_lift_arms(loc="liftdown")
         elif cmd == "liftupbattin":
             move_z_lift_arms(loc="liftupbattin")
         elif cmd == "liftupbattout":
             move_z_lift_arms(loc="liftupbattout")
+        elif cmd == "testwingcont":
+            while(1):
+                test_wing_cont()
         elif cmd == "s":  # Stop
             ESTOP()
         elif cmd == "r":  # Resume

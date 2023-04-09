@@ -27,6 +27,7 @@ class HubbotMainControllerNode(Node):
     PUBLISH_PERIOD_S = 1.0
     CHARGE_CONTROLLER_LOOP_TIME_S = 0.5
     VERBOSE_CHARGER_CONTROLLER = False
+    charge_controller: ChargeController
 
     hubbot_current_stat: HubbotStats.STAT
     minibot_a_current_stat: MinibotStats.STAT
@@ -102,7 +103,7 @@ class HubbotMainControllerNode(Node):
         elif newStat == MinibotStats.STAT.MiniSearchingForHub:
             print("Minibot searching for hub")
         elif newStat == MinibotStats.STAT.MiniDocked:
-            success: bool = swap_battery()
+            success = swap_battery(self.charge_controller)
             if success:
                 print("\n\nSUCCESSFULLY SWAPPED BATTERY!!\n\n")
             else:
