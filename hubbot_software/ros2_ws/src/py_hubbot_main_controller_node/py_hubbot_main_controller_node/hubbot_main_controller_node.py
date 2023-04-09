@@ -97,9 +97,9 @@ class HubbotMainControllerNode(Node):
 
         if newStat == MinibotStats.STAT.MiniUnknown:
             print("Minibot status unknown.")
-        elif newStat = MinibotStats.STAT.MiniNormalOperating:
+        elif newStat == MinibotStats.STAT.MiniNormalOperating:
             self.hubbot_current_stat = HubbotStats.STAT.HubReadyForMinibotUndocking
-        elif newStat = MinibotStats.STAT.MiniSearchingForHub:
+        elif newStat == MinibotStats.STAT.MiniSearchingForHub:
             print("Minibot searching for hub")
         elif newStat == MinibotStats.STAT.MiniDocked:
             success: bool = swap_battery()

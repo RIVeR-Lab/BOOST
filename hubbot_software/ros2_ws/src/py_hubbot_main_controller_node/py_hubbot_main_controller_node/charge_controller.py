@@ -335,9 +335,9 @@ def repl():
         elif cmd == "v3":
             print("Batt0Voltage: " + str(cont.get_batt_voltage_mv(3)))
         elif cmd == "enablewingpow":
-            enable_wing_power(True, True)
+            cont.enable_wing_power(True, True)
         elif cmd == "disablewingpow":
-            enable_wing_power(False, True)
+            cont.enable_wing_power(False, True)
         else:
             print("Command not found: " + cmd)
 
