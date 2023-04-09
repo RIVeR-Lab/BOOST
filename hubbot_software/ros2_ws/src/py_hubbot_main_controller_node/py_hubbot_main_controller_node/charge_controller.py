@@ -238,6 +238,21 @@ class ChargeController:
             print("Start button high.")
             print("Enabled charging on slot " + str(slot))
 
+    def enable_wing_power(self, enable = True, force: bool = False):
+        print("Enabling wing power...")
+        # Check that the minibot is there
+        if not force and not is_wing_cont_detected():
+            print("MINIBOT NOT DETECTED in dock. CANNOT transfer power!!")
+        else:
+            if enable:
+                GPIO.output(wing_power_en_pin, GPIO.LOW)
+                print("Wing Power Enable Pin button low.")
+                print("Enabled Wing Power")
+            else:
+                GPIO.output(wing_power_en_pin, GPIO.HIGH)
+                print("Wing Power Enable Pin button high.")
+                print("Disabled Wing Power")
+
     def disable_all_charging(self):
         for i in range(0, self.NUM_BATT_SLOTS):
             self.disable_charging(i)
@@ -319,6 +334,10 @@ def repl():
             print("Batt0Voltage: " + str(cont.get_batt_voltage_mv(2)))
         elif cmd == "v3":
             print("Batt0Voltage: " + str(cont.get_batt_voltage_mv(3)))
+        elif cmd == "enablewingpow":
+            enable_wing_power(True, True)
+        elif cmd == "disablewingpow":
+            enable_wing_power(False, True)
         else:
             print("Command not found: " + cmd)
 
