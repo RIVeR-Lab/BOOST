@@ -240,7 +240,7 @@ class ConnectToChargingDockNavigator(Node):
       # variable that holds the battery swapping notification.
       # if the battery has been swaped, and we are currently at goal_idx == 2
       # we will then do the undokcing sequence 
-      msg = MinibotStats().stat_to_ros_msg(MinibotStats.STAT.MiniNormalOperating)
+      msg = MinibotStats.stat_to_ros_msg(MinibotStats.STAT.MiniNormalOperating)
       msg.data = MinibotStats.STAT.MiniNormalOperating
       self.minibot_stat_pub.publish(msg)
 
@@ -249,7 +249,7 @@ class ConnectToChargingDockNavigator(Node):
         # Publish the current battery state
         self.get_logger().info('NOT CHARGING...')
         counter = counter + 1
-        msg = MinibotStats().stat_to_ros_msg(MinibotStats.STAT.MiniSearchingForHub)
+        msg = MinibotStats.stat_to_ros_msg(MinibotStats.STAT.MiniSearchingForHub)
         msg.data = MinibotStats.STAT.MiniSearchingForHub
         self.minibot_stat_pub.publish(msg)
 
@@ -273,7 +273,7 @@ class ConnectToChargingDockNavigator(Node):
           cmd_vel_msg.angular.z = 0.0
           self.publisher_cmd_vel.publish(cmd_vel_msg)
           self.get_logger().info('Arrived at charging dock. Robot is idle...')
-          msg = MinibotStats().stat_to_ros_msg(MinibotStats.STAT.MiniDocked)
+          msg = MinibotStats.stat_to_ros_msg(MinibotStats.STAT.MiniDocked)
           msg.data = MinibotStats.STAT.MiniDocked
           self.minibot_stat_pub.publish()
 
@@ -551,7 +551,7 @@ def main(args=None):
       battery_state_subscriber.destroy_node()
       aruco_marker_subscriber.destroy_node()
       cmd_vel_msg = Twist()
-      cmd_vel_msg.linear.x = 0
+      cmd_vel_msg.linear.x = 0.0
       cmd_vel_msg.angular.z = 0.0
       self.publisher_cmd_vel.publish(cmd_vel_msg)
 
