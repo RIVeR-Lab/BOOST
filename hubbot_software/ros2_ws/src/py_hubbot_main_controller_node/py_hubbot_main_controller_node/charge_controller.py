@@ -226,6 +226,7 @@ class ChargeController:
             print("BATTERY NOT DETECTED in slot " +
                   str(slot) + ". CANNOT start charging!!")
         else:
+            sleep(1)
             # Enable the Boost converter
             GPIO.output(boost_en_pins[slot], GPIO.LOW)
             print("Boost enabled.")
@@ -241,10 +242,11 @@ class ChargeController:
     def enable_wing_power(self, enable = True, force: bool = False):
         print("Enabling wing power...")
         # Check that the minibot is there
-        if not force and not is_wing_cont_detected():
+        if not force and not self.is_wing_cont_detected():
             print("MINIBOT NOT DETECTED in dock. CANNOT transfer power!!")
         else:
             if enable:
+                sleep(1)
                 GPIO.output(wing_power_en_pin, GPIO.LOW)
                 print("Wing Power Enable Pin button low.")
                 print("Enabled Wing Power")
