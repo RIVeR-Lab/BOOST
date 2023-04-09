@@ -43,6 +43,9 @@ from sensor_msgs.msg import BatteryState # Battery status
 from sensor_msgs.msg import LaserScan # Handle LIDAR scans
 from std_msgs.msg import Bool # Handle boolean values
 from std_msgs.msg import Int32 # Handle integer values
+from std_msgs.msg import Float64 # Handle integer values
+from std_msgs.msg import String
+from bot_stats import HubbotStats, MinibotStats
 
 # Holds the current pose of the aruco_marker
 # base_link (parent frame) -> aruco_marker (child frame)
@@ -67,6 +70,9 @@ aruco_center_offset = 0
 # Keep track of obstacles in front of the robot in meters
 obstacle_distance_front = 999999.9
 
+aruco_marker_distance = 999999.9
+
+
 scan_topic = '/minibot_a/scan'
 prev_readings = []
 
@@ -75,7 +81,7 @@ class ConnectToChargingDockNavigator(Node):
     """
     Navigates to the aruco marker
     """      
-    def __init__(self):
+    def __init__(self): 
   
       # Initialize the class using the constructor
       super().__init__('connect_to_charging_dock_navigator')
@@ -84,7 +90,7 @@ class ConnectToChargingDockNavigator(Node):
       # This node publishes the desired linear and angular velocity of the robot
       self.publisher_cmd_vel = self.create_publisher(
         Twist,
-        '/cmd_vel',
+        '/minibot_a/cmd_vel',
         10)  
       timer_period = 0.1
       self.timer = self.create_timer(timer_period, self.navigate_to_dock_staging_area)
@@ -109,8 +115,33 @@ class ConnectToChargingDockNavigator(Node):
 
       
       # Undocking distance
-      self.undocking_distance = 0.9
-        
+      self.undocking_distance = 0.5
+
+      PUBLISH_PERIOD_S = 1.0
+      hubbot_current_stat: HubbotStats.STAT
+      minibot_a_current_stat: MinibotStats.STAT
+
+      # self.hubbot_stat_sub = self.create_subscription(
+      #       Int32,
+      #       'hub_stat',
+      #       self.hubbot_listener_callback,
+      #       10)
+
+      self.minibot_stat_pub =  self.create_publisher(Int32, 'minibot_a_stat', 10)
+
+    
+    def hubbot_listener_callback(self, msg: Int32):
+        self.get_logger().info('I heard: "%s"' % msg.data)
+        tempStat: HubbotStats.STAT = HubbotStats.ros_msg_to_stat(msg)
+        if tempStat != self.hubbot_current_stat:
+            print("New Hubbot Status Recieved: " +
+                  str(tempStat.name) + ":" + str(tempStat.value))
+            self.minibot_a_current_stat = tempStat
+            # new_minibot_status_handler(self.minibot_a_current_stat)
+        else:
+            print("Non-New Minibot Status Recieved: " +
+                  str(tempStat.name) + ":" + str(tempStat.value))
+
     def navigate_to_dock_staging_area(self):
       """
       Navigate from somewhere in the environment to a staging area near
@@ -200,11 +231,23 @@ class ConnectToChargingDockNavigator(Node):
       Go to the charging dock.
       """ 
       counter = 0
+      # self.battery_swapped = 
+      # variable that holds the battery swapping notification.
+      # if the battery has been swaped, and we are currently at goal_idx == 2
+      # we will then do the undokcing sequence 
+      msg = MinibotStats().stat_to_ros_msg(MinibotStats.STAT.MiniNormalOperating)
+      msg.data = MinibotStats.STAT.MiniNormalOperating
+      self.minibot_stat_pub.publish(msg)
+
       # While the battery is not charging
       while this_battery_state.power_supply_status != 1:
         # Publish the current battery state
-        #self.get_logger().info('NOT CHARGING...')
+        self.get_logger().info('NOT CHARGING...')
         counter = counter + 1
+        msg = MinibotStats().stat_to_ros_msg(MinibotStats.STAT.MiniSearchingForHub)
+        msg.data = MinibotStats.STAT.MiniSearchingForHub
+        self.minibot_stat_pub.publish(msg)
+
         if (self.goal_idx == 0):
           self.search_for_aruco_marker()
           if (counter % 20 == 0):
@@ -214,7 +257,7 @@ class ConnectToChargingDockNavigator(Node):
           self.navigate_to_aruco_marker()
           # print every 100 loops
           if (counter % 20 == 0):
-            self.get_logger().info('Navigating to the ArUco marker...')
+            self.get_logger().info('Navigating to ArUco marker ID ...')
             self.get_logger().info('Distance: ' + '{:.2f}'.format(obstacle_distance_front) + ' meters.')
             counter = 0
 
@@ -225,6 +268,11 @@ class ConnectToChargingDockNavigator(Node):
           cmd_vel_msg.angular.z = 0.0
           self.publisher_cmd_vel.publish(cmd_vel_msg)
           self.get_logger().info('Arrived at charging dock. Robot is idle...')
+          msg = MinibotStats().stat_to_ros_msg(MinibotStats.STAT.MiniDocked)
+          msg.data = MinibotStats.STAT.MiniDocked
+          self.minibot_stat_pub.publish()
+
+          
     
         time.sleep(0.02)
     
@@ -278,30 +326,37 @@ class ConnectToChargingDockNavigator(Node):
         self.publisher_cmd_vel.publish(cmd_vel_msg) 
       else: 
         self.goal_idx = 1
-   
+    
     def navigate_to_aruco_marker(self):
       """
       Go straight to the ArUco marker
       """
-      self.get_logger().info('Distance: ' + '{:.2f}'.format(obstacle_distance_front) + ' meters.')
+      self.get_logger().info('Distance: ' + '{:.2f}'.format(aruco_marker_distance) + ' meters.')
       formatted_distance=  '{:.2f}'.format(obstacle_distance_front)
       # prev_readings.append(obstacle_distance_front)
       # # limit the buffer to 15 items
-      if(len(prev_readings) > 30) :
-        prev_reading = []
-      if(formatted_distance == "nan" or obstacle_distance_front < 0.4 or "nan" in prev_readings):
+      # if(len(prev_readings) > 30) :
+        # prev_readings = []
+      if (aruco_marker_distance < 0.11): 
+        prev_readings.append(aruco_marker_distance)
+        # if(len(prev_reading) > 5) :
+        #   list_sum = sum(prev_readings)
+        #   avg = list_sum/len(prev_reading)
+        #   prev_readings = []
+        #   self.get_logger().info('Average distance ' + '{:.2f}'.format(avg) + ' meters.')
+        #   if(formatted_distance == "nan" or avg < 0.12):
       #   for i in range(300): 
       #       cmd_vel_msg = Twist()
       #       cmd_vel_msg.linear.x = 0.4 
       #       self.publisher_cmd_vel.publish(cmd_vel_msg)  
       #   # for r in prev_readings:
       #     # if r <= 0.6 or '{:.2f}'.format(r) == 'nan':
-      #   # check previous 5 readings. If any of them contain a integer value, that means that it has been getting closer. 
-      #       # self.get_logger().info('we are at the dock and less than 5 cm away.')
+      #   # check previous 5 readings. If any of them contain a integer value, that means that it has been getting closer.         
+        self.get_logger().info('we are at the dock and less than 5 cm away.')
         self.goal_idx = 2 
             # break
       # If we have detected the ArUco marker and there are no obstacles in the way
-      if aruco_marker_detected and (obstacle_distance_front > self.obstacle_tolerance):
+      elif aruco_marker_detected and (obstacle_distance_front > self.obstacle_tolerance):
         self.adjust_heading()
       # If we have detected the ArUco marker and there are obstacles in the way, we have reached the charging dock
       elif aruco_marker_detected and (obstacle_distance_front <= self.obstacle_tolerance):
@@ -400,6 +455,18 @@ class ArucoMarkerSubscriber(Node):
         self.get_center_offset,
         1)
         
+      self.publisher_aruco_marker_id = self.create_subscription(
+        Int32,
+        '/aruco_marker_id', 
+        self.get_marker_id,
+        1)
+
+      self.publisher_aruco_marker_distance = self.create_subscription(
+        Float64,
+        '/aruco_marker_distance', 
+        self.get_marker_distance,
+        1)
+        
       # Create a subscriber 
       # This node subscribes to messages of type
       # sensor_msgs/LaserScan
@@ -422,6 +489,20 @@ class ArucoMarkerSubscriber(Node):
       """
       global aruco_center_offset
       aruco_center_offset = msg.data
+
+    def get_marker_id(self, msg):
+      """
+      Update the ArUco marker id
+      """
+      global aruco_marker_id
+      aruco_marker_id = msg.data
+
+    def get_marker_distance(self, msg):
+      """
+      Update the ArUco marker id
+      """
+      global aruco_marker_distance
+      aruco_marker_distance = msg.data
             
     def scan_callback(self, msg):
       """
