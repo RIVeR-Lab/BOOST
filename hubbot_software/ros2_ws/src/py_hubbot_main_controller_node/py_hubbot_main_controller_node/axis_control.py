@@ -322,8 +322,6 @@ def lift_minibot_check_alignment():
     print("Lifting minibot to check alignment")
     send_grbl_gcode_cmd("G91 G21 G1 Z-304.8 F2000")
 
-# Once minibot is aligned, swap battery
-
 
 def swap_battery(charge_controller: ChargeController) -> bool:
     """Swap a single battery from minibot to hub and then hub to minibot"""
