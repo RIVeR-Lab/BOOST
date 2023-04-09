@@ -7,7 +7,8 @@ class HubbotStats:
     HubUnknown = -1
     HubNotReady = 1
     HubReadyForMinibotDocking = 2
-    HubReadyForMinibotUndocking = 3
+    HubSwappingBattery = 3
+    HubReadyForMinibotUndocking = 4
 
   @classmethod
   def ros_msg_to_stat(self, msg: Int32) -> STAT:
@@ -33,7 +34,6 @@ class MinibotStats:
   def ros_msg_to_stat(self, msg: Int32) -> STAT:
     print("msg" + str(msg))
     return self.STAT(msg.data)
-
 
   @classmethod
   def stat_to_ros_msg(self, stat: STAT) -> Int32:

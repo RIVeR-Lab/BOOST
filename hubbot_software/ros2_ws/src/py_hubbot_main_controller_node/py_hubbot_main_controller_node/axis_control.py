@@ -384,14 +384,15 @@ def get_status() -> str:
         print(line)
     return status
 
-
-if __name__ == "__main__":
+def init_axis_control():
     get_com_port()
     connect()
     set_grbl_positive_directions()
     # Disable soft limits
     send_grbl_gcode_cmd(grbl_disable_soft_limits_setting_cmd)
-    # exit(0)
+
+if __name__ == "__main__":
+    init_axis_control()
     while (1):
         cmd_line = input(">")
         cmds = cmd_line.split()
