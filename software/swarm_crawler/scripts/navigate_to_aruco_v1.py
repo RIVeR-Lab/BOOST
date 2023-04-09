@@ -77,11 +77,16 @@ scan_topic = '/minibot_a/scan'
 prev_readings = []
 
 
+
 class ConnectToChargingDockNavigator(Node):
     """
     Navigates to the aruco marker
     """      
+    hubbot_current_stat: HubbotStats.STAT
+    minibot_a_current_stat: MinibotStats.STAT
+
     def __init__(self): 
+
   
       # Initialize the class using the constructor
       super().__init__('connect_to_charging_dock_navigator')
@@ -117,9 +122,9 @@ class ConnectToChargingDockNavigator(Node):
       # Undocking distance
       self.undocking_distance = 0.5
 
-      PUBLISH_PERIOD_S = 1.0
-      hubbot_current_stat: HubbotStats.STAT
-      minibot_a_current_stat: MinibotStats.STAT
+      self.PUBLISH_PERIOD_S = 1.0
+      self.hubbot_current_stat = HubbotStats.STAT.HubUnknown
+      self.minibot_a_current_stat = MinibotStats.STAT.MiniNormalOperating
 
       # self.hubbot_stat_sub = self.create_subscription(
       #       Int32,
