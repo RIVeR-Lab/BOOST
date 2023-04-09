@@ -318,7 +318,7 @@ def lift_minibot_check_alignment():
 # Once minibot is aligned, swap battery
 
 
-def swap_battery():
+def swap_battery() -> bool:
     """Swap a single battery from minibot to hub and then hub to minibot"""
     global last_swapped_slot
     print("Swapping battery...")

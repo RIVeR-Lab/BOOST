@@ -94,10 +94,20 @@ class HubbotMainControllerNode(Node):
         '''
         print("New Minibot Status: " + str(newStat.name) +
               ":" + str(newStat.value))
+
         if newStat == MinibotStats.STAT.MiniUnknown:
             print("Minibot status unknown.")
+        elif newStat = MinibotStats.STAT.MiniNormalOperating:
+            self.hubbot_current_stat = HubbotStats.STAT.HubReadyForMinibotUndocking
+        elif newStat = MinibotStats.STAT.MiniSearchingForHub:
+            print("Minibot searching for hub")
         elif newStat == MinibotStats.STAT.MiniDocked:
-            swap_battery()
+            success: bool = swap_battery()
+            if success:
+                print("\n\nSUCCESSFULLY SWAPPED BATTERY!!\n\n")
+            else:
+                print("\n\nBATTERY SWAP FAILED!!\n\n")
+            self.hubbot_current_stat = HubbotStats.STAT.HubReadyForMinibotUndocking
 
     def minibot_a_listener_callback(self, msg: Int32):
         self.get_logger().info('I heard: "%s"' % msg.data)
