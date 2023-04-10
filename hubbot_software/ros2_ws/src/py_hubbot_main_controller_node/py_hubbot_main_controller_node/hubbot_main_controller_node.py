@@ -64,7 +64,7 @@ class HubbotMainControllerNode(Node):
             timer_period, self.charge_controller_callback)
 
     def __init_axis_controller(self):
-        init_axis_control()
+        init_axis_control(self.charge_controller)
     
     def blockPrint(self):
         sys.stdout = open(os.devnull, 'w')
@@ -99,7 +99,7 @@ class HubbotMainControllerNode(Node):
         if newStat == MinibotStats.STAT.MiniUnknown:
             print("Minibot status unknown.")
         elif newStat == MinibotStats.STAT.MiniNormalOperating:
-            self.hubbot_current_stat = HubbotStats.STAT.HubReadyForMinibotUndocking
+            self.hubbot_current_stat = HubbotStats.STAT.HubReadyForMinibotDocking
         elif newStat == MinibotStats.STAT.MiniSearchingForHub:
             print("Minibot searching for hub")
         elif newStat == MinibotStats.STAT.MiniDocked:

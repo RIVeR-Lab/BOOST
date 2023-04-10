@@ -35,10 +35,10 @@ indexer_abs_loc_cm = {"slot0": 0, "slot1": 4.75, "slot2": 9.75}
 pusher_abs_loc_cm = {"above_minibot": 0, "in_indexer": -11.3}
 '''
 liftdown: Where the minibot can dock
-liftupbattout: Where the minibot is lifted to and where battery can be swapped OUT
-liftupbattin: Where the minibot is lifted to and where battery can be swapped IN
+liftupbattout: Where the minibot is lifted to and where battery can be swapped OUT of the minibot
+liftupbattin: Where the minibot is lifted to and where battery can be swapped INto the minibot
 '''
-lift_abs_loc_cm = {"liftdown": 0, "continuitycheck": -30, "liftupbattout": -105, "liftupbattin": -95}
+lift_abs_loc_cm = {"liftdown": 0, "continuitycheck": -30, "liftupbattout": -105, "liftupbattin": -100}
 
 # Feed rates
 indexer_feed_rate = "F200"
@@ -334,7 +334,7 @@ def lift_minibot_check_alignment():
 def swap_battery(charge_controller: ChargeController) -> bool:
     """Swap a single battery from minibot to hub and then hub to minibot"""
     global last_swapped_slot
-    print("Swapping battery...")
+    print("INFO: Swapping battery...")
 
     if charge_controller.get_first_empty_batt_slot() == -1:
         print("NO EMPTY BATTERY SLOTS!!")
@@ -348,10 +348,13 @@ def swap_battery(charge_controller: ChargeController) -> bool:
         print("Homing all axes")
         home_all_axes(charge_controller)
 
+    print("INFO: Moving Indexer to above minibot...")
+
     blocking_wait_until_axes_stop_moving()
     move_x_pusher(loc="above_minibot")
     blocking_wait_until_axes_stop_moving()
 
+    print("INFO: Attempting to enable wing power...")
     # Try to enable wing power
     num_retries = 3
     success: bool = True
@@ -375,6 +378,7 @@ def swap_battery(charge_controller: ChargeController) -> bool:
         return False
 
     # Take out old battery from minibot into hub
+    print("INFO: Taking out old battery from minibot...")
     old_batt_slot = move_indexer_to_first_empty_slot(charge_controller)
     print("#############################Empty Slot: " + str(old_batt_slot) + "################################")
     sleep(2)
@@ -396,6 +400,7 @@ def swap_battery(charge_controller: ChargeController) -> bool:
     blocking_wait_until_axes_stop_moving()
 
     # Put new batteyr from hub into minibot
+    print("INFO: Putting new battery into minibot...")
     new_batt_slot = move_indexer_to_new_battery(charge_controller, int(old_batt_slot))
     print("#############################New Slot: " + str(new_batt_slot) + "################################")
     blocking_wait_until_axes_stop_moving()
@@ -405,6 +410,7 @@ def swap_battery(charge_controller: ChargeController) -> bool:
     sleep(2)
 
     # Disable wing power
+    print("INFO: Disabling wing power...")
     success: bool = charge_controller.enable_wing_power(False)
     if not success:
         return False
@@ -416,6 +422,8 @@ def swap_battery(charge_controller: ChargeController) -> bool:
 
     last_swapped_slot = old_batt_slot
     print("last_swapped_slot" + last_swapped_slot)
+
+    print("INFO: DONE SWAPPING...")
 
 
 def are_motors_moving() -> bool:
@@ -452,12 +460,13 @@ def test_wing_cont():
     move_z_lift_arms(loc="liftdown")
     blocking_wait_until_axes_stop_moving()
 
-def init_axis_control():
+def init_axis_control(charge_controller: ChargeController):
     get_com_port()
     connect()
     set_grbl_positive_directions()
     # Disable soft limits
     send_grbl_gcode_cmd(grbl_disable_soft_limits_setting_cmd)
+    home_all_axes(charge_controller)
 
 if __name__ == "__main__":
     device_list = list_ports.comports()
@@ -467,8 +476,8 @@ if __name__ == "__main__":
         print(device.vid)
         print(device.pid)
         print("\n")
-    init_axis_control()
     charge_controller = ChargeController()
+    init_axis_control(charge_controller)
     while (1):
         cmd_line = input(">")
         cmds = cmd_line.split()
