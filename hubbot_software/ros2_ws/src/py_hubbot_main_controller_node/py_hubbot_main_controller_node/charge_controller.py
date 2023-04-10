@@ -143,7 +143,12 @@ class MCUController:
         if len(data) != 2:
             print("ERROR getting key and value from MCU serial input data: " + keyVal)
             return None
-        return float(data[1])
+        try:
+            ret = float(data[1])
+        except:
+            print("ERROR in __get_value_from_input_data_float float(data[1])")
+            ret = -1.0
+        return ret
 
     @classmethod
     def remove_all_occurences(self, arr: List[str], toRemove: str):
