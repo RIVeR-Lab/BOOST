@@ -27,6 +27,7 @@ class HubbotMainControllerNode(Node):
     PUBLISH_PERIOD_S = 1.0
     CHARGE_CONTROLLER_LOOP_TIME_S = 0.5
     VERBOSE_CHARGER_CONTROLLER = False
+    charge_controller: ChargeController
 
     hubbot_current_stat: HubbotStats.STAT
     minibot_a_current_stat: MinibotStats.STAT
@@ -63,7 +64,7 @@ class HubbotMainControllerNode(Node):
             timer_period, self.charge_controller_callback)
 
     def __init_axis_controller(self):
-        init_axis_control()
+        init_axis_control(self.charge_controller)
     
     def blockPrint(self):
         sys.stdout = open(os.devnull, 'w')
@@ -98,11 +99,11 @@ class HubbotMainControllerNode(Node):
         if newStat == MinibotStats.STAT.MiniUnknown:
             print("Minibot status unknown.")
         elif newStat == MinibotStats.STAT.MiniNormalOperating:
-            self.hubbot_current_stat = HubbotStats.STAT.HubReadyForMinibotUndocking
+            self.hubbot_current_stat = HubbotStats.STAT.HubReadyForMinibotDocking
         elif newStat == MinibotStats.STAT.MiniSearchingForHub:
             print("Minibot searching for hub")
         elif newStat == MinibotStats.STAT.MiniDocked:
-            success: bool = swap_battery()
+            success = swap_battery(self.charge_controller)
             if success:
                 print("\n\nSUCCESSFULLY SWAPPED BATTERY!!\n\n")
             else:
