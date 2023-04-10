@@ -250,7 +250,7 @@ class ChargeController:
     def enable_charging(self, slot: int, force: bool = False):
         print("Starting charging on slot " + str(slot) + "...")
         # Check that the battery is there
-        if not force and not is_batt_detected(slot):
+        if not force and not self.is_batt_detected(slot):
             print("BATTERY NOT DETECTED in slot " +
                   str(slot) + ". CANNOT start charging!!")
         else:
