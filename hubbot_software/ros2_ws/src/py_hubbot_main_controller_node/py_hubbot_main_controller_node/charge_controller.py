@@ -408,6 +408,10 @@ def repl():
             cont.enable_wing_power(True, True)
         elif cmd == "disablewingpow":
             cont.enable_wing_power(False, True)
+        elif cmd == "LED":
+            sendData = cmds.pop(0)
+            print(sendData)
+            cont.mcu.SERIAL_CONNECTION.write(str.encode(sendData))
         else:
             print("Command not found: " + cmd)
 
