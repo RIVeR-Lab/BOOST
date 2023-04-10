@@ -301,13 +301,35 @@ class ChargeController:
         '''
         # Active low. Continuity when LOW.
         if data == None:
+            # Do this multiple times to get rid of stale pkts in buffer
+            data = self.mcu.get_mcu_serial_data_blocking()
+            data = self.mcu.get_mcu_serial_data_blocking()
             data = self.mcu.get_mcu_serial_data_blocking()
         if data.getBattCont(slot) == MCURXSerDataPkt.BATT_DETECTED:
             return False
         else:
             return True
 
-    
+    def get_first_empty_batt_slot(self) -> int:
+        '''
+        Returns -1 on none found.
+        '''
+        emptySlot = -1
+        for slot in range(0, self.NUM_BATT_SLOTS):
+            if not self.is_batt_detected(slot):
+                emptySlot = slot
+                break
+        return emptySlot
+
+    def get_first_non_empty_batt_slot(self, slot_to_exclude: int) -> int:
+        nonEmptySlot = -1
+        for slot in range(0, self.NUM_BATT_SLOTS):
+            if self.is_batt_detected(slot) and slot != slot_to_exclude:
+                nonEmptySlot = slot
+                break
+        return nonEmptySlot
+
+
     def blockPrint(self):
         sys.stdout = open(os.devnull, 'w')
 
