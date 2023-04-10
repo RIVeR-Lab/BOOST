@@ -98,15 +98,15 @@ class ConnectToChargingDockNavigator(Node):
         '/minibot_a/cmd_vel',
         10)  
       timer_period = 0.1
-      self.timer = self.create_timer(timer_period, self.navigate_to_dock_staging_area)
-
+      self.timer = self.create_timer(timer_period, self.state_machine)
+      
       # Declare linear and angular velocities
       self.linear_velocity = 0.4  # meters per second
       # self.angular_velocity = 0.63 # radians per second
       # self.angular_velocity = 1.5 # radians per second
       self.angular_velocity = 1.2 # radians per second
 
-
+      self.can_undock = False
       
       # Keep track of which goal we're headed towards
       self.goal_idx = 0
@@ -120,34 +120,42 @@ class ConnectToChargingDockNavigator(Node):
 
       
       # Undocking distance
-      self.undocking_distance = 0.5
+      self.undocking_distance = 0.25
 
       self.PUBLISH_PERIOD_S = 1.0
       self.hubbot_current_stat = HubbotStats.STAT.HubUnknown
       self.minibot_a_current_stat = MinibotStats.STAT.MiniNormalOperating
 
-      # self.hubbot_stat_sub = self.create_subscription(
-      #       Int32,
-      #       'hub_stat',
-      #       self.hubbot_listener_callback,
-      #       10)
+      self.hubbot_stat_sub = self.create_subscription(
+            Int32,
+            'hub_stat',
+            self.hubbot_listener_callback,
+            10)
 
-      self.minibot_stat_pub =  self.create_publisher(Int32, 'minibot_a_stat', 10)
+      self.minibot_stat_pub =  self.create_publisher(Int32, '/minibot_a_stat', 10)
 
-    
     def hubbot_listener_callback(self, msg: Int32):
         self.get_logger().info('I heard: "%s"' % msg.data)
-        tempStat: HubbotStats.STAT = HubbotStats.ros_msg_to_stat(msg)
-        if tempStat != self.hubbot_current_stat:
-            print("New Hubbot Status Recieved: " +
-                  str(tempStat.name) + ":" + str(tempStat.value))
-            self.minibot_a_current_stat = tempStat
+        # tempStat: HubbotStats.STAT = HubbotStats.ros_msg_to_stat(msg)
+        # HubbotStats.STATS.HubReadyForMinibotUndocking
+        # if tempStat != self.hubbot_current_stat and msg.data == HubbotStats.STATS.HubReadyForMinibotUndocking:
+        if  msg.data == HubbotStats.STAT.HubReadyForMinibotUndocking :
+            self.get_logger().info('Hubbot indicating We can begin UNDOCKING sequence.')
+            self.goal_idx = -1 
+            self.can_undock = True
+            # self.minibot_a_current_stat = tempStat
             # new_minibot_status_handler(self.minibot_a_current_stat)
+        elif msg.data == HubbotStats.STAT.HubReadyForMinibotDocking:
+            self.get_logger().info('Hubbot indicating We can begin DOCKING sequence.')
+            self.goal_idx = 2
+            self.can_undock = False
+
         else:
             print("Non-New Minibot Status Recieved: " +
                   str(tempStat.name) + ":" + str(tempStat.value))
+        
 
-    def navigate_to_dock_staging_area(self):
+    def state_machine(self):
       """
       Navigate from somewhere in the environment to a staging area near
       the charging dock.
@@ -156,16 +164,27 @@ class ConnectToChargingDockNavigator(Node):
       
       # If we have enough battery, don't navigate to the charging dock.
       if low_battery == False:
-        # self.get_logger().info('Awaiting Docking Command.')
-
         return None 
-      
-      self.get_logger().info('Recieved Docking Command. Navigating to the charging dock...')
       
       # Launch the ROS 2 Navigation Stack
       # navigator = BasicNavigator()
       # navigator.cancelTask()
-      self.connect_to_dock()
+
+      if (self.goal_idx == 0 ): 
+        self.get_logger().info('Awaiting Docking Command.')
+        return
+        
+      if (self.goal_idx != 3 and self.goal_idx != -1): 
+        self.get_logger().info('Recieved Docking Command. Navigating to the charging dock...')
+        self.connect_to_dock()
+      
+      if(self.goal_idx == 3):
+        self.get_logger().info('we are docked, but cannot yet undock.')
+
+      if(self.goal_idx == -1 and self.can_undock):
+        self.undock()
+      
+
 
       # Wait for navigation to fully activate. Use this line if autostart is set to true.
       # navigator.waitUntilNav2Active(navigator='bt_navigator',localizer='slam_toolbox')
@@ -240,42 +259,55 @@ class ConnectToChargingDockNavigator(Node):
       # variable that holds the battery swapping notification.
       # if the battery has been swaped, and we are currently at goal_idx == 2
       # we will then do the undokcing sequence 
-      msg = MinibotStats.stat_to_ros_msg(MinibotStats.STAT.MiniNormalOperating)
-      msg.data = MinibotStats.STAT.MiniNormalOperating
-      self.minibot_stat_pub.publish(msg)
+      # msg = MinibotStats.stat_to_ros_msg(MinibotStats.STAT.MiniNormalOperating)
+      msg = Int32()
+
+      # msg.data = MinibotStats.STAT.MiniNormalOperating
+      # self.minibot_stat_pub.publish(msg)
 
       # While the battery is not charging
-      while this_battery_state.power_supply_status != 1:
-        # Publish the current battery state
-        self.get_logger().info('NOT CHARGING...')
-        counter = counter + 1
-        msg = MinibotStats.stat_to_ros_msg(MinibotStats.STAT.MiniSearchingForHub)
-        msg.data = MinibotStats.STAT.MiniSearchingForHub
-        self.minibot_stat_pub.publish(msg)
+      while this_battery_state.power_supply_status != 1 and self.goal_idx != -1 and not self.can_undock:
+      # while self.goal_idx != 1:
 
+        # Publish the current battery state
+        # self.get_logger().info('NOT CHARGING...')
+        counter = counter + 1
+        msg = Int32()
+        
         if (self.goal_idx == 0):
           self.search_for_aruco_marker()
           if (counter % 20 == 0):
             self.get_logger().info('Searching for the ArUco marker...')
+            msg.data = MinibotStats.STAT.MiniSearchingForHub
+            self.minibot_stat_pub.publish(msg)
             counter = 0
         elif (self.goal_idx == 1):
           self.navigate_to_aruco_marker()
           # print every 100 loops
+          msg.data = MinibotStats.STAT.MiniSearchingForHub
           if (counter % 20 == 0):
-            self.get_logger().info('Navigating to ArUco marker ID ...')
+            self.get_logger().info('Navigating to ArUco marker')
             self.get_logger().info('Distance: ' + '{:.2f}'.format(obstacle_distance_front) + ' meters.')
+            self.minibot_stat_pub.publish(msg)
             counter = 0
 
         else:
           # Stop the robot
+          # self.goal_idx = -1
           cmd_vel_msg = Twist()
           cmd_vel_msg.linear.x = 0.0
           cmd_vel_msg.angular.z = 0.0
           self.publisher_cmd_vel.publish(cmd_vel_msg)
           self.get_logger().info('Arrived at charging dock. Robot is idle...')
-          msg = MinibotStats.stat_to_ros_msg(MinibotStats.STAT.MiniDocked)
+          msg = Int32()
           msg.data = MinibotStats.STAT.MiniDocked
-          self.minibot_stat_pub.publish()
+          self.minibot_stat_pub.publish(msg)
+          self.goal_idx = 3
+          if (self.can_undock):
+            self.goal_idx = -1
+          return 
+
+          
 
           
     
@@ -292,16 +324,21 @@ class ConnectToChargingDockNavigator(Node):
       self.goal_idx = 0
 
       # While the battery is not full
-      while this_battery_state.percentage != 1.0:      
-        self.get_logger().info('CHARGING...')
+      # while this_battery_state.percentage != 1.0:      
+      #   self.get_logger().info('CHARGING...')
         
  
-
-      while obstacle_distance_front <= self.undocking_distance or '{:.2f}'.format(obstacle_distance_front) == "nan":
-             # Undock from the docking station
-        cmd_vel_msg = Twist()
-        cmd_vel_msg.linear.x = -self.linear_velocity
-        self.publisher_cmd_vel.publish(cmd_vel_msg)
+      # -1 means undock
+      # while self.goal_idx == -1  or obstacle_distance_front <= self.undocking_distance or '{:.2f}'.format(obstacle_distance_front) == "nan":
+      #        # Undock from the docking station
+      #   if( aruco_marker_distance < 0.3):
+      #     self.get_logger().info('UNDOCKING...')
+      #     cmd_vel_msg = Twist()
+      #     cmd_vel_msg.linear.x = -self.linear_velocity
+      #     self.publisher_cmd_vel.publish(cmd_vel_msg)
+      #   else:
+      #     self.get_logger().info('Done Undocking...')
+      #     self.goal_idx == 0
 
       #   # cmd_vel_msg = Twist()
       #   # cmd_vel_msg.linear.x = -0.5
@@ -316,6 +353,23 @@ class ConnectToChargingDockNavigator(Node):
       cmd_vel_msg.linear.x = 0.0     
       self.publisher_cmd_vel.publish(cmd_vel_msg)
       self.get_logger().info('Ready for my next goal!')
+
+    def undock(self): 
+      while self.goal_idx == -1 # or obstacle_distance_front <= self.undocking_distance or '{:.2f}'.format(obstacle_distance_front) == "nan":
+             # Undock from the docking station
+        if( aruco_marker_distance < 0.25):
+          self.get_logger().info('UNDOCKING...')
+          cmd_vel_msg = Twist()
+          cmd_vel_msg.linear.x = -self.linear_velocity
+          self.publisher_cmd_vel.publish(cmd_vel_msg)
+        else:
+          self.get_logger().info('Done Undocking...')
+          self.goal_idx == 0
+          self.can_undock = False
+          cmd_vel_msg = Twist()
+          cmd_vel_msg.linear.x = 0.0
+          self.publisher_cmd_vel.publish(cmd_vel_msg)
+
 
     def search_for_aruco_marker(self):
       """
@@ -361,7 +415,9 @@ class ConnectToChargingDockNavigator(Node):
         self.goal_idx = 2 
             # break
       # If we have detected the ArUco marker and there are no obstacles in the way
+      # elif aruco_marker_detected and (obstacle_distance_front > self.obstacle_tolerance):
       elif aruco_marker_detected and (obstacle_distance_front > self.obstacle_tolerance):
+
         self.adjust_heading()
       # If we have detected the ArUco marker and there are obstacles in the way, we have reached the charging dock
       elif aruco_marker_detected and (obstacle_distance_front <= self.obstacle_tolerance):
