@@ -143,7 +143,12 @@ class MCUController:
         if len(data) != 2:
             print("ERROR getting key and value from MCU serial input data: " + keyVal)
             return None
-        return float(data[1])
+        try:
+            ret = float(data[1])
+        except:
+            print("ERROR in __get_value_from_input_data_float float(data[1])")
+            ret = -1.0
+        return ret
 
     @classmethod
     def remove_all_occurences(self, arr: List[str], toRemove: str):
@@ -250,7 +255,7 @@ class ChargeController:
     def enable_charging(self, slot: int, force: bool = False):
         print("Starting charging on slot " + str(slot) + "...")
         # Check that the battery is there
-        if not force and not is_batt_detected(slot):
+        if not force and not self.is_batt_detected(slot):
             print("BATTERY NOT DETECTED in slot " +
                   str(slot) + ". CANNOT start charging!!")
         else:
@@ -403,6 +408,10 @@ def repl():
             cont.enable_wing_power(True, True)
         elif cmd == "disablewingpow":
             cont.enable_wing_power(False, True)
+        elif cmd == "LED":
+            sendData = cmds.pop(0)
+            print(sendData)
+            cont.mcu.SERIAL_CONNECTION.write(str.encode(sendData))
         else:
             print("Command not found: " + cmd)
 
