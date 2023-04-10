@@ -145,15 +145,12 @@ class ConnectToChargingDockNavigator(Node):
 
     def hubbot_listener_callback(self, msg: Int32):
         self.get_logger().info('I heard: "%s"' % msg.data)
-        # tempStat: HubbotStats.STAT = HubbotStats.ros_msg_to_stat(msg)
-        # HubbotStats.STATS.HubReadyForMinibotUndocking
-        # if tempStat != self.hubbot_current_stat and msg.data == HubbotStats.STATS.HubReadyForMinibotUndocking:
+
         if  msg.data == HubbotStats.STAT.HubReadyForMinibotUndocking :
             self.get_logger().info('Hubbot indicating We can begin UNDOCKING sequence.')
             # if( not self.recently_docked) :
             self.goal_idx = UNDOCK
             self.can_undock = True
-            # self.minibot_a_current_stat = tempStat
             # new_minibot_status_handler(self.minibot_a_current_stat)
         elif msg.data == HubbotStats.STAT.HubReadyForMinibotDocking:
             self.get_logger().info('Hubbot indicating We can begin DOCKING sequence.')
@@ -307,12 +304,16 @@ class ConnectToChargingDockNavigator(Node):
     def undock(self): 
       while self.goal_idx == -1: # or obstacle_distance_front <= self.undocking_distance or '{:.2f}'.format(obstacle_distance_front) == "nan":
              # Undock from the docking station
-        if( aruco_marker_distance < 1.00):
+        
+        if( aruco_marker_distance < 0.70):
           self.get_logger().info('UNDOCKING...')
           cmd_vel_msg = Twist()
           cmd_vel_msg.linear.x = -self.linear_velocity
           self.publisher_cmd_vel.publish(cmd_vel_msg)
         else:
+          msg = Int32()
+          msg.data = MinibotStats.STAT.MiniNormalOperating
+          self.minibot_stat_pub.publish(msg)
           self.get_logger().info('Done Undocking...')
           self.goal_idx = 0
           self.can_undock = False
@@ -405,9 +406,10 @@ class ConnectToChargingDockNavigator(Node):
         # Go straight
         cmd_vel_msg.linear.x = self.linear_velocity 
       
-      # if(aruco_marker_distance > 1) :
+      if(aruco_marker_distance > 1) :
           # the further away, the more slower the turns, this is to minimize the offset.  
-          # cmd_vel_msg.angular.z = cmd_vel_msg.angular.z * 0.80
+        cmd_vel_msg.angular.z = cmd_vel_msg.angular.z * 0.80
+        # cmd_vel_msg.linear.x = self.linear_velocity / 2
       # Publish the velocity message  
       self.publisher_cmd_vel.publish(cmd_vel_msg)  
 
