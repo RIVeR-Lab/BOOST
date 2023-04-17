@@ -1,7 +1,0 @@
-.pio
-.vscode/.browse.c_cpp.db*
-.vscode/ipch
-**/*.patch_generated
-.platformio/**
-.vscode
-.settings
