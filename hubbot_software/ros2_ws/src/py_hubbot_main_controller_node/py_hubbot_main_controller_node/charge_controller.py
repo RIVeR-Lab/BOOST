@@ -65,7 +65,7 @@ class MCUController:
     mcu_port_VID = 1027
     mcu_port_PID = 24577
     USB_PORT = ""
-    MCU_BPS = 115200
+    MCU_BPS = 9600
     SERIAL_CONNECTION: serial.Serial = None
 
     def __init__(self):

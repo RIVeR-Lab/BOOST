@@ -17,7 +17,7 @@ from rclpy.node import Node
 from std_msgs.msg import String
 from std_msgs.msg import Int32
 from .bot_stats import HubbotStats, MinibotStats
-from .axis_control import swap_battery, init_axis_control
+from .axis_control import swap_battery, init_axis_control, home_all_axes
 from .charge_controller import ChargeController
 import sys
 import os
@@ -38,6 +38,7 @@ class HubbotMainControllerNode(Node):
         self.__init_minibot_a_sub()
         self.__init_charge_controller()
         self.__init_axis_controller()
+        home_all_axes()
         self.hubbot_current_stat = HubbotStats.STAT.HubReadyForMinibotDocking
 
     def __init_hubbot_stat_pub(self):

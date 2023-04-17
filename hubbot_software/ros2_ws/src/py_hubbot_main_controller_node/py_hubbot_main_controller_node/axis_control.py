@@ -38,7 +38,7 @@ liftdown: Where the minibot can dock
 liftupbattout: Where the minibot is lifted to and where battery can be swapped OUT of the minibot
 liftupbattin: Where the minibot is lifted to and where battery can be swapped INto the minibot
 '''
-lift_abs_loc_cm = {"liftdown": 0, "continuitycheck": -30, "liftupbattout": -105, "liftupbattin": -100}
+lift_abs_loc_cm = {"liftdown": 0, "continuitycheck": -30, "liftupbattout": -105, "liftupbattin": -95}
 
 # Feed rates
 indexer_feed_rate = "F200"
@@ -466,7 +466,7 @@ def init_axis_control(charge_controller: ChargeController):
     set_grbl_positive_directions()
     # Disable soft limits
     send_grbl_gcode_cmd(grbl_disable_soft_limits_setting_cmd)
-    home_all_axes(charge_controller)
+    # home_all_axes(charge_controller)
 
 if __name__ == "__main__":
     device_list = list_ports.comports()
@@ -502,9 +502,9 @@ if __name__ == "__main__":
             swap_battery(charge_controller)
             sleep(2)
         elif cmd == "liftdownraw":
-            send_grbl_gcode_cmd("G91 G21 G1 Z200 F2000")
+            send_grbl_gcode_cmd("G91 G21 G1 Z200 F200")
         elif cmd == "liftupraw":
-            send_grbl_gcode_cmd("G91 G21 G1 Z-200 F250")
+            send_grbl_gcode_cmd("G91 G21 G1 Z-200 F200")
         elif cmd == "liftdown":
             move_z_lift_arms(loc="liftdown")
         elif cmd == "liftupbattin":
