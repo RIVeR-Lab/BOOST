@@ -38,7 +38,7 @@ liftdown: Where the minibot can dock
 liftupbattout: Where the minibot is lifted to and where battery can be swapped OUT of the minibot
 liftupbattin: Where the minibot is lifted to and where battery can be swapped INto the minibot
 '''
-lift_abs_loc_cm = {"liftdown": 0, "continuitycheck": -30, "liftupbattout": -105, "liftupbattin": -100}
+lift_abs_loc_cm = {"liftdown": 0, "continuitycheck": -30, "liftupbattout": -105, "liftupbattin": -95}
 
 # Feed rates
 indexer_feed_rate = "F200"
