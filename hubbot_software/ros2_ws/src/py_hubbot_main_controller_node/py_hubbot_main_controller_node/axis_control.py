@@ -466,7 +466,7 @@ def init_axis_control(charge_controller: ChargeController):
     set_grbl_positive_directions()
     # Disable soft limits
     send_grbl_gcode_cmd(grbl_disable_soft_limits_setting_cmd)
-    home_all_axes(charge_controller)
+    # home_all_axes(charge_controller)
 
 if __name__ == "__main__":
     device_list = list_ports.comports()
