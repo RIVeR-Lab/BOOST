@@ -502,9 +502,9 @@ if __name__ == "__main__":
             swap_battery(charge_controller)
             sleep(2)
         elif cmd == "liftdownraw":
-            send_grbl_gcode_cmd("G91 G21 G1 Z200 F2000")
+            send_grbl_gcode_cmd("G91 G21 G1 Z200 F200")
         elif cmd == "liftupraw":
-            send_grbl_gcode_cmd("G91 G21 G1 Z-200 F250")
+            send_grbl_gcode_cmd("G91 G21 G1 Z-200 F200")
         elif cmd == "liftdown":
             move_z_lift_arms(loc="liftdown")
         elif cmd == "liftupbattin":
