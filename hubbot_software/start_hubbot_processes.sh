@@ -10,11 +10,15 @@ fi
 
 echo $VERBOSE
 
+source /opt/ros/galactic/setup.sh
+
 echo "Starting ChargeController..."
 if [[ "$VERBOSE" -eq 1 ]]; then
-  python3 $BASEPATH/charge_controller.py &
+  # python3 $BASEPATH/charge_controller.py &
+  cd "ros2_ws" && sudo colcon build && source install/setup.sh && ros2 run py_hubbot_main_controller_node hubbot_main_controller_node
 else
-  python3 $BASEPATH/charge_controller.py > /dev/null 2>&1 &
+  # python3 $BASEPATH/charge_controller.py > /dev/null 2>&1 &
+  cd "ros2_ws" && sudo colcon build && source install/setup.sh && ros2 run py_hubbot_main_controller_node hubbot_main_controller_node
 fi
 
 echo "DONE"

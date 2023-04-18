@@ -30,6 +30,7 @@ bool DriveManager::logLoopHook() {
       lastTwistMsg.linear.x, lastTwistMsg.angular.z, lastCommandedVel_l,
       lastCommandedVel_r, lastCommandedPwm_l, lastCommandedPwm_r);
   LOGEVENT(buf);
+  ROSLOGEVENT(buf);
 
   return true;
 }

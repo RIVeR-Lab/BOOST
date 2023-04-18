@@ -52,6 +52,9 @@ install(
 # ament_python_install_package("ros2_aruco_interfaces")
 
 install(PROGRAMS
+  shared/bot_stats.py
+  # scripts/minibot_comms_controller.py
+
   scripts/aruco_marker_detector.py
   # scripts/aruco_marker_pose_estimation_tf.py
   # scripts/ros2_aruco_interfaces

@@ -15,6 +15,8 @@ from geometry_msgs.msg import TransformStamped # Handles TransformStamped messag
 from sensor_msgs.msg import Image # Image is the message type
 from std_msgs.msg import Bool # Handles boolean messages
 from std_msgs.msg import Int32 # Handles int 32 type message
+from std_msgs.msg import Float64 # Handles float 32 type message
+
 from geometry_msgs.msg import PoseArray, Pose
 from tf2_ros import TransformBroadcaster
 from scipy.spatial.transform import Rotation as R
@@ -61,7 +63,7 @@ class ArucoNode(Node):
     super().__init__('aruco_node')
 
     # Declare parameters
-    self.declare_parameter("aruco_dictionary_name", "DICT_4X4_50")
+    self.declare_parameter("aruco_dictionary_name", "DICT_5X5_50")
     # self.declare_parameter("aruco_marker_side_length", 0.085)  # in meters? 
     self.declare_parameter("aruco_marker_side_length", 0.05)  # in meters? 
     # self.declare_parameter("camera_calibration_parameters_filename", "swarm_crawler/scripts/calibration_chessboard.yaml")
@@ -118,7 +120,15 @@ class ArucoNode(Node):
     
     # Publishes x-centroid offset with respect to the camera image
     self.publisher_offset_aruco_marker = self.create_publisher(Int32, 'aruco_marker_offset', 10)
+    
+    self.publisher_aruco_marker_id = self.create_publisher(Int32, 'aruco_marker_id', 10)
+    
     self.offset_aruco_marker = 0
+
+    self.aruco_marker_id = -1
+    
+    self.publisher_aruco_marker_distance = self.create_publisher(Float64, 'aruco_marker_distance', 10)
+
       
     # Used to convert between ROS and OpenCV images
     self.bridge = CvBridge()
@@ -142,6 +152,10 @@ class ArucoNode(Node):
     # ArUco center offset
     aruco_center_offset_msg = Int32()
     aruco_center_offset_msg.data = self.offset_aruco_marker
+
+     # ArUco center offset
+    aruco_marker_id_msg = Int32()
+    aruco_marker_id_msg.data = self.aruco_marker_id
     
     image_width = current_frame.shape[1]
 
@@ -167,7 +181,7 @@ class ArucoNode(Node):
       
       self.offset_aruco_marker = cX - int(image_width/2)
       aruco_center_offset_msg.data = self.offset_aruco_marker
-
+      
       cv2.putText(current_frame, "Center Offset: " + str(self.offset_aruco_marker), (cX - 40, cY - 40), 
         cv2.FONT_HERSHEY_COMPLEX, 0.7, (0, 255, 0), 2) 
       
@@ -208,19 +222,27 @@ class ArucoNode(Node):
                 t.transform.rotation.w = quat[3]
                 # self.get_logger().info('broadcasting transform')
                 self.tfbroadcaster.sendTransform(t)
-                # self.get_logger().info('X,Y,Z,W Rotations: ;' + str(t.transform.rotation.x) + ';' + str(t.transform.rotation.y) + ';' + str(t.transform.rotation.z) + ';' + str(t.transform.rotation.w))
+                # self.get_logger().info('X,Y,Z DISTANCE: ;' + str(t.transform.translation.x) + ';' + str(t.transform.translation.y) + ';' + str(t.transform.translation.z))
 
                 # Send the transform
                 # pose_array.header.frame_id = t.header.frame_id
 
-                pose = Pose()
-                pose.position.x = tvecs[i][0][0]
-                pose.position.y = tvecs[i][0][1]
-                pose.position.z = tvecs[i][0][2]
-                pose.orientation.x = quat[0]
-                pose.orientation.y = quat[1]
-                pose.orientation.z = quat[2]
-                pose.orientation.w = quat[3]
+                # pose = Pose()
+                # pose.position.x = tvecs[i][0][0]
+                # pose.position.y = tvecs[i][0][1]
+                # pose.position.z = tvecs[i][0][2]
+                # pose.orientation.x = quat[0]
+                # pose.orientation.y = quat[1]
+                # pose.orientation.z = quat[2]
+                # pose.orientation.w = quat[3]
+                self.aruco_marker_id = int(marker_id)
+                aruco_marker_id_msg.data = self.aruco_marker_id
+                self.publisher_aruco_marker_id.publish(aruco_marker_id_msg)
+
+                float_msg = Float64()  # Create a new Float32 message object
+                float_msg.data = float(t.transform.translation.x)  # Set the data field to your float value
+
+                self.publisher_aruco_marker_distance.publish(float_msg)
                 # pose_array.poses.append(pose)
 
     # Publish if ArUco marker has been detected or not

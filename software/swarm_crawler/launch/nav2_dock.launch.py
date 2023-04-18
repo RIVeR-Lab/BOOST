@@ -125,6 +125,11 @@ def generate_launch_description():
         default_value='True',
         description='Whether to run SLAM')
 
+    cmd_vel_remap = DeclareLaunchArgument(
+        name='cmd_vel',
+        default_value='minibot_a/cmd_vel',
+        description='cmd_vel remap')
+
     declare_map_yaml_cmd = DeclareLaunchArgument(
         name='map',
         default_value=static_map_path,
@@ -212,16 +217,40 @@ def generate_launch_description():
     #     parameters=[{'use_sim_time': use_sim_time}])    
 
     # NAVIGATION 2
+    # start_nav2_cmd = IncludeLaunchDescription(
+    # PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'bringup_launch.py')),
+    # launch_arguments = {'namespace': '',
+    #                     'use_namespace': use_namespace,
+    #                     'map': map_yaml_file,
+    #                     'use_sim_time': 'False',
+    #                     'params_file': params_file,
+    #                     'yaml_filename': params_file,
+    #                     'slam': slam,
+    #                     'autostart': autostart
+    #                    }.items())
+
     start_nav2_cmd = IncludeLaunchDescription(
     PythonLaunchDescriptionSource(os.path.join(nav2_launch_dir, 'bringup_launch.py')),
-    launch_arguments = {'namespace': '',
-                        'use_namespace': use_namespace,
-                        'map': map_yaml_file,
-                        'use_sim_time': 'False',
-                        'params_file': params_file,
-                        'yaml_filename': params_file,
-                        'slam': slam,
-                        'autostart': autostart}.items())
+    launch_arguments={
+        'namespace': '',
+        'use_namespace': use_namespace,
+        'map': map_yaml_file,
+        'use_sim_time': 'False',
+        'params_file': params_file,
+        'yaml_filename': params_file,
+        'slam': slam,
+        'autostart': autostart,  
+        'cmd_vel_topic':'test_cmd_vel'
+    }.items()
+      # Add this line to remap the cmd_vel topic
+)
+
+    republish_cmd_vel = Node(
+    package="topic_tools",
+    executable='relay',
+    namespace=namespace,
+    arguments=["/cmd_vel", "/minibot_a/cmd_vel"],
+    output="screen")
   
     # Launch RViz
     start_rviz_cmd = Node(
@@ -344,7 +373,7 @@ def generate_launch_description():
 
     #aruco marker traversal
       # Launch navigation to the charging dock
-    nav_to_charging_dock_script = 'navigate_to_charging_dock_v2.py'
+    nav_to_charging_dock_script = 'navigate_to_aruco_v1.py'
 
     start_navigate_to_charging_dock_cmd = Node(
     package='swarm_crawler',
@@ -375,7 +404,7 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd)
 
     # STARTING ARUCO MARKER POSE TRANSFORM
-    ld.add_action(start_aruco_marker_pose_transform_cmd)
+    # ld.add_action(start_aruco_marker_pose_transform_cmd)
 
     # STARTING STATE PUBLISHER NODES
     ld.add_action(start_joint_state_publisher_cmd)
@@ -390,8 +419,14 @@ def generate_launch_description():
     # necessary "camera_depth_frame" redundant transform-- couldnt figure out the cause. 
     ld.add_action(depth_frame)
     ld.add_action(accel_frame)
+    ld.add_action(start_navigate_to_charging_dock_cmd)
     # ld.add_action(start_pointcloud_to_laserscan_cmd2)
-    
+    start_aruco_marker_detector_cmd = Node(
+    package=package_name,
+    executable='aruco_marker_detector.py')  
+
+    # AUTONOMOUS DOCKING
+    ld.add_action(start_aruco_marker_detector_cmd)
 
 
 
@@ -405,9 +440,11 @@ def generate_launch_description():
 
     # Nav 2 launch 
     # the errors that occured with nav2 were primarily due to the namespace issue stuff 
-    start_nav2 = IncludeLaunchDescription(
-    PythonLaunchDescriptionSource(os.path.join(pkg_share,'launch','unused_launch' ,'nav2.py')),
-    launch_arguments = {'namespace': ''}.items())
+    # start_nav2 = IncludeLaunchDescription(
+    # PythonLaunchDescriptionSource(os.path.join(pkg_share,'launch','unused_launch' ,'nav2.py')),
+    # launch_arguments = {'namespace': '', 'remappings': [
+    #          ('cmd_vel', 'minibot_a/cmd_vel'),
+    #      ]}.items())
     # ld.add_action(start_nav2)
 
     # navigation stuff
@@ -439,6 +476,7 @@ def generate_launch_description():
     ld.add_action(declare_map_yaml_cmd)
     ld.add_action(start_nav2_cmd)
     ld.add_action(start_rviz_cmd)
+    ld.add_action(republish_cmd_vel)
     # camera stuff 
     # ld.add_action(realsense)
     # ld.add_action(launch_realsense_d435)
