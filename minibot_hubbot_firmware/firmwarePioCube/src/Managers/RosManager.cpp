@@ -123,5 +123,7 @@ bool RosManager::logLoopHook() {
 void RosManager::subDiffDrive_cb(const geometry_msgs::Twist &msg) {
   LOGINFO("Linear: %f, %f, %f", msg.linear.x, msg.linear.y, msg.linear.z);
   LOGINFO("Angular: %f, %f, %f", msg.angular.x, msg.angular.y, msg.angular.z);
+  ROSLOGINFO("Linear: %f, %f, %f", msg.linear.x, msg.linear.y, msg.linear.z);
+  ROSLOGINFO("Angular: %f, %f, %f", msg.angular.x, msg.angular.y, msg.angular.z);
   realMain.drvManager.handlerNewTwistMsgRcv(msg);
 }
