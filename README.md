@@ -17,6 +17,21 @@
 * This board is identical on the 2x minibots and on the hubbot.
 * Controls IMU, GPS, motor control, encoders, battery voltage.
 
+# Running Things
+## HubBot Software
+* Run main ROS2 HubBot node:
+  >./hubbot_software\start_hubbot_processes.sh
+
+## HubBot Firmware
+* Load Firmware onto Charge Controller Arduino Nano.
+  * Load this sketch onto the Arduino
+  * `minibot_hubbot_firmware\charge_controller_firmware\monitor_RGB`
+* Load firmware onto STM32F446
+  * Load the latest firmware onto the NUCLEO found here:
+    * `minibot_hubbot_firmware\firmwarePioCube\firmware_releases\hubbot`
+## MiniBot Firmware
+* Load the latest firmware for the respective MiniBot onto its STM32F446RE
+  * `minibot_hubbot_firmware\firmwarePioCube\firmware_releases`
 # David Useful Commands
 > ros2 topic pub /chatter std_msgs/String "data: Hello ROS Developers"
 
