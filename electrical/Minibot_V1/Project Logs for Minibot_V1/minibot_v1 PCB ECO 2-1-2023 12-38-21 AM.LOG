@@ -1,0 +1,77 @@
+Removed Pin From Net: NetName=I2C1_SDA_IMU Pin=J8-CN10_21
+Removed Pin From Net: NetName=I2C1_SCL_IMU Pin=J8-CN10_23
+Removed Pin From Net: NetName=PA2 Pin=J8-CN10_35
+Removed Pin From Net: NetName=PA3 Pin=J8-CN10_37
+Removed Pin From Net: NetName=NetC29_2 Pin=U1-7
+Removed Pin From Net: NetName=NetR18_1 Pin=U1-41
+Removed Pin From Net: NetName=NetR19_1 Pin=U1-42
+Removed Pin From Net: NetName=INT_IMU Pin=U1-61
+Removed Pin From Net: NetName=BOOT_IMU Pin=U1-62
+Added Component: Designator=J10(CONN_61300211121_WRE)
+Add component (AddParameter): Name = "Copyright"; Value = "Copyright (C) 2023 Ultra Librarian. All rights reserved."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "61300211121"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mfr_Name"; Value = "Wurth Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RefDes"; Value = "RefDes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "DEV"; VariantName = "[No Variations]"
+Added Component: Designator=R25(J1-0603)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "29-May-2009"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "IPC-7351 Footprint Added."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageDescription"; Value = "Chip Resistor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageReference"; Value = "J1-0603"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "0K"; VariantName = "[No Variations]"
+Added Component: Designator=R26(J1-0603)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "29-May-2009"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "IPC-7351 Footprint Added."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageDescription"; Value = "Chip Resistor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageReference"; Value = "J1-0603"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "0K"; VariantName = "[No Variations]"
+Added Component: Designator=X2(ABS25-32.768KHZ-1-T_ABR)
+Add component (AddParameter): Name = "Copyright"; Value = "Copyright (C) 2023 Ultra Librarian. All rights reserved."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "ABS25-32.768KHZ-1-T"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mfr_Name"; Value = "Abracon"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RefDes"; Value = "RefDes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "DEV"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=I2C1_SDA_IMU Pin=J8-CN7_36
+Added Pin To Net: NetName=I2C1_SCL_IMU Pin=J8-CN7_38
+Added Pin To Net: NetName=D_P Pin=J8-CN10_12
+Added Pin To Net: NetName=D_N Pin=J8-CN10_14
+Added Pin To Net: NetName=BOOT_IMU Pin=J8-CN10_21
+Added Pin To Net: NetName=INT_IMU Pin=J8-CN10_23
+Added Pin To Net: NetName=INT_IMU Pin=U1-41
+Added Pin To Net: NetName=BOOT_IMU Pin=U1-42
+Added Pin To Net: NetName=D_N Pin=U1-44
+Added Pin To Net: NetName=D_P Pin=U1-45
+Added Pin To Net: NetName=NetR18_1 Pin=U1-61
+Added Pin To Net: NetName=NetR19_1 Pin=U1-62
+Added Pin To Net: NetName=BATT_GND Pin=J10-2
+Added Net: Name=BATT_GND
+Added Pin To Net: NetName=BATT_VIN Pin=J10-1
+Added Net: Name=BATT_VIN
+Added Pin To Net: NetName=NetC30_1 Pin=R26-2
+Added Pin To Net: NetName=NetC30_1 Pin=X2-4
+Added Net: Name=NetC30_1
+Added Pin To Net: NetName=NetC31_1 Pin=R25-2
+Added Pin To Net: NetName=NetC31_1 Pin=X2-1
+Added Net: Name=NetC31_1
+Added Pin To Net: NetName=NetR25_1 Pin=R25-1
+Added Pin To Net: NetName=NetR25_1 Pin=U1-4
+Added Net: Name=NetR25_1
+Added Pin To Net: NetName=NetR26_1 Pin=R26-1
+Added Pin To Net: NetName=NetR26_1 Pin=U1-3
+Added Net: Name=NetR26_1
+Added Pin To Net: NetName=NetSW1_4 Pin=SW1-4
+Added Pin To Net: NetName=NetSW1_4 Pin=U1-7
+Added Net: Name=NetSW1_4
+Added Member To Class: ClassName=Connectors Member=Component J10 61300211121
+Added Member To Class: ClassName=microController Member=Component R25 Res3
+Added Member To Class: ClassName=microController Member=Component R26 Res3
+Added Member To Class: ClassName=microController Member=Component X2 ABS25-32.768KHZ-1-T
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

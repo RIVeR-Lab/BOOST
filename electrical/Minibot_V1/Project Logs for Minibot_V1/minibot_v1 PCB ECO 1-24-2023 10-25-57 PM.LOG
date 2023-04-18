@@ -1,0 +1,55 @@
+Removed Pin From Net: NetName=12V Pin=J3-1
+Removed Pin From Net: NetName=MOTOR_GND Pin=J3-2
+Removed Pin From Net: NetName=BOOT0_1 Pin=J3-3
+Removed Pin From Net: NetName=5V Pin=J3-4
+Removed Pin From Net: NetName=ENC_1_A_5V Pin=J3-5
+Removed Pin From Net: NetName=ENC_1_B_5V Pin=J3-6
+Removed Pin From Net: NetName=12V Pin=J4-1
+Removed Pin From Net: NetName=MOTOR_GND Pin=J4-2
+Removed Pin From Net: NetName=BOOT0_1 Pin=J4-3
+Removed Pin From Net: NetName=5V Pin=J4-4
+Removed Pin From Net: NetName=ENC_2_A_5V Pin=J4-5
+Removed Pin From Net: NetName=ENC_2_B_5V Pin=J4-6
+Change Component Footprint: Designator=J3 Old Footprint=CON6_1X6_TU_TSW New Footprint=SAMTEC_TSW-106-07-F-D
+Change Component Footprint: Designator=J4 Old Footprint=CON6_1X6_TU_TSW New Footprint=SAMTEC_TSW-106-07-F-D
+Change Component Comment : Designator=J3 Old Comment=TSW-106-14-F-S New Comment=TSW-106-07-F-D
+Change Component Comment : Designator=J4 Old Comment=TSW-106-14-F-S New Comment=TSW-106-07-F-D
+Change component parameters: Designator = "J3" ("J3"); Footprint = "CON6_1X6_TU_TSW"; UniqueID = "\KVRZKECY" ("\KVRZKECY")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = "Samtec"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "TSW-106-07-F-D"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Change component parameters: Designator = "J4" ("J4"); Footprint = "CON6_1X6_TU_TSW"; UniqueID = "\YXHBTUDW" ("\YXHBTUDW")
+Change component parameters (AddParameter): Name = "Availability"; Value = "Unavailable"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MF"; Value = "Samtec"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "MP"; Value = "TSW-106-07-F-D"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Package"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Price"; Value = "None"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Value"; Value = ""; VariantName = "[No Variations]"
+Added Pin To Net: NetName=BOOT0_1 Pin=J3-05
+Added Pin To Net: NetName=5V Pin=J3-07
+Added Pin To Net: NetName=ENC_1_A_5V Pin=J3-09
+Added Pin To Net: NetName=ENC_1_B_5V Pin=J3-11
+Added Pin To Net: NetName=BOOT0_1 Pin=J4-05
+Added Pin To Net: NetName=5V Pin=J4-07
+Added Pin To Net: NetName=ENC_2_A_5V Pin=J4-09
+Added Pin To Net: NetName=ENC_2_B_5V Pin=J4-11
+Added Pin To Net: NetName=MOTOR_1_N Pin=J3-03
+Added Pin To Net: NetName=MOTOR_1_N Pin=J3-04
+Added Net: Name=MOTOR_1_N
+Added Pin To Net: NetName=MOTOR_1_P Pin=J3-01
+Added Pin To Net: NetName=MOTOR_1_P Pin=J3-02
+Added Net: Name=MOTOR_1_P
+Added Pin To Net: NetName=MOTOR_2_N Pin=J4-03
+Added Pin To Net: NetName=MOTOR_2_N Pin=J4-04
+Added Net: Name=MOTOR_2_N
+Added Pin To Net: NetName=MOTOR_2_P Pin=J4-01
+Added Pin To Net: NetName=MOTOR_2_P Pin=J4-02
+Added Net: Name=MOTOR_2_P
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

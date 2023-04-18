@@ -1,0 +1,11 @@
+Removed Pin From Net: NetName=I2C1_SDA_IMU Pin=J8-CN7_36
+Removed Pin From Net: NetName=I2C1_SCL_IMU Pin=J8-CN7_38
+Removed Pin From Net: NetName=INT_IMU Pin=J8-CN10_3
+Removed Pin From Net: NetName=BOOT_IMU Pin=J8-CN10_5
+Added Pin To Net: NetName=I2C1_SCL_IMU Pin=J8-CN10_3
+Added Pin To Net: NetName=I2C1_SDA_IMU Pin=J8-CN10_5
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

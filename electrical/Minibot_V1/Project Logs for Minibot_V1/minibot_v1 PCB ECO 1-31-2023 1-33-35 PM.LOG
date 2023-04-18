@@ -1,0 +1,8 @@
+Added Pin To Net: NetName=I2C1_SDA_IMU Pin=R16-1
+Added Pin To Net: NetName=I2C1_SDA_IMU Pin=R19-2
+Change Net Name : Old Net Name=IMU_I2C_SCL New Net Name=I2C1_SDL_IMU
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

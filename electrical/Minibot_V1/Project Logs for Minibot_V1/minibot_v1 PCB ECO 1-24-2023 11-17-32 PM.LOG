@@ -1,0 +1,50 @@
+Removed Pin From Net: NetName=5V Pin=J1-1
+Change Component Footprint: Designator=J7 Old Footprint=CONN_S2B-PH-K-S_JST New Footprint=CONN_61300211121_WRE
+Change Component Comment : Designator=J7 Old Comment=S2B-PH-K-S(LF)(SN) New Comment=61300211121
+Change component parameters: Designator = "J7" ("J7"); Footprint = "CONN_S2B-PH-K-S_JST"; UniqueID = "\DCTVNWDT" ("\DCTVNWDT")
+Change component parameters (AddParameter): Name = "Copyright"; Value = "Copyright (C) 2023 Ultra Librarian. All rights reserved."; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "61300211121"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mfr_Name"; Value = "Wurth Electronics"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "RefDes"; Value = "RefDes"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Type"; Value = "DEV"; VariantName = "[No Variations]"
+Added Component: Designator=C29(1608[0603])
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "29-May-2009"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "IPC-7351 Footprint Added."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageDescription"; Value = "Chip Capacitor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageReference"; Value = "C1206"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = ".1uF"; VariantName = "[No Variations]"
+Added Component: Designator=J9(CONN_61300211121_WRE)
+Add component (AddParameter): Name = "Copyright"; Value = "Copyright (C) 2023 Ultra Librarian. All rights reserved."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "61300211121"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mfr_Name"; Value = "Wurth Electronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RefDes"; Value = "RefDes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "DEV"; VariantName = "[No Variations]"
+Added Component: Designator=SW1(TL3301EF100QG_EWI)
+Add component (AddParameter): Name = "Copyright"; Value = "Copyright (C) 2023 Ultra Librarian. All rights reserved."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "TL3301EF100QG"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mfr_Name"; Value = "E-Switch"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RefDes"; Value = "RefDes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "DEV"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=BOOT0_1 Pin=C29-1
+Added Pin To Net: NetName=BOOT0_0 Pin=J7-1
+Added Pin To Net: NetName=BOOT0_1 Pin=J7-2
+Added Pin To Net: NetName=5V Pin=J9-1
+Added Pin To Net: NetName=BOOT0_1 Pin=SW1-1
+Added Pin To Net: NetName=BOOT0_1 Pin=SW1-2
+Added Pin To Net: NetName=NetC29_2 Pin=C29-2
+Added Pin To Net: NetName=NetC29_2 Pin=SW1-3
+Added Pin To Net: NetName=NetC29_2 Pin=U1-7
+Added Net: Name=NetC29_2
+Added Pin To Net: NetName=NetJ1_1 Pin=J1-1
+Added Pin To Net: NetName=NetJ1_1 Pin=J9-2
+Added Net: Name=NetJ1_1
+Added Member To Class: ClassName=microController Member=Component C29 Cap Semi
+Added Member To Class: ClassName=Connectors Member=Component J9 61300211121
+Added Member To Class: ClassName=microController Member=Component SW1 TL3301EF100QG
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

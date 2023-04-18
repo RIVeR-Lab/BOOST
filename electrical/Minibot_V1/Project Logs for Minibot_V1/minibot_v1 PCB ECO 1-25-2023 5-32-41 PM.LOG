@@ -1,0 +1,22 @@
+Removed Pin From Net: NetName=ANT Pin=C12-2
+Change Component Footprint: Designator=C12 Old Footprint=1608[0603] New Footprint=CC0603N_YAG
+Change Component Comment : Designator=C12 Old Comment=0603 New Comment=CC0603KRX7R7BB104
+Change component parameters: Designator = "C12" ("C12"); Footprint = "1608[0603]"; UniqueID = "\WFKBBRII" ("\WFKBBRII")
+Change component parameters (AddParameter): Name = "Copyright"; Value = "Copyright (C) 2023 Ultra Librarian. All rights reserved."; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Digi-Key_Part_Number_1"; Value = "311-1088-1-ND"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Digi-Key_Part_Number_2"; Value = "311-1088-2-ND"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Digi-Key_Part_Number_3"; Value = "311-1088-2-NDL"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Digi-Key_Part_Number_4"; Value = "311-1088-6-ND"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "CC0603KRX7R7BB104"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mfr_Name"; Value = "Yageo"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "RefDes"; Value = "RefDes"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Type"; Value = "DEV"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=ANT Pin=C12-1
+Added Pin To Net: NetName=NetC12_2 Pin=C12-2
+Added Pin To Net: NetName=NetC12_2 Pin=U6-11
+Added Net: Name=NetC12_2
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

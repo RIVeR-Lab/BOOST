@@ -1,0 +1,96 @@
+Removed Pin From Net: NetName=3V3 Pin=U1-1
+Removed Pin From Net: NetName=NetC29_2 Pin=U1-7
+Removed Pin From Net: NetName=GND Pin=U1-12
+Removed Pin From Net: NetName=3V3 Pin=U1-13
+Removed Pin From Net: NetName=TIM5_CH1_ENC_2A Pin=U1-14
+Removed Pin From Net: NetName=TIM5_CH2_ENC_2B Pin=U1-15
+Removed Pin From Net: NetName=PA2 Pin=U1-16
+Removed Pin From Net: NetName=PA3 Pin=U1-17
+Removed Pin From Net: NetName=GND Pin=U1-18
+Removed Pin From Net: NetName=3V3 Pin=U1-19
+Removed Pin From Net: NetName=PA4 Pin=U1-20
+Removed Pin From Net: NetName=TIM2_CH1_ENC_1A Pin=U1-21
+Removed Pin From Net: NetName=TIM3_CH1_MOT_1A Pin=U1-22
+Removed Pin From Net: NetName=TIM3_CH2_MOT_1B Pin=U1-23
+Removed Pin From Net: NetName=NetC27_2 Pin=U1-30
+Removed Pin From Net: NetName=GND Pin=U1-31
+Removed Pin From Net: NetName=3V3 Pin=U1-32
+Removed Pin From Net: NetName=UART6_RX_GPS Pin=U1-37
+Removed Pin From Net: NetName=UART6_TX_GPS Pin=U1-38
+Removed Pin From Net: NetName=I2C1_SCL_IMU Pin=U1-41
+Removed Pin From Net: NetName=I2C1_SDA_IMU Pin=U1-42
+Removed Pin From Net: NetName=PA10 Pin=U1-43
+Removed Pin From Net: NetName=PA11 Pin=U1-44
+Removed Pin From Net: NetName=PA12 Pin=U1-45
+Removed Pin From Net: NetName=PA13 Pin=U1-46
+Removed Pin From Net: NetName=GND Pin=U1-47
+Removed Pin From Net: NetName=3V3 Pin=U1-48
+Removed Pin From Net: NetName=PA14 Pin=U1-49
+Removed Pin From Net: NetName=PA15 Pin=U1-50
+Removed Pin From Net: NetName=TIM2_CH2_ENC_1B Pin=U1-55
+Removed Pin From Net: NetName=TIM4_CH1_MOT_2A Pin=U1-58
+Removed Pin From Net: NetName=TIM4_CH2_MOT_2B Pin=U1-59
+Removed Pin From Net: NetName=NetC28_2 Pin=U1-60
+Removed Pin From Net: NetName=GND Pin=U1-63
+Removed Pin From Net: NetName=3V3 Pin=U1-64
+Removed Member From Class: ClassName=microController Member=U1
+Added Component: Designator=U?(LQFP64-10x10mm)
+Add component (AddParameter): Name = "Copyright"; Value = "Copyright (C) 2023 Ultra Librarian. All rights reserved."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Digi-Key_Part_Number_1"; Value = "497-19357-2-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Digi-Key_Part_Number_2"; Value = "497-19357-1-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Digi-Key_Part_Number_3"; Value = "497-19357-6-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "STM32F446RCT6TR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mfr_Name"; Value = "STMicroelectronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RefDes"; Value = "RefDes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "DEV"; VariantName = "[No Variations]"
+Added Component: Designator=U?(LQFP64-10x10mm)
+Add component (AddParameter): Name = "Copyright"; Value = "Copyright (C) 2023 Ultra Librarian. All rights reserved."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Digi-Key_Part_Number_1"; Value = "497-19357-2-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Digi-Key_Part_Number_2"; Value = "497-19357-1-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Digi-Key_Part_Number_3"; Value = "497-19357-6-ND"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Manufacturer_Part_Number"; Value = "STM32F446RCT6TR"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Mfr_Name"; Value = "STMicroelectronics"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "RefDes"; Value = "RefDes"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Type"; Value = "DEV"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=3V3 Pin=U?-1
+Added Pin To Net: NetName=NetC29_2 Pin=U?-7
+Added Pin To Net: NetName=GND Pin=U?-12
+Added Pin To Net: NetName=3V3 Pin=U?-13
+Added Pin To Net: NetName=TIM5_CH1_ENC_2A Pin=U?-14
+Added Pin To Net: NetName=TIM5_CH2_ENC_2B Pin=U?-15
+Added Pin To Net: NetName=PA2 Pin=U?-16
+Added Pin To Net: NetName=PA3 Pin=U?-17
+Added Pin To Net: NetName=GND Pin=U?-18
+Added Pin To Net: NetName=3V3 Pin=U?-19
+Added Pin To Net: NetName=PA4 Pin=U?-20
+Added Pin To Net: NetName=TIM2_CH1_ENC_1A Pin=U?-21
+Added Pin To Net: NetName=TIM3_CH1_MOT_1A Pin=U?-22
+Added Pin To Net: NetName=TIM3_CH2_MOT_1B Pin=U?-23
+Added Pin To Net: NetName=NetC27_2 Pin=U?-30
+Added Pin To Net: NetName=GND Pin=U?-31
+Added Pin To Net: NetName=3V3 Pin=U?-32
+Added Pin To Net: NetName=UART6_RX_GPS Pin=U?-37
+Added Pin To Net: NetName=UART6_TX_GPS Pin=U?-38
+Added Pin To Net: NetName=I2C1_SCL_IMU Pin=U?-41
+Added Pin To Net: NetName=I2C1_SDA_IMU Pin=U?-42
+Added Pin To Net: NetName=PA10 Pin=U?-43
+Added Pin To Net: NetName=PA11 Pin=U?-44
+Added Pin To Net: NetName=PA12 Pin=U?-45
+Added Pin To Net: NetName=PA13 Pin=U?-46
+Added Pin To Net: NetName=GND Pin=U?-47
+Added Pin To Net: NetName=3V3 Pin=U?-48
+Added Pin To Net: NetName=PA14 Pin=U?-49
+Added Pin To Net: NetName=PA15 Pin=U?-50
+Added Pin To Net: NetName=TIM2_CH2_ENC_1B Pin=U?-55
+Added Pin To Net: NetName=TIM4_CH1_MOT_2A Pin=U?-58
+Added Pin To Net: NetName=TIM4_CH2_MOT_2B Pin=U?-59
+Added Pin To Net: NetName=NetC28_2 Pin=U?-60
+Added Pin To Net: NetName=GND Pin=U?-63
+Added Pin To Net: NetName=3V3 Pin=U?-64
+Added Member To Class: ClassName=microController Member=Component U? STM32F446RCT6TR
+Added Member To Class: ClassName=microController Member=Component U? STM32F446RCT6TR
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

@@ -1,0 +1,20 @@
+Removed Pin From Net: NetName=NetC13_2 Pin=L2-1
+Removed Pin From Net: NetName=ANT Pin=L2-2
+Change Component Footprint: Designator=L2 Old Footprint=0603 New Footprint=IND_0603_TDK
+Change Component Comment : Designator=L2 Old Comment=0603 New Comment=MLG0603S36NJT000
+Change component parameters: Designator = "L2" ("L2"); Footprint = "0603"; UniqueID = "\HDRVDTBM" ("\HDRVDTBM")
+Change component parameters (AddParameter): Name = "Copyright"; Value = "Copyright (C) 2023 Ultra Librarian. All rights reserved."; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Digi-Key_Part_Number_1"; Value = "445-6298-1-ND"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Digi-Key_Part_Number_2"; Value = "445-6298-2-ND"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Digi-Key_Part_Number_3"; Value = "445-6298-6-ND"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Manufacturer_Part_Number"; Value = "MLG0603S36NJT000"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Mfr_Name"; Value = "TDK"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "RefDes"; Value = "RefDes"; VariantName = "[No Variations]"
+Change component parameters (AddParameter): Name = "Type"; Value = "DEV"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=ANT Pin=L2-1
+Added Pin To Net: NetName=NetC13_2 Pin=L2-2
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

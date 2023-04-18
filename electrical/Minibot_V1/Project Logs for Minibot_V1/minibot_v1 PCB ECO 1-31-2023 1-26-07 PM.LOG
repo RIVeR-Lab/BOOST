@@ -1,0 +1,80 @@
+Removed Pin From Net: NetName=GND Pin=J2-2
+Removed Pin From Net: NetName=GND Pin=J2-3
+Removed Pin From Net: NetName=GND Pin=J2-4
+Removed Pin From Net: NetName=GND Pin=J2-5
+Removed Pin From Net: NetName=I2C1_SCL_IMU Pin=R18-1
+Removed Pin From Net: NetName=I2C1_SDA_IMU Pin=R19-1
+Removed Pin From Net: NetName=I2C1_SCL_IMU Pin=U1-41
+Removed Pin From Net: NetName=I2C1_SDA_IMU Pin=U1-42
+Added Component: Designator=R22(J1-0603)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "29-May-2009"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "IPC-7351 Footprint Added."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageDescription"; Value = "Chip Resistor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageReference"; Value = "J1-0603"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10K"; VariantName = "[No Variations]"
+Added Component: Designator=R23(J1-0603)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "29-May-2009"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "IPC-7351 Footprint Added."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageDescription"; Value = "Chip Resistor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageReference"; Value = "J1-0603"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10K"; VariantName = "[No Variations]"
+Added Component: Designator=R24(J1-0603)
+Add component (AddParameter): Name = "LatestRevisionDate"; Value = "29-May-2009"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "LatestRevisionNote"; Value = "IPC-7351 Footprint Added."; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageDescription"; Value = "Chip Resistor"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "PackageReference"; Value = "J1-0603"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Published"; Value = "8-Jun-2000"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Publisher"; Value = "Altium Limited"; VariantName = "[No Variations]"
+Add component (AddParameter): Name = "Value"; Value = "10K"; VariantName = "[No Variations]"
+Added Pin To Net: NetName=5V Pin=J8-CN7_6
+Added Pin To Net: NetName=GND Pin=J8-CN7_8
+Added Pin To Net: NetName=GND Pin=J8-CN7_19
+Added Pin To Net: NetName=GND Pin=J8-CN7_20
+Added Pin To Net: NetName=GND Pin=J8-CN7_22
+Added Pin To Net: NetName=INT_IMU Pin=J8-CN10_3
+Added Pin To Net: NetName=BOOT_IMU Pin=J8-CN10_5
+Added Pin To Net: NetName=GND Pin=J8-CN10_9
+Added Pin To Net: NetName=GND Pin=J8-CN10_20
+Added Pin To Net: NetName=3V3_GPS Pin=R22-2
+Added Pin To Net: NetName=GND Pin=R23-1
+Added Pin To Net: NetName=3V3_GPS Pin=R24-1
+Added Pin To Net: NetName=INT_IMU Pin=U1-61
+Added Pin To Net: NetName=BOOT_IMU Pin=U1-62
+Change Net Name : Old Net Name=NetR12_2 New Net Name=OE_MOT
+Change Net Name : Old Net Name=NetR15_2 New Net Name=OE_ENC
+Change Net Name : Old Net Name=NetR16_1 New Net Name=IMU_I2C_SDA
+Change Net Name : Old Net Name=NetR17_1 New Net Name=IMU_I2C_SCL
+Added Pin To Net: NetName=1PPS_GPS Pin=J8-CN7_3
+Added Pin To Net: NetName=1PPS_GPS Pin=U1-53
+Added Pin To Net: NetName=1PPS_GPS Pin=U6-4
+Added Net: Name=1PPS_GPS
+Added Pin To Net: NetName=NetR18_1 Pin=R18-1
+Added Pin To Net: NetName=NetR18_1 Pin=U1-41
+Added Net: Name=NetR18_1
+Added Pin To Net: NetName=NetR19_1 Pin=R19-1
+Added Pin To Net: NetName=NetR19_1 Pin=U1-42
+Added Net: Name=NetR19_1
+Added Pin To Net: NetName=NetR23_2 Pin=R23-2
+Added Pin To Net: NetName=NetR23_2 Pin=U6-5
+Added Net: Name=NetR23_2
+Added Pin To Net: NetName=NetR24_2 Pin=R24-2
+Added Pin To Net: NetName=NetR24_2 Pin=U6-15
+Added Net: Name=NetR24_2
+Added Pin To Net: NetName=RESET_N_GPS Pin=J8-CN7_1
+Added Pin To Net: NetName=RESET_N_GPS Pin=R22-1
+Added Pin To Net: NetName=RESET_N_GPS Pin=U1-51
+Added Pin To Net: NetName=RESET_N_GPS Pin=U6-9
+Added Net: Name=RESET_N_GPS
+Added Member To Class: ClassName=Power Member=Component C17 0603
+Added Member To Class: ClassName=Sensor Member=Component R22 Res3
+Added Member To Class: ClassName=Sensor Member=Component R23 Res3
+Added Member To Class: ClassName=Sensor Member=Component R24 Res3
+Added Room: Name=Connectors
+Added Room: Name=microController
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor

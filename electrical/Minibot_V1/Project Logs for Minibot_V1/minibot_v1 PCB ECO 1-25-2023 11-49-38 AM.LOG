@@ -1,0 +1,30 @@
+Removed Member From Class: ClassName=microController Member=U?
+Change Component Designator: OldDesignator=U? NewDesignator=U1
+Added Pin To Net: NetName=NetC29_2 Pin=U1-7
+Added Pin To Net: NetName=TIM5_CH1_ENC_2A Pin=U1-14
+Added Pin To Net: NetName=TIM5_CH2_ENC_2B Pin=U1-15
+Added Pin To Net: NetName=PA2 Pin=U1-16
+Added Pin To Net: NetName=PA3 Pin=U1-17
+Added Pin To Net: NetName=PA4 Pin=U1-20
+Added Pin To Net: NetName=TIM2_CH1_ENC_1A Pin=U1-21
+Added Pin To Net: NetName=TIM3_CH1_MOT_1A Pin=U1-22
+Added Pin To Net: NetName=TIM3_CH2_MOT_1B Pin=U1-23
+Added Pin To Net: NetName=UART6_RX_GPS Pin=U1-37
+Added Pin To Net: NetName=UART6_TX_GPS Pin=U1-38
+Added Pin To Net: NetName=I2C1_SCL_IMU Pin=U1-41
+Added Pin To Net: NetName=I2C1_SDA_IMU Pin=U1-42
+Added Pin To Net: NetName=PA10 Pin=U1-43
+Added Pin To Net: NetName=PA11 Pin=U1-44
+Added Pin To Net: NetName=PA12 Pin=U1-45
+Added Pin To Net: NetName=PA13 Pin=U1-46
+Added Pin To Net: NetName=PA14 Pin=U1-49
+Added Pin To Net: NetName=PA15 Pin=U1-50
+Added Pin To Net: NetName=TIM2_CH2_ENC_1B Pin=U1-55
+Added Pin To Net: NetName=TIM4_CH1_MOT_2A Pin=U1-58
+Added Pin To Net: NetName=TIM4_CH2_MOT_2B Pin=U1-59
+Added Pin To Net: NetName=NetC28_2 Pin=U1-60
+Added Member To Class: ClassName=microController Member=Component U1 STM32F446RCT6TR
+Added Room: Name=Connectors
+Added Room: Name=Nucleo
+Added Room: Name=Power
+Added Room: Name=Sensor
