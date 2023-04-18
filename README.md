@@ -17,6 +17,12 @@
 * This board is identical on the 2x minibots and on the hubbot.
 * Controls IMU, GPS, motor control, encoders, battery voltage.
 
+`/shared/`
+* Data shared on the ROS network between HubBot and Minibots
+
+`/software/`
+* All SLAM and NAV software running on MiniBot for autonomous Docking
+
 # Running Things
 ## HubBot Software
 * Run main ROS2 HubBot node:
