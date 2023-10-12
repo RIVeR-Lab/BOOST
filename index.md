@@ -20,7 +20,7 @@ permalink: /
       <h1>Battery-Swapping Multi-Agent System for Sustained Operation of Large Planetary Fleets</h1>
     </div>
     <div class="names">
-      <p><strong> Ethan Holand <sup>*</sup><a></a>, Jarrod Homer <sup>*</sup><a></a>, Musheera Khandaker <sup>*</sup><a></a>, Ethan F. Muhlon <sup>*</sup><a></a>, Maulik Patel <sup>*</sup><a></a>, Alex Storrer <sup>*</sup><a></a>, Ben-oni Vainqueur <sup>*</sup><a></a>, <a  href="https://nhanson.io/"  >Nathaniel Hanson</a>, <a  href="https://www.tpadir.info/">Taşkın Padır</a></strong></p>
+      <p><strong> Ethan Holand <sup>*†</sup><a></a>, Jarrod Homer <sup>*</sup><a></a>, Musheera Khandaker <sup>*</sup><a></a>, Ethan F. Muhlon <sup>*</sup><a></a>, Maulik Patel <sup>*</sup><a></a>, Alex Storrer <sup>*</sup><a></a>, Ben-oni Vainqueur <sup>*</sup><a></a>, <a  href="https://nhanson.io/"  >Nathaniel Hanson</a>, <a  href="https://www.tpadir.info/">Taşkın Padır</a></strong></p>
   </div>
 
   <div>
@@ -46,4 +46,5 @@ permalink: /
 
 </body>
 </html>
-∗These authors contributed equally
+<p><i>∗These authors contributed equally</i><p>
+<p><i>† Corresponding author. Email: holand.e@northeastern.edu</i></p>
