@@ -1,8 +1,5 @@
-# Autonomous Navigation & Docking for Distributed Robots
-* Aka Swarm Crawler
-* Aka BOOST: Battery Optimized On-site Swapping Technology
-* Making swarms crawl
-
+# BOOST
+Multi-Agent Mission Concept for Battery Optimized Onsite Swapping Technology (BOOST)
 # Where Software Is
 
 `/hubbot_software/`
