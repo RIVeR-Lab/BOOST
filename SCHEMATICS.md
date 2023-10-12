@@ -3,10 +3,11 @@ layout: default
 title: Schematics
 nav_order: 4
 ---
+<h1>Schematics</h1>
+
 This is currently being updated. Here are some introductory schematics with a description of each component. 
-<div class="title_set">
-    <h1>Battery Modules</h1>
-</div>
+
+<h2>Battery Modules</h2>
 <div style="text-align: center;">
   <figure>
       <img src="./media/battery_module_schematic.png" alt="Battery Module Schematic">
@@ -18,7 +19,7 @@ This is currently being updated. Here are some introductory schematics with a de
 <h2>Hub Electronics</h2>
 <div style="text-align: center;">
   <figure>
-      <img src="./media/hub_system_electronics.png" alt="Hub Electronics Diagram">
+      <img src="./media/hub_system_diagram.png" alt="Hub Electronics Diagram">
     <figcaption>The hub consists of electronic components for sensing the states of battery modules and circuitry for recharging the 3x battery modules.
     </figcaption>
   </figure>
