@@ -1,5 +1,5 @@
 # BOOST
-Multi-Agent Mission Concept for Battery Optimized Onsite Swapping Technology (BOOST)
+Battery-Swapping Multi-Agent System for Sustained Operation of Large Planetary Fleets
 # Where Software Is
 
 `/hubbot_software/`
