@@ -11,7 +11,7 @@ This is currently being updated. Here are some introductory schematics with a de
 <div style="text-align: center;">
   <figure>
       <img src="./media/battery_module_schematic.png" alt="Battery Module Schematic">
-    <figcaption>The battery module is the unit that is exchanged between the minibot and hubbot. The battery module consists of a 6S lipo battery, BMS, custom connector PCBs, as well as protection circuitry. The battery module housing is 3D printed and has design elements for proper alignment and exchange. Figure 9 details the system.
+    <figcaption>The battery module is the unit that is exchanged between the minibot and hubbot. The battery module consists of a 6S lipo battery, BMS, custom connector PCBs, as well as protection circuitry. The battery module housing is 3D printed and has design elements for proper alignment and exchange. 
     </figcaption>
   </figure>
 </div>
