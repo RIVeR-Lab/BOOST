@@ -35,7 +35,7 @@ Multi-Agent Mission Concept for Battery Optimized Onsite Swapping Technology (BO
 ## MiniBot Firmware
 * Load the latest firmware for the respective MiniBot onto its STM32F446RE
   * `minibot_hubbot_firmware\firmwarePioCube\firmware_releases`
-# David Useful Commands
+# Useful Commands
 > ros2 topic pub /chatter std_msgs/String "data: Hello ROS Developers"
 
 >ros2 topic pub /hub_stat std_msgs/Int32 "data: 4"
