@@ -1,0 +1,121 @@
+(kicad_sch (version 20230121) (generator eeschema)
+
+  (uuid 6277d1d5-4dc2-4848-a445-faca51f2a521)
+
+  (paper "A4")
+
+  (lib_symbols
+  )
+
+
+  (text "Minibot PCB Sheets" (at 115.57 25.4 0)
+    (effects (font (size 4 4) (thickness 0.8) bold) (justify left bottom))
+    (uuid 2af4be0f-2526-45ec-a742-aa826fdfdcd2)
+  )
+
+  (sheet (at 151.13 87.63) (size 35.56 21.59) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 00a91963-d243-4d82-94ce-55577cb843e0)
+    (property "Sheetname" "Power" (at 151.13 86.5534 0)
+      (effects (font (size 2 2)) (justify left bottom))
+    )
+    (property "Sheetfile" "Power.kicad_sch" (at 151.13 109.8046 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "Minibot_V1"
+        (path "/6277d1d5-4dc2-4848-a445-faca51f2a521" (page "5"))
+      )
+    )
+  )
+
+  (sheet (at 86.36 46.99) (size 35.56 21.59) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 03fe57a4-7a7a-4787-83ca-3b066c474155)
+    (property "Sheetname" "Block Diagram" (at 86.36 45.9134 0)
+      (effects (font (size 2 2)) (justify left bottom))
+    )
+    (property "Sheetfile" "block_diagram.kicad_sch" (at 86.36 69.1646 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "Minibot_V1"
+        (path "/6277d1d5-4dc2-4848-a445-faca51f2a521" (page "2"))
+      )
+    )
+  )
+
+  (sheet (at 151.13 46.99) (size 35.56 21.59) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 159a9af1-6fb2-46e5-aab6-762dc8b3b139)
+    (property "Sheetname" "MicroController" (at 151.13 45.9134 0)
+      (effects (font (size 2 2)) (justify left bottom))
+    )
+    (property "Sheetfile" "MicroController.kicad_sch" (at 151.13 69.1646 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "Minibot_V1"
+        (path "/6277d1d5-4dc2-4848-a445-faca51f2a521" (page "3"))
+      )
+    )
+  )
+
+  (sheet (at 86.36 130.81) (size 35.56 21.59) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 1b50ac16-59a6-480a-a908-39e3ffda0215)
+    (property "Sheetname" "Connectors" (at 86.36 129.7334 0)
+      (effects (font (size 2 2)) (justify left bottom))
+    )
+    (property "Sheetfile" "Connectors.kicad_sch" (at 86.36 152.9846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "Minibot_V1"
+        (path "/6277d1d5-4dc2-4848-a445-faca51f2a521" (page "6"))
+      )
+    )
+  )
+
+  (sheet (at 86.36 88.9) (size 35.56 21.59) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid 2b5c0196-d692-4e9e-9edf-bd6adc405e74)
+    (property "Sheetname" "Sensor" (at 86.36 87.8234 0)
+      (effects (font (size 2 2)) (justify left bottom))
+    )
+    (property "Sheetfile" "Sensor.kicad_sch" (at 86.36 111.0746 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "Minibot_V1"
+        (path "/6277d1d5-4dc2-4848-a445-faca51f2a521" (page "4"))
+      )
+    )
+  )
+
+  (sheet (at 152.4 130.81) (size 35.56 21.59) (fields_autoplaced)
+    (stroke (width 0.1524) (type solid))
+    (fill (color 0 0 0 0.0000))
+    (uuid c59fe1fc-a3c5-4ac3-a6d9-dddd207f7f02)
+    (property "Sheetname" "Nucleo" (at 152.4 129.7334 0)
+      (effects (font (size 2 2)) (justify left bottom))
+    )
+    (property "Sheetfile" "Nucleo.kicad_sch" (at 152.4 152.9846 0)
+      (effects (font (size 1.27 1.27)) (justify left top))
+    )
+    (instances
+      (project "Minibot_V1"
+        (path "/6277d1d5-4dc2-4848-a445-faca51f2a521" (page "7"))
+      )
+    )
+  )
+
+  (sheet_instances
+    (path "/" (page "1"))
+  )
+)

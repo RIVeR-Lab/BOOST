@@ -1,0 +1,4 @@
+(sym_lib_table
+  (version 7)
+  (lib (name "batt_swap-altium-import")(type "KiCad")(uri "C:/Users/mqk0717/Documents/myornr/boost/electrical/batt_swap/batt_swap-altium-import.kicad_sym")(options "")(descr ""))
+)
