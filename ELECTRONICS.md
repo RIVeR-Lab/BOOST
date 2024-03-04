@@ -1,13 +1,13 @@
 ---
 layout: default
-title: Schematics
+title: Electronics
 nav_order: 4
 ---
 <h1>Schematics</h1>
 
-This is currently being updated. Here are some introductory schematics with a description of each component. 
+This page provides a high-level overview of the electronics of the system. Block diagrams for each main system (battery modules, hub, and rover) are provided. three custom PCBs were crated for the function of the system: a rover PCB, a connector PCB, and a power swap PCB. The full design files for these boards is available in KiCad and Altium file formats at [this link](https://github.com/RIVeR-Lab/BOOST/tree/main/electrical/Minibot_V2).
 
-<h2>Battery Modules</h2>
+<h2>Battery Module Electronics</h2>
 <div style="text-align: center;">
   <figure>
       <img src="./media/battery_module_schematic.png" alt="Battery Module Schematic">
