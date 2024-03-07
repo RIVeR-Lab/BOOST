@@ -4,7 +4,9 @@ title: Bill of Materials
 nav_order: 5
 ---
 
-The full component list for our system, with prices at the time of purchase, are lifted below. When building the system, note that two battery modules are required for every rover: one for active discharge to the rover, and a second to concurrently charge at the hub. Additionally, note the use of custom components: many components were 3D printed, and several custom PCBs were created. The associated CAD files can be found at [this link](https://river-lab.github.io/BOOST/CAD.html), and further information on the electronics can be found [at this link](https://river-lab.github.io/BOOST/ELECTRONICS.html).
+# Bill of Materials
+
+The full component list for our system, with prices at the time of purchase, are listed below. When building the system, note that two battery modules are required for every rover: one for active discharge to the rover, and its backup which concurrently charges at the hub. Additionally, note the use of custom components: many components were 3D printed, and several custom PCBs were created. The associated CAD files can be found at [this link](https://river-lab.github.io/BOOST/CAD.html), and further information on the electronics can be found [at this link](https://river-lab.github.io/BOOST/ELECTRONICS.html).
 
 ## Rover
 
@@ -33,6 +35,7 @@ The full component list for our system, with prices at the time of purchase, are
 |                   | Battery Swap PCB | 1   | $12.00    | $12.00        |
 |                   | -                | -   | -         | -             |
 | **Grand Total**   |                  |     |           | **$1,013.62** |
+
 ## Battery Module
 
 | Top Level   | Level 2           | QTY | Unit Cost | Subtotal |
