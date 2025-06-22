@@ -20,7 +20,7 @@ permalink: /
       <h1>Battery-Swapping Multi-Agent System for Sustained Operation of Large Planetary Fleets</h1>
     </div>
     <div class="names">
-      <p><strong> <a href = https://ethanholand.com/">Ethan Holand</a> <sup>†</sup>, <a href =https://www.jarrod-homer.com/>Jarrod Homer</a>, Alex Storrer, Musheera Khandaker, Ethan F. Muhlon, Maulik Patel Ben-oni Vainqueur, David Antaki, Naomi Cooke, Chloe Wilson, Bahram Shafai, <a  href="https://nhanson.io/"  >Nathaniel Hanson</a>, <a  href="https://www.tpadir.info/">Taşkın Padır</a></strong></p>
+      <p><strong> <a href = "https://ethanholand.com/">Ethan Holand</a> <sup>†</sup>, <a href ="https://www.jarrod-homer.com/">Jarrod Homer</a>, Alex Storrer, Musheera Khandaker, Ethan F. Muhlon, Maulik Patel Ben-oni Vainqueur, David Antaki, Naomi Cooke, Chloe Wilson, Bahram Shafai, <a  href="https://nhanson.io/"  >Nathaniel Hanson</a>, <a  href="https://www.tpadir.info/">Taşkın Padır</a></strong></p>
   </div>
 
   <div>
