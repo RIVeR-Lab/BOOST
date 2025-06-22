@@ -45,6 +45,11 @@ permalink: /
 <h2>Publication Details</h2>
 <p>We are excited to share that our paper was accepted to the <a href="https://www.aeroconf.org/" >2024 IEEE Aerospace Conference (Aeroconf)</a>. We presented our work on March 7th, 2024. A pre-print of the paper is available on <a href="https://arxiv.org/abs/2401.08497">arXiv</a>; the paper is officially available on <a href="https://ieeexplore.ieee.org/abstract/document/10521295">IEEEXplore</a>.</p>
 
+
+</body>
+</html>
+
+
 ### Citing
 
 #### Plaintext: 
@@ -69,7 +74,4 @@ E. Holand et al., "Battery-Swapping Multi-Agent System for Sustained Operation o
 
 ```
 
-
-</body>
-</html>
 <p><i>† Corresponding author. Email: holand.e@northeastern.edu</i></p>
