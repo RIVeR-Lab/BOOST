@@ -1,106 +1,33 @@
-# BOOST
-Battery-Swapping Multi-Agent System for Sustained Operation of Large Planetary Fleets
-# Where Software Is
+# BOOST: Battery-Swapping Multi-Agent System for Sustained Operation of Large Planetary Fleets
+[![Image of BOOST system, feature hub bot and mini-rover docked in an outdoor field environment.](https://river-lab.github.io/BOOST/media/boostglamour.jpg)](https://river-lab.github.io/BOOST/)
+## Abstract
+We propose a novel, heterogeneous multi-agent architecture that miniaturizes rovers by outsourcing power generation to a central hub. By delegating power generation and distribution functions to this hub, the size, weight, power, and cost (SWAP-C) per rover are reduced, enabling efficient fleet scaling. As these rovers conduct mission tasks around the terrain, the hub charges an array of replacement battery modules. When a rover requires charging, it returns to the hub to initiate an autonomous docking sequence and exits with a fully charged battery. This confers an advantage over direct charging methods, such as wireless or wired charging, by replenishing a rover in minutes as opposed to hours, increasing net rover uptime.
 
-`/hubbot_software/`
-* The software running on the NVidia Jetson Nano on the HubBot
-* Includes the main ROS2 node running on the HubBot in `hubbot_software\ros2_ws\src\py_hubbot_main_controller_node\py_hubbot_main_controller_node`
+This work shares an open-source platform developed to demonstrate battery swapping on unknown field terrain. We detail our design methodologies utilized for increasing system reliability, with a focus on optimization, robust mechanical design, and verification. Optimization of the system is discussed, including the design of passive guide rails through simulation-based optimization methods which increase the valid docking configuration space by 258%. The full system was evaluated during integrated testing, where an average servicing time of 98 seconds was achieved on surfaces with a gradient up to 10°. We conclude by briefly proposing flight considerations for advancing the system toward a space-ready design. In sum, this prototype represents a proof of concept for autonomous docking and battery transfer on field terrain, advancing its Technology Readiness Level (TRL) from 1 to 3.
+## Building the system
+[CAD models are available](https://river-lab.github.io/BOOST/CAD.html) in a wide variety of data formats; at the time, assembly instructions are not available. [Electronic schematics](https://river-lab.github.io/BOOST/ELECTRONICS.html) and [custom PCBs](electrical/) are both accessible.
 
-`/minibot_hubbot_firmware/charge_controller_firmware/`
-* Code running on the Arduino Nano on the HubBot that controls the LEDs and reads battery module continuity and voltage and sends to Jetson Nano over UART.
+## Installing Software
+A [software overview](https://river-lab.github.io/BOOST/CODE.html) is provided. Further instructions can be found at [SOFTWARE.md](SOFTWARE.md).
 
-`/minibot_hubbot_firmware/firmwarePioCube/`
-* Code running on the STM32F466RE NUCLEO on our Custom PCB.
-* This board is identical on the 2x minibots and on the hubbot.
-* Controls IMU, GPS, motor control, encoders, battery voltage.
+## Links
+- [Demo Video](https://www.youtube.com/watch?v=pb5BIy4iOmw)
+- [Website](https://river-lab.github.io/BOOST/)
+- [Paper (IEEEXplore)](https://ieeexplore.ieee.org/document/10521295)
+- [Preprint (ArXiV)](https://arxiv.org/abs/2401.08497)
 
-`/shared/`
-* Data shared on the ROS network between HubBot and Minibots
-
-`/software/`
-* All SLAM and NAV software running on MiniBot for autonomous Docking
-
-# Running Things
-## HubBot Software
-* Run main ROS2 HubBot node:
-  >./hubbot_software\start_hubbot_processes.sh
-
-## HubBot Firmware
-* Load Firmware onto Charge Controller Arduino Nano.
-  * Load this sketch onto the Arduino
-  * `minibot_hubbot_firmware\charge_controller_firmware\monitor_RGB`
-* Load firmware onto STM32F446
-  * Load the latest firmware onto the NUCLEO found here:
-    * `minibot_hubbot_firmware\firmwarePioCube\firmware_releases\hubbot`
-## MiniBot Firmware
-* Load the latest firmware for the respective MiniBot onto its STM32F446RE
-  * `minibot_hubbot_firmware\firmwarePioCube\firmware_releases`
-# Useful Commands
-> ros2 topic pub /chatter std_msgs/String "data: Hello ROS Developers"
-
->ros2 topic pub /hub_stat std_msgs/Int32 "data: 4"
-
-#### rosserial with ROS1
-- http://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup
-- Installed ROS1 with WSL Ubuntu on windows
-  - http://wiki.ros.org/noetic/Installation/Ubuntu
-  - Installed ROS-Base: sudo apt install ros-noetic-ros-base
-- Followed the below to build the rosserial/ros_lib library files and msgs.
-  - http://wiki.ros.org/rosserial_arduino/Tutorials/Arduino%20IDE%20Setup
-
-##### To find the USB Port and get Nucleo board USB into WSL
-  - https://learn.microsoft.com/en-us/windows/wsl/connect-usb
-  - PS> usbipd wsl list
-  - PS> usbipd wsl attach -i 0483:374b
-  - wsl> lsusb
-  - wsl> sudo chmod 777 /dev/ttyACM0
-
-##### To give user permission to /dev/ttyUSBx, ttyACMx, and ttySx devices
-- These devices are in the dialout group, so add your user to that group
-  > $ sudo adduser myusername dialout
-
-##### Getting Data into ROS1 from MCU
-- http://wiki.ros.org/rosserial_arduino/Tutorials/Hello%20World
-- run roscore in one terminal
-  - wsl> roscore
-- Run serial_node.py in another terminal
-  - wsl> rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=57600
-  - This will get all topics from the MCU.
-- Should now see the topic in ROS1 in another terminal
-  - wsl> rostopic list
-  - Can echo with wsl> rostopic echo <topic>
-
-#### Using ros1_bridge
-- https://github.com/ros2/ros1_bridge
-- Start ROS1 core wsl> roscore
-  - If not done already.
-- Need to source both ROS1 and then ROS2 setup.bash's
-- wsl> ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
-  - This will bring in all topics from ROS1 to ROS2 and all topics from ROS2 to ROS1.
-
-#### teleop twist keyboard
-- http://wiki.ros.org/stdr_simulator/Tutorials/Teleop%20with%20teleop_twist_keyboard
-- ROS1: >rosrun teleop_twist_keyboard teleop_twist_keyboard.py cmd_vel:=cmd_vel
-- ROS2: >ros2 run teleop_twist_keyboard teleop_twist_keyboard
+## Citing this work
+```bibtex
+@INPROCEEDINGS{10521295,
+  author={Holand, Ethan and Homer, Jarrod and Storrer, Alex and Khandeker, Musheeera and Muhlon, Ethan F. and Patel, Maulik and Vainqueur, Ben-oni and Antaki, David and Cooke, Naomi and Wilson, Chloe and Shafai, Bahram and Hanson, Nathaniel and Padır, Taşkın},
+  booktitle={2024 IEEE Aerospace Conference}, 
+  title={Battery-Swapping Multi-Agent System for Sustained Operation of Large Planetary Fleets}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-15},
+  keywords={Wireless communication;Rails;Prototypes;Optimization methods;Batteries;Outsourcing;Reliability},
+  doi={10.1109/AERO58975.2024.10521295}}
+```
 
 
-#### ROSSerial TroubleShooting
-#### [ERROR] [1677681154.605087]: Unable to sync with device; possible link problem or link software version mismatch such as hydro rosserial_python with groovy Arduino
-  * Make sure Baud rates are matching
-  * Make sure that LOGGING is off on the nucleo so that ONLY ROSserial stuff is is sent out over the serial port connected to the Jetson.
-
-#### If serial isn't getting to jetson, but is getting to laptop
-* Make sure that the power configuration is correct on the NUCLEO board.
-* i.e. since we are using the STLink as a serial to USB adapter, the STLINK must be powered when the MCU is booted.
-* Make sure that we are powering USB through NUCLEO from the jetson.
-  * And if we are using external 5v to power NUCLEO that the correct jumpers are set.
-
-
-### For running ROSserial and ros1_bridge
->source ros1
->roscore
->rosrun rosserial_python serial_node.py _port:=/dev/ttyACM0 _baud:=57600
-
->source ros2
->source ros1
->ros2 run ros1_bridge dynamic_bridge --bridge-all-topics
